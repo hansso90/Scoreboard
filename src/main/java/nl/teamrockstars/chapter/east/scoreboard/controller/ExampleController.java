@@ -5,13 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.BASE;
+import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.MOUNT;
+import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
+
+@RestController(BASE+MOUNT+PUBLIC)
 public class ExampleController {
 
     @Autowired
     private ExampleService exampleService;
 
-    @GetMapping
+    @GetMapping(name = "example")
     public String getExample()
     {
         return exampleService.exampleMethod();
