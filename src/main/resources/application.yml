@@ -1,0 +1,14 @@
+
+#debug: true
+
+spring:
+  application:
+    name: Team Rockstars IT Scoreboard
+  datasource:
+    url: jdbc:mysql://localhost:3306/scoreboard
+    username: root
+    password: mysql
+    driver-class: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
