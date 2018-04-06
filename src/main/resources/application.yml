@@ -14,3 +14,20 @@ spring:
       ddl-auto: create-drop
   resource:
     add-mapping: true
+
+
+logging:
+  level:
+    ROOT: ERROR
+
+    # Set INFO to see the allocated port
+    org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer: INFO
+    org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainer: INFO
+
+    # Get info regarding connection to the config server and retries if required
+    org.springframework.cloud.config.client.ConfigServicePropertySourceLocator: INFO
+
+    org.apache.http.impl.execchain.RetryExec: INFO
+
+    nl.teamrockstars.chapter.east.scoreboard: INFO
+

@@ -15,8 +15,7 @@ public class PrivateExampleController {
 
   @RequestMapping(value = "secure", method = RequestMethod.GET)
   @ApiOperation(value = "Check public controller is accessible", notes = "", response = String.class)
-  public String getSecure()
-  {
+  public String getSecure() {
     return "secure";
   }
 }
