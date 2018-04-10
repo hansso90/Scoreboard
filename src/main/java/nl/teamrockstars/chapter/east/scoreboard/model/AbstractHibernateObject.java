@@ -1,8 +1,11 @@
 package nl.teamrockstars.chapter.east.scoreboard.model;
 
 
-import javax.persistence.*;
 import java.util.Objects;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class AbstractHibernateObject {
@@ -21,7 +24,6 @@ public abstract class AbstractHibernateObject {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 }
