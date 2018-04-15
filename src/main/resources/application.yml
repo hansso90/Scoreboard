@@ -4,17 +4,36 @@
 spring:
   application:
     name: Team Rockstars IT Scoreboard
-  datasource:
-    url: jdbc:mysql://localhost:3306/scoreboard
-    username: root
-    password: mysql
-    driver-class: com.mysql.jdbc.Driver
+  profiles:
+    active:
+      h2
   jpa:
     hibernate:
       ddl-auto: create-drop
   resource:
     add-mapping: true
 
+---
+
+spring:
+  profile: mysql
+  datasource:
+    url: jdbc:mysql://localhost:3306/scoreboard
+    username: root
+    password: mysql
+    driver-class: com.mysql.jdbc.Driver
+
+---
+
+spring:
+  profiles: h2
+  datasource:
+    url: jdbc:h2:mem:scoreboard
+    username: sa
+    password:
+    driver-class: org.h2.Driver
+
+---
 
 logging:
   level:
