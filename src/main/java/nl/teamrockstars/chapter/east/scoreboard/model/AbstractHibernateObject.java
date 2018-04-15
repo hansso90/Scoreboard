@@ -1,18 +1,24 @@
 package nl.teamrockstars.chapter.east.scoreboard.model;
 
 
-import java.util.Objects;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
+import java.util.Objects;
 
 @MappedSuperclass
-public abstract class AbstractHibernateObject {
+public abstract class AbstractHibernateObject implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
 
     @Override
     public boolean equals(Object o) {
