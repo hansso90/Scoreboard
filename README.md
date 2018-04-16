@@ -1,7 +1,19 @@
 # Scoreboard
 Scoreboard
 
-## oauth
+## How to setup de application
+
+prepare:
+- Install Mysql db
+- Install your favorite IDE
+
+Install
+- Open the project in your favorite IDE, we all know Intellij is the best
+- Go to the application.yml and edit your username and password to your mysql config
+- Run the ScoreboardApplication.class
+
+
+## How to get a oauth token
 
 1. get access token:
 ```
