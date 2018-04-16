@@ -7,7 +7,10 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         jshint: {
-            all: [mainFolder]
+            all: [mainFolder],
+            options: {
+                esnext: true
+            }
         },
         browserify: {
             development: {
@@ -22,7 +25,7 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            files: [mainFolder],
+            files: [mainFolder, './Gruntfile.js', './package.json'],
             tasks: ['jshint', 'browserify']
         }
     })

@@ -1,1 +1,3 @@
-alert(1);
+import * as React from 'react';
+
+console.log(React);
