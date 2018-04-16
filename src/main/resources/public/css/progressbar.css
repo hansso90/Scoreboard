@@ -1,0 +1,69 @@
+
+.progress-bar {
+    background-color: #1a1a1a;
+    height: 80px;
+    padding: 5px;
+    width: 100%;
+    margin: 0;
+    border-radius: 3px;
+    box-shadow: 0 1px 5px #333 inset, 0 1px 0 #444;
+}
+
+.progress-bar span {
+    display: inline-block;
+    height: 100%;
+    background-color: #777;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+    transition: width .4s ease-in-out;
+}
+
+/*---------------------------*/
+
+.blue span {
+    background-color: #4196e3;
+}
+
+.pink span {
+    background-color: #e36690;
+}
+
+.orange span {
+    background-color: #fecf23;
+    background-image: linear-gradient(top, #feba71, #a37756);
+}
+
+.green span {
+    background-color: #a5df41;
+    background-image: linear-gradient(top, #a5df41, #4ca916);
+}
+
+/*---------------------------*/
+
+.stripes span {
+    background-size: 30px 30px;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
+    transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
+    transparent 75%, transparent);
+    -webkit-animation: stripes-anim 3s linear infinite;
+}
+
+@-webkit-keyframes stripes-anim {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 50px 0;
+    }
+}
+
+@-moz-keyframes stripes-anim {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 50px 0;
+    }
+}
