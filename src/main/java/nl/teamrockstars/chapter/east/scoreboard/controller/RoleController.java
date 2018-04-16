@@ -26,17 +26,12 @@ public class RoleController {
   @Autowired
   private RoleRepository roleRepository;
 
-  @Autowired
-  private RoleService roleService;
-
-  //@PreAuthorize("hasRole('ROLEMANAGEMENT')")
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   @ApiOperation(value = "Get role", notes = "Gets a certain role with id", response = Role.class)
   public ResponseEntity<Role> getRole(@PathVariable("id") Long id) {
-    return new ResponseEntity<Role>(roleService.findById(id), HttpStatus.OK);
+    return new ResponseEntity<Role>(roleRepository.findById(id), HttpStatus.OK);
   }
 
-  //@PreAuthorize("hasRole('ROLEMANAGEMENT')")
   @RequestMapping(value = "", method = RequestMethod.POST)
   @ApiOperation(value = "Create role", notes = "Create a new role")
   public HttpStatus postRole(@RequestBody Role role) {
@@ -45,7 +40,6 @@ public class RoleController {
     return HttpStatus.ACCEPTED;
   }
 
-  //@PreAuthorize("hasRole('ROLEMANAGEMENT')")
   @RequestMapping(value = "", method = RequestMethod.PUT)
   @ApiOperation(value = "Create role", notes = "Create a new role")
   public HttpStatus putRole(@RequestBody Role role) {

@@ -6,6 +6,9 @@ public enum Right implements GrantedAuthority {
 
     ROLE_ROLEMANAGEMENT("ROLE_ROLEMANAGEMENT"),
 
+    ROLE_USERMANAGEMENT("ROLE_USERMANAGEMENT"),
+
+    ROLE_ACTIVITYMANAGEMENT("ROLE_ACTIVITYMANAGEMENT"),
     ;
 
     private String authority;

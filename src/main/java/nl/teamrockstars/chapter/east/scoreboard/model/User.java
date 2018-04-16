@@ -1,5 +1,6 @@
 package nl.teamrockstars.chapter.east.scoreboard.model;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,6 +17,7 @@ public class User extends AbstractHibernateObject implements UserDetails {
     @Column(name = "username")
     private String username;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
