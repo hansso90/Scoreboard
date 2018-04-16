@@ -1,5 +1,6 @@
 package nl.teamrockstars.chapter.east.scoreboard;
 
+import javax.annotation.PostConstruct;
 import nl.teamrockstars.chapter.east.scoreboard.model.Right;
 import nl.teamrockstars.chapter.east.scoreboard.model.Role;
 import nl.teamrockstars.chapter.east.scoreboard.model.User;
@@ -13,37 +14,34 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.annotation.PostConstruct;
-
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @SpringBootApplication(scanBasePackages = "nl.teamrockstars.chapter.east.scoreboard")
 public class ScoreboardApplication {
 
-    private static Logger LOG = LoggerFactory.getLogger(ScoreboardApplication.class);
+  private static Logger LOG = LoggerFactory.getLogger(ScoreboardApplication.class);
 
-    @Autowired
-    private RoleService roleService;
+  @Autowired
+  private RoleService roleService;
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    public static void main(String[] args) {
-        SpringApplication.run(ScoreboardApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(ScoreboardApplication.class, args);
+  }
 
-    @PostConstruct
-    public void createFirstUser() {
+  @PostConstruct
+  public void createFirstUser() {
 
-        Role role = roleService.createNewRole("admin", Right.values());
+    Role role = roleService.createNewRole("admin", Right.values());
 
+    String password = "password";
+    User user = userService.createNewUser("admin", "password", "Beheerder", role);
 
-        String password = "password";
-        User user = userService.createNewUser("admin", "password", "Beheerder", role);
-
-        LOG.info("##################################################");
-        LOG.info("                 username: " + user.getUsername() + "                  ");
-        LOG.info("                 password: " + password + "        ");
-        LOG.info("##################################################");
-    }
+    LOG.info("##################################################");
+    LOG.info("                 username: " + user.getUsername() + "                  ");
+    LOG.info("                 password: " + password + "        ");
+    LOG.info("##################################################");
+  }
 }

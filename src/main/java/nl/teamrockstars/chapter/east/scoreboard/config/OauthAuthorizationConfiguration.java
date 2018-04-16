@@ -1,5 +1,7 @@
 package nl.teamrockstars.chapter.east.scoreboard.config;
 
+import java.util.stream.Stream;
+import javax.sql.DataSource;
 import nl.teamrockstars.chapter.east.scoreboard.model.Right;
 import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
 import org.slf4j.Logger;
@@ -23,9 +25,6 @@ import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeSe
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
-import javax.sql.DataSource;
-import java.util.stream.Stream;
-
 /**
  * @author hans
  */
@@ -33,82 +32,82 @@ import java.util.stream.Stream;
 @EnableAuthorizationServer
 public class OauthAuthorizationConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    private static Logger LOG = LoggerFactory.getLogger(WebSecurityConfiguration.class);
+  private static Logger LOG = LoggerFactory.getLogger(WebSecurityConfiguration.class);
 
-    private static final String[] OAUTH_SCOPES = new String[]{"read", "write"};
+  private static final String[] OAUTH_SCOPES = new String[]{"read", "write"};
 
-    private static final String[] OAUTH_GRANT_TYPES = new String[]{"password", "refresh_token"};
+  private static final String[] OAUTH_GRANT_TYPES = new String[]{"password", "refresh_token"};
 
-    public static final String RESOURCE_ID = "scoreboard_resources";
+  public static final String RESOURCE_ID = "scoreboard_resources";
 
-    private TokenStore tokenStore;
+  private TokenStore tokenStore;
 
-    @Autowired
-    private DataSource dataSource;
+  @Autowired
+  private DataSource dataSource;
 
-    @Autowired
-    @Qualifier("authenticationManagerBean")
-    private AuthenticationManager authenticationManager;
+  @Autowired
+  @Qualifier("authenticationManagerBean")
+  private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
-    public OauthAuthorizationConfiguration() {
-        LOG.info("Loading OauthAuthorizationConfiguration...");
+  public OauthAuthorizationConfiguration() {
+    LOG.info("Loading OauthAuthorizationConfiguration...");
+  }
+
+  @Override
+  public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    endpoints
+        .tokenStore(tokenStore())
+        .authenticationManager(authenticationManager)
+        .userDetailsService(userService)
+        .approvalStoreDisabled();
+  }
+
+
+  @Override
+  public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+    clients
+        .jdbc(dataSource)
+        .withClient("scoreboard")
+        .secret("123456")
+        .authorities(Stream.of(Right.values()).map(Right::getAuthority).toArray(String[]::new))
+        .authorizedGrantTypes(OAUTH_GRANT_TYPES)
+        .scopes(OAUTH_SCOPES);
+  }
+
+
+  @Bean
+  public JdbcClientDetailsService clientDetailsService() {
+    return new JdbcClientDetailsService(dataSource);
+  }
+
+  @Bean
+  public ApprovalStore approvalStore() {
+    return new JdbcApprovalStore(dataSource);
+  }
+
+  @Bean
+  public AuthorizationCodeServices authorizationCodeServices() {
+    return new JdbcAuthorizationCodeServices(dataSource);
+  }
+
+  @Bean
+  public TokenStore tokenStore() {
+    if (tokenStore == null) {
+      return new JdbcTokenStore(dataSource);
     }
+    return tokenStore;
+  }
 
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints
-                .tokenStore(tokenStore())
-                .authenticationManager(authenticationManager)
-                .userDetailsService(userService)
-                .approvalStoreDisabled();
-    }
-
-
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients
-                .jdbc(dataSource)
-                .withClient("scoreboard")
-                .secret("123456")
-                .authorities(Stream.of(Right.values()).map(Right::getAuthority).toArray(String[]::new))
-                .authorizedGrantTypes(OAUTH_GRANT_TYPES)
-                .scopes(OAUTH_SCOPES);
-    }
-
-
-    @Bean
-    public JdbcClientDetailsService clientDetailsService() {
-        return new JdbcClientDetailsService(dataSource);
-    }
-
-    @Bean
-    public ApprovalStore approvalStore() {
-        return new JdbcApprovalStore(dataSource);
-    }
-
-    @Bean
-    public AuthorizationCodeServices authorizationCodeServices() {
-        return new JdbcAuthorizationCodeServices(dataSource);
-    }
-
-    @Bean
-    public TokenStore tokenStore() {
-        if (tokenStore == null) {
-            return new JdbcTokenStore(dataSource);
-        }
-        return tokenStore;
-    }
-
-    @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        // clients can authenicatie with a form post with rest.
-        oauthServer.allowFormAuthenticationForClients();
-        oauthServer.tokenKeyAccess("isAnonymous()").checkTokenAccess("permitAll()");
-    }
+  @Override
+  public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+    // clients can authenicatie with a form post with rest.
+    oauthServer.allowFormAuthenticationForClients();
+    oauthServer.tokenKeyAccess("isAnonymous()").checkTokenAccess("permitAll()");
+  }
 }
