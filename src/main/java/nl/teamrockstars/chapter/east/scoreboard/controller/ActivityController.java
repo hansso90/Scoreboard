@@ -1,10 +1,7 @@
 package nl.teamrockstars.chapter.east.scoreboard.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import nl.teamrockstars.chapter.east.scoreboard.model.Activity;
-import nl.teamrockstars.chapter.east.scoreboard.model.Role;
-import nl.teamrockstars.chapter.east.scoreboard.repository.ActivityRepository;
+import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import nl.teamrockstars.chapter.east.scoreboard.model.Activity;
+import nl.teamrockstars.chapter.east.scoreboard.repository.ActivityRepository;
 
 @RestController
-@RequestMapping(value = PUBLIC + "/role")
+@RequestMapping(value = PUBLIC + "/activity")
 @PreAuthorize("hasRole('ACTIVITYMANAGEMENT')")
 @Api(tags = "Activity Controller", description = "Management of activities")
 public class ActivityController {
