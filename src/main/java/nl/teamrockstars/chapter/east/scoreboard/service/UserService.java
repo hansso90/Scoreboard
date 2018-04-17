@@ -1,5 +1,6 @@
 package nl.teamrockstars.chapter.east.scoreboard.service;
 
+import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
 import nl.teamrockstars.chapter.east.scoreboard.model.Role;
 import nl.teamrockstars.chapter.east.scoreboard.model.User;
 import org.springframework.security.authentication.BadCredentialsException;
