@@ -1,17 +1,17 @@
 package nl.teamrockstars.chapter.east.scoreboard.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
 
 import nl.teamrockstars.chapter.east.scoreboard.dto.CategoryDto;
+import nl.teamrockstars.chapter.east.scoreboard.mapper.factory.EntityObjectFactory;
 import nl.teamrockstars.chapter.east.scoreboard.model.Category;
 
-@Mapper
+@Mapper( uses = EntityObjectFactory.class, componentModel = "spring" )
 public interface CategoryMapper {
 
-  CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
+  CategoryDto toDto(Category category);
 
-  CategoryDto categoryToCategoryDto(Category category);
-  
-  Category categoryDtoToCategory(CategoryDto category);
+  @Mapping(target = "id", ignore = true)
+  Category fromDto(CategoryDto fromDto);
 }
