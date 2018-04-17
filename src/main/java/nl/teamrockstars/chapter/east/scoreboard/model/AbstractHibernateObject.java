@@ -32,4 +32,8 @@ public abstract class AbstractHibernateObject implements Serializable {
     public int hashCode() {
         return Objects.hash(id);
     }
+    
+    public boolean isNew() {
+  		return id == null;
+  	}
 }
