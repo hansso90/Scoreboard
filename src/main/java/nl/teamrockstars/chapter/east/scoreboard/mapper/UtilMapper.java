@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 
 import org.mapstruct.Mapper;
 
-@Mapper(uses = {UtilMapper.class}, componentModel = "spring")
+@Mapper(componentModel = "spring")
 public class UtilMapper {
 
 	private static final ZoneId UTC_ZONE = ZoneId.of("UTC");
