@@ -13,10 +13,16 @@ public class UtilMapper {
 
 	ZonedDateTime from(LocalDateTime ldt) {
 
+	    if(ldt == null) {
+	        return null;
+	    }
 		return ldt.atZone(UTC_ZONE);
 	}
 
 	LocalDateTime from(ZonedDateTime zdt) {
+	    if(zdt == null) {
+	        return null;
+	    }
 		return zdt.withZoneSameInstant(UTC_ZONE).toLocalDateTime();
 	}
 }

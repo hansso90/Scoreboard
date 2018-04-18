@@ -3,15 +3,12 @@ package nl.teamrockstars.chapter.east.scoreboard.dto;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
-
 public class ActivityDto extends DtoObject {
 
     private String description;
 
     private ZonedDateTime date;
 
-    @Column(name = "starDust")
     private Long stardust;
 
     private DtoObject category;

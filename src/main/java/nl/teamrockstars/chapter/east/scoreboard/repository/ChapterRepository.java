@@ -1,8 +1,13 @@
 package nl.teamrockstars.chapter.east.scoreboard.repository;
 
-import nl.teamrockstars.chapter.east.scoreboard.model.Chapter;
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
+import nl.teamrockstars.chapter.east.scoreboard.model.Chapter;
+
 public interface ChapterRepository extends CrudRepository<Chapter, Long> {
+
+    List<Chapter> findAllByOrderByName();
 
 }
