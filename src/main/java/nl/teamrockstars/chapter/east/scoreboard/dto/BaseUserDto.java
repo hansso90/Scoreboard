@@ -1,6 +1,6 @@
 package nl.teamrockstars.chapter.east.scoreboard.dto;
 
-public class BaseUserDto extends CategoryDto {
+public class BaseUserDto extends DtoObject {
 
   private String name;
 
