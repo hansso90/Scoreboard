@@ -1,8 +1,6 @@
-export const UPDATE_ELEMENT = 'ROCKSTARS/USERACTIONS/UPDATE_ELEMENT'; 
+import { UPDATE_ELEMENT } from './types';
 
-
-
-export default function updateElement(id, value){
+export default function updateElement(id, value) {
     return {
         type: UPDATE_ELEMENT,
         id,

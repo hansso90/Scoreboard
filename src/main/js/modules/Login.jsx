@@ -6,10 +6,14 @@ import actions from '../actions';
 import TextWithLabel from '../components/TextWithLabel';
 
 const Login = (props) => {
-    const usernameBox = 'usernameBox';
+    const userNameProps = {
+        label: 'User name:',
+        name: 'userNameBox',
+        ...props
+    };
     return (
         <div>
-            <TextWithLabel label="UserName" text={props.userInputs[usernameBox]} name={usernameBox} />
+            <TextWithLabel {...userNameProps} />
         </div>);
 };
 
