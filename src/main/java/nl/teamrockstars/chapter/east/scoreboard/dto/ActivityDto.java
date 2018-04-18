@@ -19,6 +19,10 @@ public class ActivityDto extends DtoObject {
     private List<BaseUserDto> users;
 
     private DtoObject chapter;
+    
+  	private ZonedDateTime lastModifiedAt;
+  	
+  	private ZonedDateTime createdAt;
 
     public String getDescription() {
         return description;
@@ -67,4 +71,22 @@ public class ActivityDto extends DtoObject {
     public void setChapter(DtoObject chapter) {
         this.chapter = chapter;
     }
+
+		public ZonedDateTime getLastModifiedAt() {
+			return lastModifiedAt;
+		}
+
+		public void setLastModifiedAt(ZonedDateTime lastModifiedAt) {
+			this.lastModifiedAt = lastModifiedAt;
+		}
+
+		public ZonedDateTime getCreatedAt() {
+			return createdAt;
+		}
+
+		public void setCreatedAt(ZonedDateTime createdAt) {
+			this.createdAt = createdAt;
+		}
+    
+    
 }
