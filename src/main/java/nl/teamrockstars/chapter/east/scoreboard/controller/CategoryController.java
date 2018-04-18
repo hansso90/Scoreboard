@@ -2,6 +2,8 @@ package nl.teamrockstars.chapter.east.scoreboard.controller;
 
 import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,23 +32,31 @@ import nl.teamrockstars.chapter.east.scoreboard.repository.CategoryRepository;
 public class CategoryController {
 
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private CategoryRepository repository;
 	
 	@Autowired
-	private CategoryMapper categoryMapper;
+	private CategoryMapper mapper;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get category", notes = "Gets a certain category with id", response = CategoryDto.class)
-	public ResponseEntity<CategoryDto> read(@PathVariable("id") Long id) {
+	public ResponseEntity<CategoryDto> single(@PathVariable("id") Long id) {
 
-		Category category = categoryRepository.findOne(id);
+		Category category = repository.findOne(id);
 		
 		if (category == null) {
 			
 			return new ResponseEntity<CategoryDto>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<CategoryDto>(categoryMapper.toDto(category), HttpStatus.OK);
+		return new ResponseEntity<CategoryDto>(mapper.toDto(category), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	@ApiOperation(value = "Get categories", notes = "Gets all categories", response = CategoryDto.class)
+	public ResponseEntity<List<CategoryDto>> list() {
+
+		List<Category> categories = repository.findAllByOrderByName();
+		return new ResponseEntity<List<CategoryDto>>(mapper.toDtoList(categories), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
@@ -57,9 +67,9 @@ public class CategoryController {
 			errors.rejectValue("id", "ID must be empty on POST");
 			throw new MethodArgumentNotValidException(null, errors);
 		}
-		Category cat = categoryMapper.fromDto(category);
+		Category cat = mapper.fromDto(category);
 
-		categoryRepository.save(cat);
+		repository.save(cat);
 		return HttpStatus.ACCEPTED;
 	}
 	
@@ -67,13 +77,13 @@ public class CategoryController {
 	@ApiOperation(value = "Update category", notes = "Update a category")
 	public HttpStatus update(@RequestBody @Valid CategoryDto category, BindingResult errors) throws MethodArgumentNotValidException {
 		
-		Category cat = categoryMapper.fromDto(category);
+		Category cat = mapper.fromDto(category);
 		if(cat.isNew()) {
 			errors.rejectValue("id", "ID could not be found");
 			throw new MethodArgumentNotValidException(null, errors);
 		}
 
-		categoryRepository.save(cat);
+		repository.save(cat);
 		return HttpStatus.ACCEPTED;
 	}
 }

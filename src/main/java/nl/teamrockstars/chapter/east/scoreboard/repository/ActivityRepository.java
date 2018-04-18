@@ -1,10 +1,14 @@
 package nl.teamrockstars.chapter.east.scoreboard.repository;
 
-import nl.teamrockstars.chapter.east.scoreboard.model.Activity;
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
+
+import nl.teamrockstars.chapter.east.scoreboard.model.Activity;
 
 
 public interface ActivityRepository extends CrudRepository<Activity, Long> {
 
-    Activity findById(Long id);
+    List<Activity> findAllByOrderByDateDesc();
+    
 }
