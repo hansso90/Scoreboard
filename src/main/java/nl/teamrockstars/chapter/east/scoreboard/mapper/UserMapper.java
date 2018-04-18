@@ -1,13 +1,16 @@
 package nl.teamrockstars.chapter.east.scoreboard.mapper;
 
-import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
-import nl.teamrockstars.chapter.east.scoreboard.model.User;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
+import nl.teamrockstars.chapter.east.scoreboard.model.User;
+
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
   UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
@@ -18,4 +21,6 @@ public interface UserMapper {
       @Mapping(target = "chapter", source = "chapter.name")
   })
   UserDto userToUserDto(User user);
+  
+  List<UserDto> userToUserDtoList(List<User> user);
 }

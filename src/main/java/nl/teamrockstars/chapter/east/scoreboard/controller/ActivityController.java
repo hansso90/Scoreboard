@@ -2,10 +2,16 @@ package nl.teamrockstars.chapter.east.scoreboard.controller;
 
 import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import nl.teamrockstars.chapter.east.scoreboard.dto.ActivityDto;
+import nl.teamrockstars.chapter.east.scoreboard.mapper.ActivityMapper;
 import nl.teamrockstars.chapter.east.scoreboard.model.Activity;
 import nl.teamrockstars.chapter.east.scoreboard.repository.ActivityRepository;
 
@@ -24,19 +32,74 @@ import nl.teamrockstars.chapter.east.scoreboard.repository.ActivityRepository;
 public class ActivityController {
 
     @Autowired
-    private ActivityRepository activityRepository;
+    private ActivityRepository repository;
+    
+    @Autowired
+  	private ActivityMapper mapper;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ApiOperation(value = "Get activity", notes = "Gets a certain activity with id", response = Activity.class)
-    public ResponseEntity<Activity> getActivity(@PathVariable("id") Long id) {
-        return new ResponseEntity<Activity>(activityRepository.findById(id), HttpStatus.OK);
-    }
+    @ApiOperation(value = "Get activity", notes = "Gets a certain activity by id", response = ActivityDto.class)
+    public ResponseEntity<ActivityDto> single(@PathVariable("id") Long id) {
+    	
+  		Activity activity = repository.findOne(id);
+  		
+  		if (activity == null) {
+  			
+  			return new ResponseEntity<ActivityDto>(HttpStatus.NOT_FOUND);
+  		}
+
+  		return new ResponseEntity<ActivityDto>(mapper.toDto(activity), HttpStatus.OK);
+  	}
+  	
+  	@RequestMapping(value = "", method = RequestMethod.GET)
+  	@ApiOperation(value = "Get activities", notes = "Gets all activities", response = ActivityDto.class)
+  	public ResponseEntity<List<ActivityDto>> list() {
+
+  		List<Activity> activities = repository.findAllByOrderByDateDesc();
+  		return new ResponseEntity<List<ActivityDto>>(mapper.toDtoList(activities), HttpStatus.OK);
+  	}
     
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    @ApiOperation(value = "Create activity", notes = "Create a new activity")
-    public HttpStatus postActivity(@RequestBody Activity activity) {
-      //TODO: check content;
-      activityRepository.save(activity);
-      return HttpStatus.ACCEPTED;
-    }
+  	@RequestMapping(value = "", method = RequestMethod.POST)
+  	@ApiOperation(value = "Create activity", notes = "Create a new activity")
+  	public HttpStatus create(@RequestBody @Valid ActivityDto activity, BindingResult errors) throws MethodArgumentNotValidException {
+  		
+  		if(activity.getId() != null) {
+  			errors.rejectValue("id", "ID must be empty on POST");
+  			throw new MethodArgumentNotValidException(null, errors);
+  		}
+  		Activity act = mapper.fromDto(activity);
+
+  		repository.save(act);
+  		return HttpStatus.ACCEPTED;
+  	}
+  	
+  	@RequestMapping(value = "", method = RequestMethod.PUT)
+  	@ApiOperation(value = "Update activity", notes = "Update an activity")
+  	public HttpStatus update(@RequestBody @Valid ActivityDto activity, BindingResult errors) throws MethodArgumentNotValidException {
+  		
+  		Activity act = mapper.fromDto(activity);
+  		if(act.isNew()) {
+  			errors.rejectValue("id", "ID could not be found");
+  			throw new MethodArgumentNotValidException(null, errors);
+  		}
+
+  		repository.save(act);
+  		return HttpStatus.ACCEPTED;
+  	}
+  	
+  	 @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+     @ApiOperation(value = "Delete activity", notes = "Delete a certain activity by id")
+     public HttpStatus delete(@PathVariable("id") Long id) {
+     	
+   		Activity activity = repository.findOne(id);
+   		
+   		if (activity == null) {
+   			
+   			return HttpStatus.NOT_FOUND;
+   		}
+   		
+   		repository.delete(activity);
+
+   		return HttpStatus.OK;
+   	}
 }
