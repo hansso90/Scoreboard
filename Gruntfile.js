@@ -3,8 +3,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-browserify');
 
-    const mainFolderJS = "./src/main/js/*.js";
-    const mainFolderJSX = "./src/main/js/*.js";
+    const mainFolderJS = './src/main/js/*.js';
+    const mainFolderJSX = './src/main/js/*.jsx';
 
     grunt.initConfig({
         browserify: {
@@ -14,10 +14,14 @@ module.exports = function (grunt) {
                 ],
                 dest: './src/main/resources/public/js/bundle.js',
                 options: {
-                    browserifyOptions: {debug: true},
-                    transform: [["babelify", {
-                        "babel": require("@babel/core"),
-                        "presets": ["@babel/preset-env", "@babel/preset-react"]
+                    browserifyOptions: { debug: true },
+                    transform: [['babelify', {
+                    // extensions: [
+                    //     '.js', '.jsx'
+                    // ],
+                    //  babel: require('@babel/core'),
+                        presets: ['presets-env', { loose: true }],
+                        plugins: ['transform-object-rest-spread']
                     }]]
                 }
             }
@@ -26,6 +30,5 @@ module.exports = function (grunt) {
             files: [mainFolderJS, mainFolderJSX, './Gruntfile.js', './package.json'],
             tasks: ['browserify']
         }
-    })
-
-}
+    });
+};
