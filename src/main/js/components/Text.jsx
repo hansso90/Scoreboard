@@ -18,3 +18,4 @@ Text.propTypes = {
     actions: object.isRequired,
     userInputs: object.isRequired
 };
+

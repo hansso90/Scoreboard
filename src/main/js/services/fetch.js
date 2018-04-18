@@ -5,5 +5,5 @@
  * - Adds fetch() method to IE8
  */
 
-var Promise = require('es6-promise').Promise;
+let Promise = require('es6-promise').Promise;
 require('fetch-everywhere');

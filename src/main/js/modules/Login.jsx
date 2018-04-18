@@ -1,6 +1,6 @@
 import React from 'react';
-import { withRouteData } from 'react-router';
-import { connect } from 'redux';
+//import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import proptypes from 'prop-types';
 import actions from '../actions';
 import TextWithLabel from '../components/TextWithLabel';
@@ -24,9 +24,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps() {
-    return { ...actions };
+    return { actions: { ...actions } };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(withRouteData(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const { object } = proptypes;
 
