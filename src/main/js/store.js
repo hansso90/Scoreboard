@@ -1,10 +1,8 @@
 import createSaga from 'redux-saga';
 import { createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
-// import { routerMiddleware } from 'react-router-redux';
-
-import rootSaga from '../sagas/index';
-import reducers from '../reducers';
+import rootSaga from './sagas/index';
+import reducers from './reducers';
 
 const sagaMiddleware = createSaga(); // abc
 
