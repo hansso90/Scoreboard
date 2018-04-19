@@ -1,5 +1,5 @@
 import * as userInputActions from './userInputActions';
 import * as activityActions from './activityActions';
-import * as generalActions from './generalActions';
+import * as authorizationActions from './authorizationActions';
 
-export default { ...userInputActions, ...activityActions, ...generalActions };
+export default { ...userInputActions, ...activityActions, ...authorizationActions };

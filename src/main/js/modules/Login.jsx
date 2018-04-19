@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import proptypes from 'prop-types';
 import actions from '../actions/index';
 import TextWithLabel from '../components/TextWithLabel';
+import Button from '../components/Button';
 
 const Login = (props) => {
     const userNameProps = {
@@ -12,9 +13,25 @@ const Login = (props) => {
         name: 'userNameBox',
         ...props
     };
+
+
+    const passwordProps = {
+        label: 'Password:',
+        name: 'passwordBox',
+        blur: true,
+        ...props
+    };
+
+    const buttonProps = {
+        label: 'Login',
+        onClick: () => props.actions.doLogin(props.userInputs[userNameProps.name], props.userInputs[passwordProps.name])
+    };
+
     return (
         <div>
             <TextWithLabel {...userNameProps} />
+            <TextWithLabel {...passwordProps} />
+            <Button {...buttonProps} />
         </div>);
 };
 
@@ -34,6 +51,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Login);
 const { object } = proptypes;
 
 Login.propTypes = {
-    userInputs: object.isRequired
+    userInputs: object.isRequired,
+    actions: object.isRequired
 };
 
