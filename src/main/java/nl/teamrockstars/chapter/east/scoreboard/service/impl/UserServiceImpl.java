@@ -1,5 +1,6 @@
 package nl.teamrockstars.chapter.east.scoreboard.service.impl;
 
+import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
 import nl.teamrockstars.chapter.east.scoreboard.model.Role;
 import nl.teamrockstars.chapter.east.scoreboard.model.User;
 import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import springfox.documentation.swagger2.mappers.ModelMapper;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)
