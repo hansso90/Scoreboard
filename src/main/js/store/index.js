@@ -9,7 +9,7 @@ import reducers from '../reducers';
 const sagaMiddleware = createSaga(); // abc
 
 const store = createStore(reducers, {}, compose(
-    applyMiddleware(sagaMiddleware, reduxThunk), // logger must always be the last in the chain!
+    applyMiddleware(reduxThunk, sagaMiddleware), // logger must always be the last in the chain!
     window.devToolsExtension ? window.devToolsExtension() : f => f
 ));
 
