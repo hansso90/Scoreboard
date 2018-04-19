@@ -2,7 +2,7 @@ import React from 'react';
 //import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import proptypes from 'prop-types';
-import actions from '../actions';
+import actions from '../actions/index.js';
 import TextWithLabel from '../components/TextWithLabel';
 
 const Login = (props) => {
@@ -23,9 +23,9 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps() {
-    return { actions: { ...actions } };
-}
+const mapDispatchToProps = 
+    { ...actions  
+    };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const { object } = proptypes;

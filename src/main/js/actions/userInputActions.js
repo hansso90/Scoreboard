@@ -1,6 +1,6 @@
 import { UPDATE_ELEMENT } from './types';
 
-export default function updateElement(id, value) {
+export function updateElement(id, value) {
     return {
         type: UPDATE_ELEMENT,
         id,

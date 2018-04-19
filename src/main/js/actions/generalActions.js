@@ -1,6 +1,6 @@
 import { UN_AUTHORIZED } from './types';
 
-export default function unAuthorized() {
+export function unAuthorized() {
     return {
         type: UN_AUTHORIZED
     };

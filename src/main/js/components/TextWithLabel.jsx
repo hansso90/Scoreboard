@@ -5,10 +5,10 @@ import Label from './Label';
 
 
 const TextWithLabel = ({
-    label, text, name, actions
+    label, userInputs, name, actions
 }) => {
     const textProps = {
-        text,
+        userInputs,
         name,
         actions
     };
@@ -31,9 +31,9 @@ const {
 
 TextWithLabel.propTypes = {
     label: string,
-    text: string.isRequired,
     name: string.isRequired,
-    actions: object.isRequired
+    actions: object.isRequired,
+    userInputs:object.isRequired
 };
 
 TextWithLabel.defaultProps = {
