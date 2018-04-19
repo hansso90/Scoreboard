@@ -3,10 +3,14 @@ import propTypes from 'prop-types';
 
 const Text = ({ name, actions, userInputs }) => {
     const _onchange = (e) => {
-        actions.updateElement(name, e.value);
+        actions.updateElement(name, e.target.value);
+    };
+    const textProps = {
+        value: userInputs[name] !== undefined ? userInputs[name] : '',
+        name
     };
 
-    return <input name={name} value={userInputs[name]} onChange={_onchange} />;
+    return <input {...textProps} onChange={_onchange} />;
 };
 
 export default Text;

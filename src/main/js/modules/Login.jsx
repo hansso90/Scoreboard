@@ -1,8 +1,9 @@
 import React from 'react';
 //import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import proptypes from 'prop-types';
-import actions from '../actions/index.js';
+import actions from '../actions/index';
 import TextWithLabel from '../components/TextWithLabel';
 
 const Login = (props) => {
@@ -19,13 +20,15 @@ const Login = (props) => {
 
 function mapStateToProps(state) {
     return {
-        ...state.userInput
+        userInputs: { ...state.userInput }
     };
 }
 
-const mapDispatchToProps = 
-    { ...actions  
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({ ...actions }, dispatch)
     };
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const { object } = proptypes;

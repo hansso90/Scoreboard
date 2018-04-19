@@ -1,8 +1,7 @@
 import { assignIn } from 'lodash';
-import { UPDATE_ELEMENT } from '../actions/userInputActions';
+import { UPDATE_ELEMENT } from '../actions/types';
 
 const initalState = {
-    userInputs: {}
 };
 
 export default (state = initalState, action) => {
