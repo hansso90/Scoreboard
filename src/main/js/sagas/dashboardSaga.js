@@ -2,7 +2,7 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { receiveActivities, receiveActivityError, unAuthorized } from '../actions/index';
 import { getActivities } from '../services/activityService';
-import { REQUIRE_ACTIVITIES, UN_AUTHORIZED, UPDATE_ELEMENT } from '../actions/types';
+import { REQUIRE_ACTIVITIES } from '../actions/types';
 
 
 function* getAllActivities() {
@@ -21,18 +21,7 @@ function* getAllActivities() {
     }
 }
 
-function* onUnAuthorized() {
-//ACCESS router here to redirect to login
-}
-
-function* updateElementCheck(message) {
-    console.log('saga');
-    console.log(message);
-}
-
 
 export default function* dashboardSaga() {
-    yield takeLatest(UPDATE_ELEMENT, updateElementCheck);
     yield takeLatest(REQUIRE_ACTIVITIES, getAllActivities);
-    yield takeLatest(UN_AUTHORIZED, onUnAuthorized);
 }

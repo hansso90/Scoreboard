@@ -32,12 +32,16 @@ const Login = (props) => {
             <TextWithLabel {...userNameProps} />
             <TextWithLabel {...passwordProps} />
             <Button {...buttonProps} />
+            {props.authorization.loginError &&
+                <span>{props.authorization.loginError}</span>
+            }
         </div>);
 };
 
 function mapStateToProps(state) {
     return {
-        userInputs: { ...state.userInput }
+        userInputs: { ...state.userInput },
+        authorization: { ...state.authorization }
     };
 }
 
@@ -52,6 +56,7 @@ const { object } = proptypes;
 
 Login.propTypes = {
     userInputs: object.isRequired,
+    authorization: object.isRequired,
     actions: object.isRequired
 };
 
