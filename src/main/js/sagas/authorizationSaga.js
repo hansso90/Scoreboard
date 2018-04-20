@@ -1,9 +1,10 @@
 
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { clearLoginError, receivLoginError } from '../actions/index';
+import actions from '../actions/index';
 import { login } from '../services/authorizationService';
 import { UN_AUTHORIZED, DO_LOGIN } from '../actions/types';
 
+const { clearLoginError, receiveLoginError } = actions;
 
 function* onUnAuthorized() {
     //goto login with the current url as return url
@@ -14,15 +15,17 @@ function* onDoLogin(message) {
         const result = yield call(login, message.username, message.password);
         if(!result.ok) {
             console.log('response niet ok');
-            yield put(receivLoginError('De gebruikersnaam en het wachtwoord komen niet overeen'));
+            yield put(receiveLoginError('De gebruikersnaam en het wachtwoord komen niet overeen'));
         } else {
+            console.log('response ok');
+
             yield put(clearLoginError());
         //goto message.returnurl
         }
     } catch(e) {
         console.log(e);
 
-        yield put(receivLoginError(e.message));
+        yield put(receiveLoginError(e.message));
     }
 }
 
