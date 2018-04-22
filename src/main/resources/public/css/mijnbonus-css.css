@@ -6780,7 +6780,7 @@ html {
 }
 
 body {
-    /* background: #232323 url(http://mijnbonus.teamrockstars.nl/dist/background.jpg) no-repeat top; */
+    background: #232323 url(http://mijnbonus.teamrockstars.nl/dist/background.jpg) no-repeat top;
     background-size: cover;
     background-attachment: fixed;
     font-size: .8rem
@@ -7160,7 +7160,7 @@ input[type=password] {
 .chart-container-wrapper .chart-container .chart-container-inner .chart-bar.negative .chart-bar-amount span {
     bottom: auto !important
 }
-
+ashboard.html
 .chart-container-wrapper .chart-container .chart-container-inner .chart-bar.negative .chart-bar-amount span:before {
     display: none
 }
