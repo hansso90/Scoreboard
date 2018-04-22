@@ -6780,7 +6780,7 @@ html {
 }
 
 body {
-    background: #232323 url(http://mijnbonus.teamrockstars.nl/dist/background.jpg) no-repeat top;
+    /* background: #232323 url(http://mijnbonus.teamrockstars.nl/dist/background.jpg) no-repeat top; */
     background-size: cover;
     background-attachment: fixed;
     font-size: .8rem
