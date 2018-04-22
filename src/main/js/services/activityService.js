@@ -1,4 +1,4 @@
-import fetch from './fetch';
+import './fetch';
 
 const webApiBaseUrl = 'http://localhost:8080';
 

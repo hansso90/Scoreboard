@@ -1,6 +1,21 @@
 import './fetch';
+import fetchIntercept from 'fetch-intercept';
+
+
+fetchIntercept.register({
+    request: (url, config) => {
+        const token = localStorage.getItem("token");
+        window.TOKEN = token;
+        if(token && token != 'undefined'){
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return [url, config];
+    }
+});
 
 const webApiBaseUrl = 'http://localhost:8080';
+
+
 
 
 export function login(userName, password) {
@@ -24,13 +39,17 @@ export function login(userName, password) {
             Authorization: 'Basic c2NvcmVib2FyZDoxMjM0NTY=',
             Accept: 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-            'Content-Length' : suffix.length,
+            'Content-Length': suffix.length,
 
         },
         body: suffix
     };
 
-    fetch(`${webApiBaseUrl}/oauth/token`, prefs).then(o => o.body.getReader().read().then(obj => console.log(new TextDecoder().decode(obj.value))));
+    const tokenPromise = fetch(`${webApiBaseUrl}/oauth/token`, prefs);
+    tokenPromise.then(o => o.body.getReader().read().then(obj => {
+        const tokenJSON = JSON.parse(new TextDecoder().decode(obj.value));
+        localStorage.setItem('token', tokenJSON.access_token);
+    }));
 
-    return fetch(`${webApiBaseUrl}/oauth/token`, prefs);
+    return tokenPromise;
 }
