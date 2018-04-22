@@ -8,17 +8,29 @@ export function login(userName, password) {
     //     ok: true,
     //     status: 200
     // });
+    const formData = new FormData();
+    const suffix = `grant_type=password&username=${userName}&password=${password}`;
+
+    formData.append('grant_type', 'password');
+    formData.append('username', userName);
+    formData.append('password', password);
+
 
     // Define fetch properties
     const prefs = {
         method: 'POST',
-        credentials: 'same-origin',
+        //credentials: 'same-origin',
         headers: {
             Authorization: 'Basic c2NvcmVib2FyZDoxMjM0NTY=',
             Accept: 'application/json',
-            'Content-Type': 'applciation/x-www-form-urlencoded; charset=utf-8'
-        }
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+            'Content-Length' : suffix.length,
+
+        },
+        body: suffix
     };
 
-    return fetch(`${webApiBaseUrl}/oauth/token?grant_type=password&username=${userName}&password=${password}`, prefs);
+    fetch(`${webApiBaseUrl}/oauth/token`, prefs).then(o => o.body.getReader().read().then(obj => console.log(new TextDecoder().decode(obj.value))));
+
+    return fetch(`${webApiBaseUrl}/oauth/token`, prefs);
 }
