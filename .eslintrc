@@ -1,0 +1,39 @@
+{
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "root": true,
+    "rules": {
+        "arrow-body-style": [0],
+        "comma-dangle": ["error", {
+            "arrays": "only-multiline",
+            "objects": "only-multiline",
+            "imports": "only-multiline",
+            "exports": "only-multiline",
+            "functions": "only-multiline"
+        }],
+        "import/extensions": ["warn"],
+        "import/no-extraneous-dependencies": ["error", {"packageDir": ""}],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "keyword-spacing": ["error", { "overrides": { "if": { "after": false }, "for": { "after": false }, "catch": {"after": false} } }],
+        "linebreak-style": ["error", "windows"],
+        "max-len": ["warn", 150, { "ignoreTrailingComments": true, "ignoreComments": true }],
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "no-use-before-define": ["error", "nofunc"],
+        "no-underscore-dangle": ["off"],
+        "react/forbid-prop-types": ["warn"],
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/jsx-indent": ["error", 4],
+        "react/jsx-indent-props": ["error", 4],
+        "spaced-comment": ["off"]
+    },
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true,
+        "jquery": true
+    },
+    "globals": {
+        "configuration": true,
+        "dataLayer": true
+    }
+}

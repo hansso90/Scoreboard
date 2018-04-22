@@ -3,31 +3,37 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-browserify');
 
-    const mainFolder = "./src/main/js/*.js";
-
+    const mainFolderJS = './src/main/js/**';
     grunt.initConfig({
-        jshint: {
-            all: [mainFolder],
-            options: {
-                esnext: true
-            }
-        },
         browserify: {
             development: {
                 src: [
-                    mainFolder
+                    mainFolderJS
                 ],
                 dest: './src/main/resources/public/js/bundle.js',
                 options: {
-                    browserifyOptions: {debug: true},
-                    transform: [["babelify", {"presets": ["es2015"]}]]
-                }
+                    browserifyOptions: {
+                        debug: true,
+                        extensions: ['.js', '.jsx'],
+
+                        transform:
+                        [[
+                            'babelify',
+                            {
+                                presets: ['es2015', 'react'],
+                                plugins: ['transform-object-rest-spread', ['transform-runtime', {
+                                    polyfill: false,
+                                    regenerator: true
+                                }]]
+                            }
+                        ]]
+                    }
+                },
             }
         },
         watch: {
-            files: [mainFolder, './Gruntfile.js', './package.json'],
-            tasks: ['jshint', 'browserify']
+            files: [mainFolderJS, './Gruntfile.js', './package.json'],
+            tasks: ['browserify']
         }
-    })
-
-}
+    });
+};
