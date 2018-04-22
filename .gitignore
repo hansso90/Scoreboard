@@ -27,3 +27,4 @@ nbdist/
 .nb-gradle/
 npm-debug.log
 mvnw
+.DS_Store

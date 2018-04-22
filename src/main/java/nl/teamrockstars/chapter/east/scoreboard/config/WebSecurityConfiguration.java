@@ -69,10 +69,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
        
-       CorsFilter f = new CorsFilter(source);
-       f.setCorsProcessor( new DefaultCorsProcessor() );
+       CorsFilter filter = new CorsFilter(source);
+       filter.setCorsProcessor( new DefaultCorsProcessor() );
        
-       return f;
+       return filter;
     }
 
 }
