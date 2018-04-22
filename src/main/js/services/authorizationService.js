@@ -16,7 +16,7 @@ export function login(userName, password) {
         headers: {
             Authorization: 'Basic c2NvcmVib2FyZDoxMjM0NTY=',
             Accept: 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
+            'Content-Type': 'applciation/x-www-form-urlencoded; charset=utf-8'
         }
     };
 
