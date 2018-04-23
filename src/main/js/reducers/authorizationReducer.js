@@ -1,8 +1,9 @@
 import { assignIn } from 'lodash';
-import { RECEIVE_LOGIN_ERROR, CLEAR_LOGIN_ERROR } from '../actions/types';
+import { RECEIVE_LOGIN_ERROR, CLEAR_LOGIN_ERROR, RECEIVE_TOKEN } from '../actions/types';
 
 const initalState = {
-    loginError: null
+    loginError: null,
+    token:null
 };
 
 export default (state = initalState, action) => {
@@ -12,7 +13,12 @@ export default (state = initalState, action) => {
                 loginError: action.message
             };
             return assignIn({}, state, obj);
-        case CLEAR_LOGIN_ERROR:
+         case RECEIVE_TOKEN:
+            const tokenObj = {
+                token: action.token
+            };
+            return assignIn({}, state, tokenObj);
+            case CLEAR_LOGIN_ERROR:
             return initalState;
 
         default:

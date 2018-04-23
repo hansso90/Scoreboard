@@ -6,17 +6,22 @@ import { createBrowserHistory } from 'history';
 
 import store from './store';
 import Login from './modules/Login';
+import Dashboard from './modules/Dashboard';
 
 
 window.onload = function () {
     ReactDOM.render(
         <Provider store={store}>
             <Router history={createBrowserHistory()}>
-                <Route>
-                    <Login />
-                </Route>
+                <div>
+                <Route exact path='/' component={Dashboard}/>
+                    <Route exact path='/index.html?path=dashboard' component={Dashboard}/>
+                    <Route exact path='/index.html?path=login' component={Login}/>
+                </div>
             </Router>
         </Provider>,
         document.getElementById('reactRoot')
-    );
+    );  
 };
+
+

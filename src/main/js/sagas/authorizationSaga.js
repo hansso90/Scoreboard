@@ -1,28 +1,35 @@
 
 import { takeLatest, call, put } from 'redux-saga/effects';
+import { createBrowserHistory } from 'history';
 import actions from '../actions/index';
 import { login } from '../services/authorizationService';
 import { getActivities, getActivityById } from '../services/activityService';
 import { UN_AUTHORIZED, DO_LOGIN } from '../actions/types';
+import { receiveToken } from '../actions/authorizationActions';
 
 const { clearLoginError, receiveLoginError } = actions;
-
+const history = createBrowserHistory();
 function* onUnAuthorized() {
-    //goto login with the current url as return url
+    history.push({
+        pathname: '/index.html',
+        search: '?path=login'
+      });
 }
 
 function* onDoLogin(message) {
     try {
-        localStorage.removeItem('token');
+       
         const result = yield call(login, message.username, message.password);
         if(!result.ok) {
             console.log('response niet ok');
             yield put(receiveLoginError('De gebruikersnaam en het wachtwoord komen niet overeen'));
         } else {
             console.log('response ok');
-            getActivities().then(o => o.body.getReader().read().then(obj => console.log(new TextDecoder().decode(obj.value))));
+            const token = yield call(result, 'text');
+            yield put(receiveToken(token));
             yield put(clearLoginError());
-        //goto message.returnurl
+            const returnUrl = window.location;
+            history.push(returnUrl);
         }
     } catch(e) {
         console.log(e);

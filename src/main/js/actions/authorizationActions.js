@@ -1,4 +1,4 @@
-import { UN_AUTHORIZED, DO_LOGIN, RECEIVE_LOGIN_ERROR, CLEAR_LOGIN_ERROR } from './types';
+import { UN_AUTHORIZED, DO_LOGIN, RECEIVE_LOGIN_ERROR, CLEAR_LOGIN_ERROR, RECEIVE_TOKEN } from './types';
 
 export function unAuthorized() {
     return {
@@ -18,6 +18,13 @@ export function receiveLoginError(message) {
     return {
         type: RECEIVE_LOGIN_ERROR,
         message
+    };
+}
+
+export function receiveToken(token) {
+    return {
+        type: RECEIVE_TOKEN,
+        token
     };
 }
 
