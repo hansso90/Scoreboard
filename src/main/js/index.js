@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route } from 'react-router';
+import { Router, Route, Redirect, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
 
 import store from './store';
@@ -14,9 +14,9 @@ window.onload = function () {
         <Provider store={store}>
             <Router history={createBrowserHistory()}>
                 <div>
-                <Route exact path='/' component={Dashboard}/>
-                    <Route exact path='/index.html?path=dashboard' component={Dashboard}/>
-                    <Route exact path='/index.html?path=login' component={Login}/>
+                    <Route exact path='/' render={() => (<Redirect to="/login"/>)}/>
+                    <Route exact path='/dashboard' component={Dashboard}/>
+                    <Route exact path='/login' component={Login}/>
                 </div>
             </Router>
         </Provider>,

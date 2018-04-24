@@ -1,5 +1,5 @@
 import React from 'react';
-//import { withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import proptypes from 'prop-types';
@@ -33,7 +33,7 @@ function mapDispatchToProps(dispatch) {
         actions: bindActionCreators({ ...actions }, dispatch)
     };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Dashboard));
 
 const { object } = proptypes;
 

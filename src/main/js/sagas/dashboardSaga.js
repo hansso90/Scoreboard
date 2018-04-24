@@ -12,7 +12,7 @@ function* getAllActivities() {
         const token = yield select(getToken);
         const activitiesResponse = yield call(getActivities,token);
         if(activitiesResponse.ok) {
-            const activities = yield call(activitiesResponse, 'json');
+            const activities = yield activitiesResponse.json();
             yield put(receiveActivities(activities));
             return;
         }
@@ -25,7 +25,7 @@ function* getAllActivities() {
         }
     }
     catch(e){
-        yield put(unAuthorized()); 
+            yield put(unAuthorized());
     }
 }
 

@@ -6,6 +6,7 @@ import proptypes from 'prop-types';
 import actions from '../actions/index';
 import TextWithLabel from '../components/TextWithLabel';
 import Button from '../components/Button';
+import { Redirect } from 'react-router';
 
 const Login = (props) => {
     const userNameProps = {
@@ -35,6 +36,7 @@ const Login = (props) => {
             {props.authorization.loginError &&
                 <span>{props.authorization.loginError}</span>
             }
+            {props.authorization.token && <Redirect to='/dashboard'/>}
         </div>);
 };
 

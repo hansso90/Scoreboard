@@ -1,9 +1,9 @@
 
 import { takeLatest, call, put } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
 import actions from '../actions/index';
 import { login } from '../services/authorizationService';
-import { getActivities, getActivityById } from '../services/activityService';
 import { UN_AUTHORIZED, DO_LOGIN } from '../actions/types';
 import { receiveToken } from '../actions/authorizationActions';
 
@@ -25,11 +25,16 @@ function* onDoLogin(message) {
             yield put(receiveLoginError('De gebruikersnaam en het wachtwoord komen niet overeen'));
         } else {
             console.log('response ok');
-            const token = yield call(result, 'text');
+            const tokenJson = yield result.json();
+            const token = tokenJson.access_token;
+
             yield put(receiveToken(token));
-            yield put(clearLoginError());
-            const returnUrl = window.location;
-            history.push(returnUrl);
+            history.push('/dashboard');
+
+
+
+
+
         }
     } catch(e) {
         console.log(e);
@@ -39,7 +44,7 @@ function* onDoLogin(message) {
 }
 
 
-export default function* dashboardSaga() {
+export default function* authorizationSaga() {
     yield takeLatest(DO_LOGIN, onDoLogin);
     yield takeLatest(UN_AUTHORIZED, onUnAuthorized);
 }
