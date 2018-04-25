@@ -10,6 +10,10 @@ export default Label;
 
 const { string } = proptypes;
 Label.propTypes = {
-    label: string.isRequired
+    label: string
+};
+
+Label.defaultValues = {
+    label: ''
 };
 

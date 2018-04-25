@@ -8,16 +8,16 @@ import Menu from '../components/Menu';
 import AddCategory from '../components/AddCategory';
 
 const Categories = (props) => {
-
     return (
         <div>
             <Menu />
             <div>
-                <CategoriesOverview {...props} />
-            </div>
-            <div>
                 <AddCategory {...props} />
             </div>
+            <div>
+                <CategoriesOverview {...props} />
+            </div>
+
         </div>
     );
 };

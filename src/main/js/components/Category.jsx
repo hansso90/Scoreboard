@@ -31,7 +31,7 @@ const { string, shape } = propTypes;
 
 Category.propTypes = {
     category: shape({
-        name: string.isRequired,
-        defaultStardust: string.isRequired
+        name: string,
+        defaultStardust: string
     }).isRequired
 };
