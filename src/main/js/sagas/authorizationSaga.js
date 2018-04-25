@@ -11,6 +11,7 @@ const { clearLoginError, receiveLoginError } = actions;
 const history = createBrowserHistory();
 function* onUnAuthorized() {
     history.push('/login');
+    history.go('/login');
 }
 
 function* onDoLogin(message) {

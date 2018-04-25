@@ -4,22 +4,19 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import proptypes from 'prop-types';
 import actions from '../actions/index';
-import TextWithLabel from '../components/TextWithLabel';
-import Button from '../components/Button';
+import ActivitiesOverview from '../components/ActivitiesOverview';
+import Menu from '../components/Menu';
 
 const Dashboard = (props) => {
-    if(!props.activityData.activities || props.activityData.activityError) {
-        props.actions.requireActivities();
-        return (<div>
-            { props.activityData.activityError && <span>props.activityData.activityError</span>}
-            { !props.activityData.activityError && <span>Getting activities</span>}
-                </div>);
-    }
+
     return (
         <div>
-            <span> Received activities:</span>
-            <span>{props.activities}</span>
-        </div>);
+            <Menu />
+            <div>
+                <ActivitiesOverview {...props} />
+            </div>
+        </div>
+    );
 };
 
 function mapStateToProps(state) {

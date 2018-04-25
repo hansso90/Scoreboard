@@ -1,16 +1,16 @@
-var http = require('http');
-var fs = require('fs');
-var path = require('path');
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
-http.createServer(function (request, response) {
+http.createServer((request, response) => {
     console.log('request starting...');
-
-    var filePath = './src/main/resources/public' + request.url;
-    if (filePath == './')
-        filePath = './index.html';
-
-    var extname = path.extname(filePath);
-    var contentType = 'text/html';
+    console.log(request.url);
+    const pathBase = './src/main/resources/public';
+    let filePath = pathBase + request.url;
+    if(request.url == '/') { filePath = `${pathBase}/index.html`; }
+    console.log(`serving: ${filePath}`);
+    const extname = path.extname(filePath);
+    let contentType = 'text/html';
     switch (extname) {
         case '.js':
             contentType = 'text/javascript';
@@ -23,7 +23,7 @@ http.createServer(function (request, response) {
             break;
         case '.png':
             contentType = 'image/png';
-            break;      
+            break;
         case '.jpg':
             contentType = 'image/jpg';
             break;
@@ -32,32 +32,28 @@ http.createServer(function (request, response) {
             break;
     }
 
-    fs.readFile(filePath, function(error, content) {
-        if (error) {
-            if(error.code == 'ENOENT'){
-                if( contentType === 'text/html'){
-				fs.readFile('./src/main/resources/public/index.html', function(error, content) {
-                    response.writeHead(200, { 'Content-Type': contentType });
-                    response.end(content, 'utf-8');
-                });
-				}
-				else{
-					response.writeHead(404);
-                response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
-                response.end(); 
-				}
-            }
-            else {
+    fs.readFile(filePath, (error, content) => {
+        if(error) {
+            if(error.code == 'ENOENT') {
+                if(contentType === 'text/html') {
+                    fs.readFile('./src/main/resources/public/index.html', (error, content) => {
+                        response.writeHead(200, { 'Content-Type': contentType });
+                        response.end(content, 'utf-8');
+                    });
+                } else {
+                    response.writeHead(404);
+                    response.end(`Sorry, check with the site admin for error: ${error.code} ..\n`);
+                    response.end();
+                }
+            } else {
                 response.writeHead(500);
-                response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
-                response.end(); 
+                response.end(`Sorry, check with the site admin for error: ${error.code} ..\n`);
+                response.end();
             }
-        }
-        else {
+        } else {
             response.writeHead(200, { 'Content-Type': contentType });
             response.end(content, 'utf-8');
         }
     });
-
 }).listen(1337);
 console.log('Server running at http://127.0.0.1:1337/');

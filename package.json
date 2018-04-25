@@ -44,6 +44,7 @@
     "react-history": "^0.18.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "react-router-redux": "^4.0.8",
     "redux": "^4.0.0",
     "redux-saga": "^0.16.0",
