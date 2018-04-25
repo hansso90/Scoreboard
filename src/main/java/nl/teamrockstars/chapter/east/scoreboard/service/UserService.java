@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
 
+    User getCurrentAuthentication();
+
     User createNewUser(String username, String password, String name, Role role);
 
     void checkPassword(User user, String rawPassword) throws BadCredentialsException;
