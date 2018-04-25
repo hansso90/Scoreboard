@@ -1,8 +1,8 @@
 
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import actions from '../actions/index';
-import { getCategories, createCategories } from '../services/categoryService';
-import { REQUIRE_CATEGORIES, ADD_CATEGORY } from '../actions/types';
+import { getCategories, createCategory, removeCategory } from '../services/categoryService';
+import { REQUIRE_CATEGORIES, ADD_CATEGORY, REMOVE_CATEGORY } from '../actions/types';
 
 export const getToken = state => state.authorization.token;
 const { onReceiveCategories, receiveCategoryError, unAuthorized } = actions;
@@ -14,7 +14,6 @@ function* getAllCategories() {
 
         if(categoriesResponse.ok) {
             const categories = yield call([categoriesResponse, 'json']);
-            console.log(categories);
             yield put(onReceiveCategories(categories));
             return;
         }
@@ -25,18 +24,17 @@ function* getAllCategories() {
             const message = yield call([categoriesResponse, 'text']);
             yield put(receiveCategoryError(message));
         }
-    }
-    catch(e) {
+    } catch(e) {
         yield put(receiveCategoryError(e.message));
         yield put(unAuthorized());
     }
 }
 
-function* addCategory(msg) {
+function* onAddCategory(msg) {
     try {
-        const name = msg.name;
+        const { name, defaultStardust } = msg;
         const token = yield select(getToken);
-        const categoriesResponse = yield call(createCategories, token, name);
+        const categoriesResponse = yield call(createCategory, token, name, defaultStardust);
 
         if(categoriesResponse.ok) {
             yield call(getAllCategories);
@@ -49,8 +47,31 @@ function* addCategory(msg) {
             const message = yield call([categoriesResponse, 'text']);
             yield put(receiveCategoryError(message));
         }
+    } catch(e) {
+        yield put(receiveCategoryError(e.message));
+        yield put(unAuthorized());
     }
-    catch(e) {
+}
+
+
+function* onRemoveCategory(msg) {
+    try {
+        const { id } = msg;
+        const token = yield select(getToken);
+        const categoriesResponse = yield call(removeCategory, token, id);
+
+        if(categoriesResponse.ok) {
+            yield call(getAllCategories);
+            return;
+        }
+
+        if(categoriesResponse.status === 403 || categoriesResponse.status === 401) { //unauthorized
+            yield put(unAuthorized());
+        } else {
+            const message = yield call([categoriesResponse, 'text']);
+            yield put(receiveCategoryError(message));
+        }
+    } catch(e) {
         yield put(receiveCategoryError(e.message));
         yield put(unAuthorized());
     }
@@ -59,5 +80,6 @@ function* addCategory(msg) {
 
 export default function* categoriesSaga() {
     yield takeLatest(REQUIRE_CATEGORIES, getAllCategories);
-    yield takeLatest(ADD_CATEGORY, addCategory);
+    yield takeLatest(ADD_CATEGORY, onAddCategory);
+    yield takeLatest(REMOVE_CATEGORY, onRemoveCategory);
 }

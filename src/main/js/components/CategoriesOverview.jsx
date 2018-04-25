@@ -1,4 +1,5 @@
 import React from 'react';
+import Category from './Category';
 
 const CategoriesOverview = (props) => {
     const categoryData = props.categoryData;
@@ -17,15 +18,7 @@ const CategoriesOverview = (props) => {
         <div>
             <span> Received categories:</span>
             {categories.map((a) => {
-                return (
-                    <div>
-                        <div>
-                            <span>Id: </span>                    <span>{a.id}</span>
-                        </div>
-                        <div>
-                            <span>Name: </span>                    <span>{a.name}</span>
-                        </div>
-                    </div>);
+                return (<Category category={a} actions={props.actions} />);
             })}
 
         </div>);

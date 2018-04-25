@@ -18,5 +18,5 @@ export function login(userName, password) {
         body
     };
 
-    return  fetch(`${webApiBaseUrl}/oauth/token`, prefs);
+    return fetch(`${webApiBaseUrl}/oauth/token`, prefs);
 }

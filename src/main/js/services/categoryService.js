@@ -33,10 +33,11 @@ export function getCategories(token) {
     return fetch(`${webApiBaseUrl}/api/v0/category`, prefs);
 }
 
-export function createCategories(token, name) {
+export function createCategory(token, name, defaultStardust) {
     // Define fetch properties
     const body = JSON.stringify({
-        name
+        name,
+        defaultStardust
     });
     const prefs = {
         method: 'POST',
@@ -50,4 +51,20 @@ export function createCategories(token, name) {
     };
 
     return fetch(`${webApiBaseUrl}/api/v0/category`, prefs);
+}
+
+export function removeCategory(token, id) {
+    // Define fetch properties
+    const prefs = {
+        method: 'DELETE',
+        credentials: 'same-origin',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${token}`
+        },
+
+    };
+
+    return fetch(`${webApiBaseUrl}/api/v0/category/${id}`, prefs);
 }

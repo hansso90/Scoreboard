@@ -8,23 +8,29 @@ const TextWithLabel = (props) => {
     return (
         <div>
             <Label {...props} />
-            <Text {...props} />
+            {!props.readOnly &&
+            <Text {...props} /> }
+            {props.readOnly &&
+            <Label label={props.userInputs[props.name]} />
+            }
         </div>);
 };
 
 
 export default TextWithLabel;
 const {
-    string, object//, objectOf, func, , bool, shape
+    string, bool, object//, objectOf, func, , bool, shape
 } = propTypes;
 
 TextWithLabel.propTypes = {
     label: string,
     name: string.isRequired,
+    readOnly: bool,
     actions: object.isRequired,
     userInputs: object.isRequired
 };
 
 TextWithLabel.defaultProps = {
-    label: ''
+    label: '',
+    readOnly: false
 };

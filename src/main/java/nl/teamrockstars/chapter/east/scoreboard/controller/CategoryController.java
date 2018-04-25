@@ -86,4 +86,11 @@ public class CategoryController {
 		repository.save(cat);
 		return HttpStatus.ACCEPTED;
 	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete category", notes = "Delete a category")
+	public HttpStatus delete(@PathVariable("id") Long id) throws MethodArgumentNotValidException {
+		repository.delete(id);
+		return HttpStatus.ACCEPTED;
+	}
 }

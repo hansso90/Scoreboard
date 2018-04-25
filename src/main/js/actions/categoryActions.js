@@ -1,4 +1,4 @@
-import { REQUIRE_CATEGORIES, ADD_CATEGORY, RECEIVE_CATEGORIES, RECEIVE_CATEGORY_ERROR } from './types';
+import { REQUIRE_CATEGORIES, ADD_CATEGORY, RECEIVE_CATEGORIES, RECEIVE_CATEGORY_ERROR, REMOVE_CATEGORY } from './types';
 
 export function requireCategories() {
     return {
@@ -6,12 +6,21 @@ export function requireCategories() {
     };
 }
 
-export function addCategory(name) {
+export function addCategory(name, defaultStardust) {
     return {
         type: ADD_CATEGORY,
-        name
+        name,
+        defaultStardust
     };
 }
+
+export function removeCategory(id) {
+    return {
+        type: REMOVE_CATEGORY,
+        id
+    };
+}
+
 
 export function onReceiveCategories(categories) {
     return {
