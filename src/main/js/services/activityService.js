@@ -3,7 +3,7 @@ import './fetch';
 const webApiBaseUrl = 'http://localhost:8080';
 
 
-export function getActivityById(id,token) {
+export function getActivityById(id, token) {
     // Define fetch properties
     const prefs = {
         method: 'GET',

@@ -8,15 +8,16 @@ import TextWithLabel from '../components/TextWithLabel';
 import Button from '../components/Button';
 
 const Dashboard = (props) => {
-    if(!props.activityData.activities || props.activityData.activityError){
+    if(!props.activityData.activities || props.activityData.activityError) {
         props.actions.requireActivities();
         return (<div>
-            { props.activityData.activityError &&<span>props.activityData.activityError</span>}
-            { !props.activityData.activityError &&<span>Getting activities</span>}
-        </div>);
+            { props.activityData.activityError && <span>props.activityData.activityError</span>}
+            { !props.activityData.activityError && <span>Getting activities</span>}
+                </div>);
     }
     return (
         <div>
+            <span> Received activities:</span>
             <span>{props.activities}</span>
         </div>);
 };
@@ -43,6 +44,6 @@ Dashboard.propTypes = {
 };
 
 Dashboard.defaultValues = {
-    activityData:null
-}
+    activityData: null
+};
 

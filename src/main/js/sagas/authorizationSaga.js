@@ -10,15 +10,12 @@ import { receiveToken } from '../actions/authorizationActions';
 const { clearLoginError, receiveLoginError } = actions;
 const history = createBrowserHistory();
 function* onUnAuthorized() {
-    history.push({
-        pathname: '/index.html',
-        search: '?path=login'
-      });
+    history.push('/login');
 }
 
 function* onDoLogin(message) {
     try {
-       
+
         const result = yield call(login, message.username, message.password);
         if(!result.ok) {
             console.log('response niet ok');
@@ -30,11 +27,6 @@ function* onDoLogin(message) {
 
             yield put(receiveToken(token));
             history.push('/dashboard');
-
-
-
-
-
         }
     } catch(e) {
         console.log(e);

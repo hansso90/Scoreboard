@@ -1,9 +1,9 @@
 import { assignIn } from 'lodash';
-import { RECEIVE_ACTIVITIES,RECEIVE_ACTIVITY_ERROR} from '../actions/types';
+import { RECEIVE_ACTIVITIES, RECEIVE_ACTIVITY_ERROR } from '../actions/types';
 
 const initalState = {
     activityError: null,
-    activities:null
+    activities: null
 };
 
 export default (state = initalState, action) => {
@@ -14,7 +14,7 @@ export default (state = initalState, action) => {
             };
             return assignIn({}, state, obj);
         case RECEIVE_ACTIVITIES:
-            return assignIn({},state,{activities:message.activities});
+            return assignIn({}, state, { activities: action.activities });
 
         default:
             return state;

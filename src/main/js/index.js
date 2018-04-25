@@ -14,14 +14,14 @@ window.onload = function () {
         <Provider store={store}>
             <Router history={createBrowserHistory()}>
                 <div>
-                    <Route exact path='/' render={() => (<Redirect to="/login"/>)}/>
-                    <Route exact path='/dashboard' component={Dashboard}/>
-                    <Route exact path='/login' component={Login}/>
+                    <Route exact path="/" render={() => (<Redirect to="/login" />)} />
+                    <Route exact path="/dashboard" component={Dashboard} />
+                    <Route exact path="/login" component={Login} />
                 </div>
             </Router>
         </Provider>,
         document.getElementById('reactRoot')
-    );  
+    );
 };
 
 
