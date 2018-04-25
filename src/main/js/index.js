@@ -8,6 +8,7 @@ import store from './store';
 import Login from './modules/Login';
 import Dashboard from './modules/Dashboard';
 import Categories from './modules/Categories';
+import Chapters from './modules/Chapters';
 
 
 window.onload = function () {
@@ -19,11 +20,11 @@ window.onload = function () {
                     <Route exact path="/dashboard" component={Dashboard} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/categories" component={Categories} />
+                    <Route exact path="/chapters" component={Chapters} />
                 </div>
             </Router>
         </Provider>,
         document.getElementById('reactRoot')
     );
 };
-
 

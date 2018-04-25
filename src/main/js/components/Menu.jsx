@@ -6,6 +6,7 @@ const Menu = (props) => {
         <div>
             <ul>
                 <NavLink to="/categories" replace >Categories</NavLink>
+                <NavLink to="/chapters" replace >Chapters</NavLink>
                 <NavLink to="/dashboard" replace >Dashboard</NavLink>
             </ul>
         </div>

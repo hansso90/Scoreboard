@@ -86,4 +86,12 @@ public class ChapterController {
 		repository.save(cat);
 		return HttpStatus.ACCEPTED;
 	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "Delete Chapter", notes = "Deletes a certain Chapter with id")
+	public HttpStatus delete(@PathVariable("id") Long id) {
+		repository.delete(id);
+		return HttpStatus.ACCEPTED;
+	}
+
 }
