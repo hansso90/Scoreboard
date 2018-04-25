@@ -7,6 +7,7 @@ import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
 import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,6 +43,11 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new BadCredentialsException("Wachtwoord komt niet overeen.");
         }
+    }
+
+    @Override
+    public User getCurrentAuthentication() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @Override

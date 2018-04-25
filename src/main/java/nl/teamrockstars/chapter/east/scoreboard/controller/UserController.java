@@ -4,6 +4,7 @@ import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants
 
 import java.util.List;
 
+import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
 public class UserController {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -39,6 +43,12 @@ public class UserController {
     @ApiOperation(value = "Get user", notes = "Gets a certain user with id", response = User.class)
     public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
         return new ResponseEntity<User>(userRepository.findById(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    @ApiOperation(value = "Get user", notes = "gets the current user out of token;", response = User.class)
+    public ResponseEntity<UserDto> getCurrentUser() {
+        return new ResponseEntity(mapper.userToUserDto(userService.getCurrentAuthentication()), HttpStatus.OK);
     }
     
     @RequestMapping(value = "", method = RequestMethod.GET)
