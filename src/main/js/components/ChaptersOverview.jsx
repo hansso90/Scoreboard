@@ -9,7 +9,7 @@ const ChaptersOverview = (props) => {
         props.actions.requireChapters();
         return (
             <div>
-                { error && <span>error</span>}
+                { error && <span>{error}</span>}
                 { !error && <span>Getting chapters</span>}
             </div>);
     }

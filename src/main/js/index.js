@@ -9,7 +9,7 @@ import Login from './modules/Login';
 import Dashboard from './modules/Dashboard';
 import Categories from './modules/Categories';
 import Chapters from './modules/Chapters';
-
+import Users from './modules/Users';
 
 window.onload = function () {
     ReactDOM.render(
@@ -21,6 +21,7 @@ window.onload = function () {
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/categories" component={Categories} />
                     <Route exact path="/chapters" component={Chapters} />
+                    <Route exact path="/users" component={Users} />
                 </div>
             </Router>
         </Provider>,
