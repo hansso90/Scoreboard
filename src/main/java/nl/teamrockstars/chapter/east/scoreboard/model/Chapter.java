@@ -6,16 +6,16 @@ import javax.persistence.Entity;
 @Entity(name = "chapter")
 public class Chapter extends AbstractHibernateObject {
 
-  @Column(name = "name")
+  @Column(name = "name", unique = true, nullable = false)
   private String name;
 
   public String getName() {
-        return name;
-    }
+    return name;
+  }
 
   public void setName(String name) {
-        this.name = name;
-    }
+    this.name = name;
+  }
 
   @Override
   public String toString() {

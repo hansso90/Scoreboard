@@ -6,11 +6,11 @@ import javax.persistence.Entity;
 @Entity(name = "category")
 public class Category extends AbstractHibernateObject {
 
-  @Column(name = "name")
+  @Column(name = "name", nullable = false, unique = true)
   private String name;
 
   // Default value for amount of stardust for activities in this category
-  @Column(name = "defaultStardust")
+  @Column(name = "defaultStardust", nullable = false, unique = true)
   private Long defaultStardust;
 
   public String getName() {
