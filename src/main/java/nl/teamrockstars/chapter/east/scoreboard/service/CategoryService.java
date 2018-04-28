@@ -7,5 +7,7 @@ import java.util.Map;
 
 public interface CategoryService {
 
-    Map<String, String> validateAndSubmit(CategoryDto categoryDto, Boolean alreadyExist);
+    CategoryDto submit(CategoryDto categoryDto);
+
+    Map<String, String> validate(CategoryDto categoryDto, Boolean alreadyExist);
 }

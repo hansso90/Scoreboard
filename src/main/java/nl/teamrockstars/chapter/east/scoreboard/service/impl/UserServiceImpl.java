@@ -1,6 +1,7 @@
 package nl.teamrockstars.chapter.east.scoreboard.service.impl;
 
 import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
+import nl.teamrockstars.chapter.east.scoreboard.mapper.UserMapper;
 import nl.teamrockstars.chapter.east.scoreboard.model.Chapter;
 import nl.teamrockstars.chapter.east.scoreboard.model.Role;
 import nl.teamrockstars.chapter.east.scoreboard.model.User;
@@ -30,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper mapper;
 
     @Autowired
     private ChapterService chapterService;
@@ -74,11 +78,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, String> validateAndSubmit(UserDto userDto, Boolean alreadyExists) {
+    public UserDto submit(UserDto dto) {
+        User user = mapper.fromDto(dto);
+        return mapper.userToUserDto(user);
+    }
+
+    @Override
+    public Map<String, String> validate(UserDto userDto, Boolean alreadyExists) {
         Map<String, String> map = new HashMap<String, String>();
-        map.putAll(chapterService.validateAndSubmit(userDto.getChapter(), true));
-        
-        return null;
+        map.putAll(chapterService.validate(userDto.getChapter(), true));
+        return map;
     }
 
 }

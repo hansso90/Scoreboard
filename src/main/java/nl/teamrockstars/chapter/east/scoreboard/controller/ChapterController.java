@@ -2,6 +2,7 @@ package nl.teamrockstars.chapter.east.scoreboard.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import nl.teamrockstars.chapter.east.scoreboard.dto.CategoryDto;
 import nl.teamrockstars.chapter.east.scoreboard.dto.ChapterDto;
 import nl.teamrockstars.chapter.east.scoreboard.mapper.ChapterMapper;
 import nl.teamrockstars.chapter.east.scoreboard.model.Chapter;
@@ -59,25 +60,27 @@ public class ChapterController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ApiOperation(value = "Create Chapter", notes = "Create a new Chapter")
-    public HttpStatus create(@RequestBody @Valid ChapterDto chapter, BindingResult errors) throws MethodArgumentNotValidException {
+    public ResponseEntity<ChapterDto> create(@RequestBody @Valid ChapterDto chapter, BindingResult errors) throws MethodArgumentNotValidException {
 
-        Map<String, String> map = chapterService.validateAndSubmit(chapter, false);
+        Map<String, String> map = chapterService.validate(chapter, false);
         map.forEach((index, text)-> errors.rejectValue(index, text));
         if (errors.hasErrors()) {
             throw new MethodArgumentNotValidException(null, errors);
         }
-        return HttpStatus.ACCEPTED;
+        ChapterDto dto = chapterService.submit(chapter);
+        return new ResponseEntity<ChapterDto>(dto, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ApiOperation(value = "Update Chapter", notes = "Update a Chapter")
-    public HttpStatus update(@RequestBody @Valid ChapterDto chapter, BindingResult errors) throws MethodArgumentNotValidException {
-        Map<String, String> map = chapterService.validateAndSubmit(chapter, true);
+    public ResponseEntity<ChapterDto> update(@RequestBody @Valid ChapterDto chapter, BindingResult errors) throws MethodArgumentNotValidException {
+        Map<String, String> map = chapterService.validate(chapter, true);
         map.forEach((index, text)-> errors.rejectValue(index, text));
         if (errors.hasErrors()) {
             throw new MethodArgumentNotValidException(null, errors);
         }
-        return HttpStatus.ACCEPTED;
+        ChapterDto dto = chapterService.submit(chapter);
+        return new ResponseEntity<ChapterDto>(dto, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

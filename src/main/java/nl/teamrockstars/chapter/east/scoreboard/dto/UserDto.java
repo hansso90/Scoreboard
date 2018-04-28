@@ -4,30 +4,10 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public class UserDto extends BaseUserDto {
-
-	private String role;
-
-	private List<String> rights;
 	
 	private ZonedDateTime lastModifiedAt;
 	
 	private ZonedDateTime createdAt;
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public List<String> getRights() {
-		return rights;
-	}
-
-	public void setRights(List<String> rights) {
-		this.rights = rights;
-	}
 
 	public ZonedDateTime getLastModifiedAt() {
 		return lastModifiedAt;

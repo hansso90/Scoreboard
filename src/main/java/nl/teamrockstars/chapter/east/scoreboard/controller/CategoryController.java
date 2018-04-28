@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import nl.teamrockstars.chapter.east.scoreboard.dto.ChapterDto;
 import nl.teamrockstars.chapter.east.scoreboard.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,28 +68,30 @@ public class CategoryController {
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ApiOperation(value = "Create category", notes = "Create a new category")
-	public HttpStatus create(@RequestBody @Valid CategoryDto category, BindingResult errors) throws MethodArgumentNotValidException {
+	public ResponseEntity<CategoryDto> create(@RequestBody @Valid CategoryDto category, BindingResult errors) throws MethodArgumentNotValidException {
 
-		Map<String, String> map = categoryService.validateAndSubmit(category, false);
+		Map<String, String> map = categoryService.validate(category, false);
 		map.forEach((index, text)-> errors.rejectValue(index, text));
 		if(errors.hasErrors())
 		{
 			throw new MethodArgumentNotValidException(null, errors);
 		}
-		return HttpStatus.ACCEPTED;
+        CategoryDto dto = categoryService.submit(category);
+        return new ResponseEntity(dto, HttpStatus.ACCEPTED);
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update category", notes = "Update a category")
-	public HttpStatus update(@RequestBody @Valid CategoryDto category, BindingResult errors) throws MethodArgumentNotValidException {
+	public ResponseEntity<CategoryDto> update(@RequestBody @Valid CategoryDto category, BindingResult errors) throws MethodArgumentNotValidException {
 
-		Map<String, String> map = categoryService.validateAndSubmit(category, true);
+		Map<String, String> map = categoryService.validate(category, true);
 		map.forEach((index, text)-> errors.rejectValue(index, text));
 		if(errors.hasErrors())
 		{
 			throw new MethodArgumentNotValidException(null, errors);
 		}
-		return HttpStatus.ACCEPTED;
+        CategoryDto dto = categoryService.submit(category);
+        return new ResponseEntity(dto, HttpStatus.ACCEPTED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

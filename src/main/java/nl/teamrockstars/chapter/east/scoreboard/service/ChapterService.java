@@ -9,6 +9,8 @@ public interface ChapterService {
 
     Chapter createNewChapter(String name);
 
-    Map<String, String> validateAndSubmit(ChapterDto chapterDto, Boolean alreadyExist);
+    Map<String, String> validate(ChapterDto chapterDto, Boolean alreadyExist);
+
+    ChapterDto submit(ChapterDto chapterDto);
 
 }

@@ -60,26 +60,28 @@ public class UserController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ApiOperation(value = "Create user", notes = "Create a new user")
     @PreAuthorize("hasAnyRole('USERMANAGEMENT', 'CHAPTERMANAGEMENT') ")
-    public HttpStatus userRole(@RequestBody UserDto userDto, BindingResult errors) {
-        Map<String, String> map = userService.validateAndSubmit(userDto, false);
+    public ResponseEntity<UserDto> userRole(@RequestBody UserDto userDto, BindingResult errors) {
+        Map<String, String> map = userService.validate(userDto, false);
         map.forEach( (index, text) -> errors.rejectValue(index, text));
         if(errors.hasErrors())
         {
             new MethodArgumentNotValidException(null, errors);
         }
-        return HttpStatus.ACCEPTED;
+        UserDto dto = userService.submit(userDto);
+        return new ResponseEntity(dto, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
     @ApiOperation(value = "Update user", notes = "Update a user ")
     @PreAuthorize("hasAnyRole('USERMANAGEMENT', 'CHAPTERMANAGEMENT') ")
-    public HttpStatus putUser(@RequestBody UserDto user, BindingResult errors) {
-        Map<String, String> map = userService.validateAndSubmit(user, true);
+    public ResponseEntity<UserDto> putUser(@RequestBody UserDto user, BindingResult errors) {
+        Map<String, String> map = userService.validate(user, true);
         map.forEach( (index, text) -> errors.rejectValue(index, text));
         if(errors.hasErrors())
         {
             new MethodArgumentNotValidException(null, errors);
         }
-        return HttpStatus.ACCEPTED;
+        UserDto dto = userService.submit(user);
+        return new ResponseEntity(dto, HttpStatus.ACCEPTED);
     }
 }

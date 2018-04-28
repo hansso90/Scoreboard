@@ -17,5 +17,7 @@ public interface UserService extends UserDetailsService {
 
     void checkPassword(User user, String rawPassword) throws BadCredentialsException;
 
-    Map<String, String> validateAndSubmit(UserDto userDto, Boolean alreadyExist);
+    UserDto submit(UserDto dto);
+
+    Map<String, String> validate(UserDto userDto, Boolean alreadyExist);
 }

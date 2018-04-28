@@ -27,8 +27,14 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper mapper;
 
     @Override
+    public CategoryDto submit(CategoryDto categoryDto) {
+        Category category = categoryRepository.save(mapper.fromDto(categoryDto));
+        return mapper.toDto(category);
+    }
+
+    @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public Map<String, String> validateAndSubmit(CategoryDto categoryDto, Boolean alreadyExist) {
+    public Map<String, String> validate(CategoryDto categoryDto, Boolean alreadyExist) {
         HashMap<String, String> map = new HashMap();
         if (categoryDto == null) {
             map.put("Chapter", "There is no chapter information.");
@@ -41,11 +47,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
         if (!alreadyExist && categoryDto.getId() != null) {
             map.put("Chapter", "There could not be a id if the chapter is new ");
-        }
-
-        if (CollectionUtils.isEmpty(map)) {
-            Category category = mapper.fromDto(categoryDto);
-            categoryRepository.save(category);
         }
         return map;
     }

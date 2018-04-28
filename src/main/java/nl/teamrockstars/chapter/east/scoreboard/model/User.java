@@ -17,11 +17,11 @@ public class User extends AbstractHibernateObject implements UserDetails {
   @Column(name = "name", unique = true, nullable = false)
   private String name;
 
-  @Column(name = "username", unique = true, nullable = false)
+  @Column(name = "username", unique = true)
   private String username;
 
   @JsonIgnore
-  @Column(name = "password", nullable = false)
+  @Column(name = "password")
   private String password;
 
   @Column(name = "enabled", nullable = false)

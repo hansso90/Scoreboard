@@ -35,10 +35,16 @@ public class ChapterServiceImpl implements ChapterService {
         return chapter;
     }
 
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ChapterDto submit(ChapterDto chapterDto) {
+        Chapter chapter = chapterRepository.save(mapper.fromDto(chapterDto));
+        return mapper.toDto(chapter);
+    }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public Map<String, String> validateAndSubmit(ChapterDto chapterDto, Boolean alreadyExist) {
+    public Map<String, String> validate(ChapterDto chapterDto, Boolean alreadyExist) {
         HashMap<String, String> map = new HashMap();
         if (chapterDto == null) {
             map.put("Chapter", "There is no chapter information.");
@@ -51,11 +57,6 @@ public class ChapterServiceImpl implements ChapterService {
         }
         if (!alreadyExist && chapterDto.getId() != null) {
             map.put("Chapter", "There could not be a id if the chapter is new ");
-        }
-
-        if (CollectionUtils.isEmpty(map)) {
-            Chapter chapter = mapper.fromDto(chapterDto);
-            chapterRepository.save(chapter);
         }
         return map;
     }
