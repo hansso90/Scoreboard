@@ -1,6 +1,6 @@
 import React from 'react';
 import Label from './Label';
-import Dropdown from './DropDown';
+import Dropdown from './Dropdown';
 
 
 const DropdownWithLabel = (props) => {

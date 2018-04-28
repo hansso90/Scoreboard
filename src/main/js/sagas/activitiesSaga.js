@@ -1,8 +1,8 @@
 
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import actions from '../actions/index';
-import { getActivities } from '../services/activityService';
-import { REQUIRE_ACTIVITIES } from '../actions/types';
+import { createActivity, getActivities } from '../services/activityService';
+import {ADD_ACTIVITY, REQUIRE_ACTIVITIES} from '../actions/types';
 
 export const getToken = state => state.authorization.token;
 const { onReceiveActivities, receiveActivityError, unAuthorized } = actions;
@@ -31,7 +31,38 @@ function* getAllActivities() {
     }
 }
 
+function* onAddActivity(msg) {
+    try {
+        const {
+            userId, chapterId, categoryId, stardust, description, date
+        } = msg;
+        const token = yield select(getToken);
+
+        console.log("======== Add Activity ========");
+        console.log(msg);
+        console.log("------------------------------");
+
+        const response = yield call(createActivity, token, userId, chapterId, categoryId, stardust, description, date);
+
+        if(response.ok) {
+            yield call(getAllActivities);
+            return;
+        }
+
+        if(response.status === 403 || response.status === 401) {
+            yield put(unAuthorized());
+        } else {
+            const message = yield call([response, 'text']);
+            yield put(receiveActivityError(message));
+        }
+    } catch(e) {
+        yield put(receiveActivityError(e.message));
+        yield put(unAuthorized());
+    }
+}
+
 
 export default function* activitiesSaga() {
     yield takeLatest(REQUIRE_ACTIVITIES, getAllActivities);
+    yield takeLatest(ADD_ACTIVITY, onAddActivity);
 }

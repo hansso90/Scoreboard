@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/scoreboard
     username: root
-    password: root
+    password:
     driver-class: com.mysql.jdbc.Driver
     initialization-mode: always
     platform: mysql
@@ -20,16 +20,16 @@ spring:
 
 logging:
   level:
-    ROOT: ERROR
+    ROOT: INFO
 
     # Set INFO to see the allocated port
-    org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer: INFO
-    org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainer: INFO
+    org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer: DEBUG
+    org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainer: DEBUG
 
     # Get info regarding connection to the config server and retries if required
     org.springframework.cloud.config.client.ConfigServicePropertySourceLocator: INFO
 
     org.apache.http.impl.execchain.RetryExec: INFO
 
-    nl.teamrockstars.chapter.east.scoreboard: INFO
+    nl.teamrockstars.chapter.east.scoreboard: DEBUG
 

@@ -32,3 +32,35 @@ export function getActivities(token) {
 
     return fetch(`${webApiBaseUrl}/api/v0/activity`, prefs);
 }
+
+export function createActivity(token, userId, chapterId, categoryId, stardust, description, date) {
+    const body = JSON.stringify({
+        category: {
+            id: categoryId
+        },
+        chapter: {
+            id: chapterId
+        },
+        date: date,
+        description: description,
+        stardust: stardust,
+        users: [
+            {
+                id: userId
+            }
+        ]
+    });
+
+    const prefs = {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            Authorization: `Bearer ${token}`
+        },
+        body
+    };
+
+    return fetch(`${webApiBaseUrl}/api/v0/activity`, prefs);
+}

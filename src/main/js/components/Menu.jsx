@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 
 const Menu = (props) => {
-    const endpoints = ["categories", "chapters", "users", "dashboard"];
+    const endpoints = ["categories", "chapters", "users", "activities", "dashboard"];
 
 
     return (
