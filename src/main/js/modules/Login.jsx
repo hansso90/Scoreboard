@@ -36,7 +36,7 @@ const Login = (props) => {
             {props.authorization.loginError &&
                 <span>{props.authorization.loginError}</span>
             }
-            {props.authorization.token && <Redirect to='/dashboard'/>}
+            {props.authorization.token && <Redirect to='/categories'/>}
         </div>);
 };
 
