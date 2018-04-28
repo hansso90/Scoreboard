@@ -5,7 +5,7 @@ import Dropdown from './DropDown';
 
 const DropdownWithLabel = (props) => {
     return (
-        <div>
+        <div className="dropdownWithLabel">
             <Label label={props.label} />
             <Dropdown {...props} />
         </div>);

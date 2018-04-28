@@ -62,7 +62,7 @@ const Dropdown = (props) => {
 
 
     return (
-        <div >
+        <div className="dropdown">
             <select
                 onChange={handleChange}
                 value={_selectedValue()}

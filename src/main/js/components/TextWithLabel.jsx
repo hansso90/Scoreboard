@@ -3,10 +3,9 @@ import React from 'react';
 import Text from './Text';
 import Label from './Label';
 
-
 const TextWithLabel = (props) => {
     return (
-        <div>
+        <div className="textWithLabel">
             <Label {...props} />
             {!props.readOnly &&
             <Text {...props} /> }

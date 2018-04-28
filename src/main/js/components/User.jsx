@@ -16,7 +16,7 @@ const User = (props) => {
     };
 
     return (
-        <div>
+        <div className="user">
             <LabelWithLabel {...nameProps} />
             <Button {...buttonProps} />
         </div>);

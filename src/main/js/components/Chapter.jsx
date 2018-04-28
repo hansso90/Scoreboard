@@ -16,7 +16,7 @@ const Chapter = (props) => {
     };
 
     return (
-        <div>
+        <div className="chapter">
             <LabelWithLabel {...nameProps} />
             <Button {...buttonProps} />
         </div>);

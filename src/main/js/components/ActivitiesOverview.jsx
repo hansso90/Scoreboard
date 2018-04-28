@@ -11,7 +11,7 @@ const ActivityOverview = (props) => {
     }
     const activities = props.activityData.activities;
     return (
-        <div>
+        <div className="activitiesOverview">
             <span> Received activities:</span>
             <span>{activities.map((a) => {
                 <span>{a.id}</span>;

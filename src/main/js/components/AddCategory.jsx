@@ -23,7 +23,7 @@ const AddCategory = (props) => {
     };
 
     return (
-        <div>
+        <div className="addCategory">
             <TextWithLabel {...nameProps} />
             <TextWithLabel {...defaultStardustProps} />
             <Button {...buttonProps} />

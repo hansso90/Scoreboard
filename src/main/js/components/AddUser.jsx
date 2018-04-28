@@ -52,7 +52,7 @@ const AddUser = (props) => {
     };
 
     return (
-        <div>
+        <div className="addUser">
             <TextWithLabel {...nameProps} />
             <TextWithLabel {...userNameProps} />
             <TextWithLabel {...passwordProps} />

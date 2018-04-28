@@ -5,7 +5,7 @@ import Label from './Label';
 
 const LabelWithLabel = (props) => {
     return (
-        <div>
+        <div className="labelWithLabel">
             <Label label={props.label} />
             <Label label={props.text} />
         </div>);

@@ -3,7 +3,7 @@ import proptypes from 'prop-types';
 
 
 const Label = ({ label }) => {
-    return (<span>{label}</span>);
+    return (<span className="label">{label}</span>);
 };
 
 export default Label;

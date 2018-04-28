@@ -19,7 +19,7 @@ const Category = (props) => {
     };
 
     return (
-        <div>
+        <div className="category">
             <LabelWithLabel {...nameProps} />
             <LabelWithLabel {...stardustProps} />
             <Button {...buttonProps} />

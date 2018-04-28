@@ -16,7 +16,7 @@ const AddChapter = (props) => {
     };
 
     return (
-        <div>
+        <div className="addChapter">
             <TextWithLabel {...nameProps} />
             <Button {...buttonProps} />
         </div>);
