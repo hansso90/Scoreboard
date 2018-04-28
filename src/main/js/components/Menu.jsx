@@ -6,18 +6,14 @@ const Menu = (props) => {
 
 
     return (
-        <div className="menu col-sm-12">
-            <nav className="navbar navbar-light navbar-expand-sm">
-                <div className="collapse navbar-collapse">
-                    <ul className="navbar-nav">
-                        {endpoints.map(name =>
-                            <li>
-                                <NavLink to={'/' + name} replace>{name}</NavLink>
-                            </li>
-                        )}
-                    </ul>
-                </div>
-            </nav>
+        <div className="menu">
+            <ul className="row">
+                {endpoints.map(name =>
+                    <li>
+                        <NavLink to={'/' + name} replace>{name}</NavLink>
+                    </li>
+                )}
+            </ul>
         </div>
     );
 };

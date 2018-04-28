@@ -29,7 +29,7 @@ const Login = (props) => {
     };
 
     return (
-        <div class="login">
+        <div className="login">
             <TextWithLabel {...userNameProps} />
             <TextWithLabel {...passwordProps} />
             <Button {...buttonProps} />

@@ -18,7 +18,7 @@
 }
 
 .reactApplication {
-    margin-top: 65px;
+    margin-top: 80px;
 }
 
 .form-group {
@@ -45,4 +45,18 @@ input.form-control {
 
 .overview > span {
     display: block;
+}
+
+.menu {
+    text-align: center;
+}
+.menu ul {
+    margin: auto;
+    width: 50%;
+    list-style-type: none;
+    font-size: 24px;
+}
+.menu li {
+    padding-left: 5px;
+    padding-right: 5px;
 }
