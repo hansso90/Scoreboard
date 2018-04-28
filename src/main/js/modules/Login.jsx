@@ -31,16 +31,29 @@ const Login = (props) => {
         ...props
     };
 
-    const buttonProps = {
+    const regularLoginButton = {
         label: 'Login',
         onClick: () => props.actions.doLogin(props.userInputs[userNameProps.name], props.userInputs[passwordProps.name])
+    };
+
+    const adLoginButton = {
+        label: 'Login with Microsoft Credentials',
+        onClick: () => {
+            fetch(`http://localhost:8080/ad/login`).then(res => {
+                res.json().then(json => {
+                    const url = json.url;
+                    window.location.href = url;
+                });
+            });
+        }
     };
 
     return (
         <div className="login">
             <TextWithLabel {...userNameProps} />
             <TextWithLabel {...passwordProps} />
-            <Button {...buttonProps} />
+            <Button {...regularLoginButton} />
+            <Button {...adLoginButton} />
             {props.authorization.loginError &&
                 <span>{props.authorization.loginError}</span>
             }
