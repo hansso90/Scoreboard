@@ -1,18 +1,3 @@
-.progress-bars{
-    padding-top: 200px;
-}
-
-.stardustText{
-    position: relative;
-    text-align: center;
-    font-size: 3em;
-    font-weight: bolder;
-    top: 50%;
-    transform: translateY(-50%);
-    -webkit-text-stroke-color: black;
-    -webkit-text-stroke-width: 1.30px;
-}
-
 .login {
     margin-top: 125px;
 }
