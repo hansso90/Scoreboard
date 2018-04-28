@@ -3,12 +3,15 @@ package nl.teamrockstars.chapter.east.scoreboard.controller;
 import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
+import nl.teamrockstars.chapter.east.scoreboard.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -30,6 +33,9 @@ import nl.teamrockstars.chapter.east.scoreboard.repository.CategoryRepository;
 @PreAuthorize("hasRole('ACTIVITYMANAGEMENT')")
 @Api(tags = "Category Controller", description = "Management of categories")
 public class CategoryController {
+
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private CategoryRepository repository;
@@ -62,28 +68,26 @@ public class CategoryController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ApiOperation(value = "Create category", notes = "Create a new category")
 	public HttpStatus create(@RequestBody @Valid CategoryDto category, BindingResult errors) throws MethodArgumentNotValidException {
-		
-		if(category.getId() != null) {
-			errors.rejectValue("id", "ID must be empty on POST");
+
+		Map<String, String> map = categoryService.validateAndSubmit(category, false);
+		map.forEach((index, text)-> errors.rejectValue(index, text));
+		if(errors.hasErrors())
+		{
 			throw new MethodArgumentNotValidException(null, errors);
 		}
-		Category cat = mapper.fromDto(category);
-
-		repository.save(cat);
 		return HttpStatus.ACCEPTED;
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	@ApiOperation(value = "Update category", notes = "Update a category")
 	public HttpStatus update(@RequestBody @Valid CategoryDto category, BindingResult errors) throws MethodArgumentNotValidException {
-		
-		Category cat = mapper.fromDto(category);
-		if(cat.isNew()) {
-			errors.rejectValue("id", "ID could not be found");
+
+		Map<String, String> map = categoryService.validateAndSubmit(category, true);
+		map.forEach((index, text)-> errors.rejectValue(index, text));
+		if(errors.hasErrors())
+		{
 			throw new MethodArgumentNotValidException(null, errors);
 		}
-
-		repository.save(cat);
 		return HttpStatus.ACCEPTED;
 	}
 
