@@ -6,10 +6,10 @@ export function requireActivities() {
     };
 }
 
-export function addActivity(userId, chapterId, categoryId, stardust, description, date) {
+export function addActivity(user, chapterId, categoryId, stardust, description, date) {
     return {
         type: ADD_ACTIVITY,
-        userId,
+        user,
         chapterId,
         categoryId,
         stardust,

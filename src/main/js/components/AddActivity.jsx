@@ -18,7 +18,7 @@ const AddActivity = (props) => {
         return {
             key: i,
             name: u.name,
-            value: u.id
+            value: i
         }
     });
     const userProps = {
@@ -83,14 +83,16 @@ const AddActivity = (props) => {
 
     const buttonProps = {
         label: '+',
-        onClick: () => props.actions.addActivity(
-            props.userInputs[userProps.name],
-            props.userInputs[chapterProps.name],
-            props.userInputs[categoryProps.name],
-            props.userInputs[stardustProps.name],
-            props.userInputs[descriptionProps.name],
-            date
-        )
+        onClick: () => {
+            props.actions.addActivity(
+                props.users[props.userInputs[userProps.name]],
+                props.userInputs[chapterProps.name],
+                props.userInputs[categoryProps.name],
+                props.userInputs[stardustProps.name],
+                props.userInputs[descriptionProps.name],
+                date
+            )
+        }
     };
 
     return (

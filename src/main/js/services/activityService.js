@@ -33,7 +33,7 @@ export function getActivities(token) {
     return fetch(`${webApiBaseUrl}/api/v0/activity`, prefs);
 }
 
-export function createActivity(token, userId, chapterId, categoryId, stardust, description, date) {
+export function createActivity(token, user, chapterId, categoryId, stardust, description, date) {
     const body = JSON.stringify({
         category: {
             id: categoryId
@@ -44,11 +44,7 @@ export function createActivity(token, userId, chapterId, categoryId, stardust, d
         date: date,
         description: description,
         stardust: stardust,
-        users: [
-            {
-                id: userId
-            }
-        ]
+        users: [user]
     });
 
     const prefs = {

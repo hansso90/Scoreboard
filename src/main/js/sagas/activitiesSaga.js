@@ -34,15 +34,11 @@ function* getAllActivities() {
 function* onAddActivity(msg) {
     try {
         const {
-            userId, chapterId, categoryId, stardust, description, date
+            user, chapterId, categoryId, stardust, description, date
         } = msg;
         const token = yield select(getToken);
 
-        console.log("======== Add Activity ========");
-        console.log(msg);
-        console.log("------------------------------");
-
-        const response = yield call(createActivity, token, userId, chapterId, categoryId, stardust, description, date);
+        const response = yield call(createActivity, token, user, chapterId, categoryId, stardust, description, date);
 
         if(response.ok) {
             yield call(getAllActivities);
