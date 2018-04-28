@@ -16,7 +16,7 @@ const ChaptersOverview = (props) => {
 
     return (
         <div className="chaptersOverview overview">
-            <span> Received chapters:</span>
+            <span>Chapters:</span>
             {chapters.map((a, index) => {
                 return (<Chapter chapter={a} actions={props.actions} />);
             })}

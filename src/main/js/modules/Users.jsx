@@ -26,7 +26,7 @@ const Users = (props) => {
 
 
     return (
-        <div>
+        <div className="users">
             <Menu />
             <div>
                 { waitingChapters || waitingUsers && (
@@ -37,11 +37,11 @@ const Users = (props) => {
                 { userError && <span>{userError}</span>}
 
                 { !waitingChapters && !waitingUsers && (
-                    <div>
-                        <div>
+                    <div className="row">
+                        <div className="col-md-12 col-sm-24">
                             <AddUser {...props} chapters={chapters} />
                         </div>
-                        <div>
+                        <div className="col-md-12 col-sm-24">
                             <UsersOverview {...props} users={users} />
                         </div>
                     </div>)}

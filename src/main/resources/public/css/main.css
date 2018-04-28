@@ -60,3 +60,12 @@ input.form-control {
     padding-left: 5px;
     padding-right: 5px;
 }
+
+.labelWithLabel span {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.labelWithLabel span:first-child {
+    font-style: italic;
+}

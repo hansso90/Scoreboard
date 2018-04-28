@@ -9,13 +9,15 @@ import AddChapter from '../components/AddChapter';
 
 const Chapters = (props) => {
     return (
-        <div>
+        <div className="chapters">
             <Menu />
-            <div>
-                <AddChapter {...props} />
-            </div>
-            <div>
-                <ChaptersOverview {...props} />
+            <div className="row">
+                <div className="col-md-12 col-sm-24">
+                    <AddChapter {...props} />
+                </div>
+                <div className="col-md-12 col-sm-24">
+                    <ChaptersOverview {...props} />
+                </div>
             </div>
 
         </div>

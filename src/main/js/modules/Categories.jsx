@@ -9,15 +9,16 @@ import AddCategory from '../components/AddCategory';
 
 const Categories = (props) => {
     return (
-        <div>
+        <div className="categories">
             <Menu />
-            <div>
-                <AddCategory {...props} />
+            <div className="row">
+                <div className="col-md-12 col-sm-24">
+                    <AddCategory {...props} />
+                </div>
+                <div className="col-md-12 col-sm-24">
+                    <CategoriesOverview {...props} />
+                </div>
             </div>
-            <div>
-                <CategoriesOverview {...props} />
-            </div>
-
         </div>
     );
 };

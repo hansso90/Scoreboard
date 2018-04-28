@@ -16,7 +16,7 @@ const CategoriesOverview = (props) => {
 
     return (
         <div className="categoryOverview overview">
-            <span> Received categories:</span>
+            <span>Categories:</span>
             {categories.map((a, index) => {
                 return (<Category category={a} actions={props.actions} />);
             })}
