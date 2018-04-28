@@ -2,23 +2,23 @@ package nl.teamrockstars.chapter.east.scoreboard.dto;
 
 public class BaseUserDto extends DtoObject {
 
-  private String name;
+    private String name;
 
-  private String chapter;
+    private ChapterDto chapter;
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public String getChapter() {
-    return chapter;
-  }
+    public ChapterDto getChapter() {
+        return chapter;
+    }
 
-  public void setChapter(String chapter) {
-    this.chapter = chapter;
-  }
+    public void setChapter(ChapterDto chapter) {
+        this.chapter = chapter;
+    }
 }

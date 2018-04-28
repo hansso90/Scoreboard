@@ -1,28 +1,26 @@
 package nl.teamrockstars.chapter.east.scoreboard.controller;
 
-import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
-
-import java.util.List;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
+import nl.teamrockstars.chapter.east.scoreboard.mapper.UserMapper;
+import nl.teamrockstars.chapter.east.scoreboard.model.User;
+import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
 import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import nl.teamrockstars.chapter.east.scoreboard.dto.ActivityDto;
-import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
-import nl.teamrockstars.chapter.east.scoreboard.mapper.UserMapper;
-import nl.teamrockstars.chapter.east.scoreboard.model.Activity;
-import nl.teamrockstars.chapter.east.scoreboard.model.User;
-import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
+import java.util.List;
+import java.util.Map;
+
+import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
 
 @RestController
 @RequestMapping(value = PUBLIC + "/user")
@@ -37,8 +35,8 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-  	private UserMapper mapper;
-    
+    private UserMapper mapper;
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get user", notes = "Gets a certain user with id", response = User.class)
     public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
@@ -50,28 +48,38 @@ public class UserController {
     public ResponseEntity<UserDto> getCurrentUser() {
         return new ResponseEntity(mapper.userToUserDto(userService.getCurrentAuthentication()), HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ApiOperation(value = "Get users", notes = "Gets all users", response = UserDto.class)
     public ResponseEntity<List<UserDto>> getUsers() {
-    	
-    	List<User> users = userRepository.findAllByOrderByName();
-  		return new ResponseEntity<List<UserDto>>(mapper.userToUserDtoList(users), HttpStatus.OK);
+
+        List<User> users = userRepository.findAllByOrderByName();
+        return new ResponseEntity<List<UserDto>>(mapper.userToUserDtoList(users), HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ApiOperation(value = "Create user", notes = "Create a new user")
-    public HttpStatus userRole(@RequestBody User user) {
-        //TODO: check content;
-        userRepository.save(user);
+    @PreAuthorize("hasAnyRole('USERMANAGEMENT', 'CHAPTERMANAGEMENT') ")
+    public HttpStatus userRole(@RequestBody UserDto userDto, BindingResult errors) {
+        Map<String, String> map = userService.validateAndSubmit(userDto, false);
+        map.forEach( (index, text) -> errors.rejectValue(index, text));
+        if(errors.hasErrors())
+        {
+            new MethodArgumentNotValidException(null, errors);
+        }
         return HttpStatus.ACCEPTED;
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
-    @ApiOperation(value = "Update user", notes = "Update a ")
-    public HttpStatus putUser(@RequestBody User user) {
-        //TODO: check content;
-        userRepository.save(user);
+    @ApiOperation(value = "Update user", notes = "Update a user ")
+    @PreAuthorize("hasAnyRole('USERMANAGEMENT', 'CHAPTERMANAGEMENT') ")
+    public HttpStatus putUser(@RequestBody UserDto user, BindingResult errors) {
+        Map<String, String> map = userService.validateAndSubmit(user, true);
+        map.forEach( (index, text) -> errors.rejectValue(index, text));
+        if(errors.hasErrors())
+        {
+            new MethodArgumentNotValidException(null, errors);
+        }
         return HttpStatus.ACCEPTED;
     }
 }

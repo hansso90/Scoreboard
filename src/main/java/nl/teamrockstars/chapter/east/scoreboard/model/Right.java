@@ -8,10 +8,12 @@ public enum Right implements GrantedAuthority {
 
     ROLE_USERMANAGEMENT("ROLE_USERMANAGEMENT"),
 
-    ROLE_ACTIVITYMANAGEMENT("ROLE_ACTIVITYMANAGEMENT"),
-    ;
+    ROLE_CHAPTERMANAGEMENT("ROLE_CHAPTERMANAGEMENT"),
+
+    ROLE_ACTIVITYMANAGEMENT("ROLE_ACTIVITYMANAGEMENT"),;
 
     private String authority;
+
 
     Right(String authority) {
         this.authority = authority;
