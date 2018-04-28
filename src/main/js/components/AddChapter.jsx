@@ -11,7 +11,7 @@ const AddChapter = (props) => {
     };
 
     const buttonProps = {
-        label: '+',
+        label: 'Save',
         onClick: () => props.actions.addChapter(props.userInputs[nameProps.name])
     };
 

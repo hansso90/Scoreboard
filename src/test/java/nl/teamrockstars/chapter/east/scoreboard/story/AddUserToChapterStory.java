@@ -4,27 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.teamrockstars.chapter.east.scoreboard.controller.AbstractControllerTest;
 import nl.teamrockstars.chapter.east.scoreboard.dto.ChapterDto;
 import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
-import nl.teamrockstars.chapter.east.scoreboard.model.AbstractHibernateObject;
-import nl.teamrockstars.chapter.east.scoreboard.model.Chapter;
-import org.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.oauth2.common.util.JacksonJsonParser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.time.ZonedDateTime;
-
 import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.MOUNT;
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,11 +51,9 @@ public class AddUserToChapterStory extends AbstractControllerTest {
         String responseContent = result.getResponse().getContentAsString();
         chapterDto = mapper.readValue(responseContent, ChapterDto.class);
 
-                UserDto dto = new UserDto();
-                dto.setName("John Doe");
-                dto.setChapter(chapterDto);
-                //dto.setCreatedAt(ZonedDateTime.now());
-                //dto.setLastModifiedAt(ZonedDateTime.now());
+        UserDto dto = new UserDto();
+        dto.setName("John Doe");
+        dto.setChapter(chapterDto);
 
 
         result = mvc.perform(post(MOUNT + "/user")

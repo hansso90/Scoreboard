@@ -42,7 +42,7 @@ const AddUser = (props) => {
         defaultText: 'Select a chapter'
     };
     const buttonProps = {
-        label: '+',
+        label: 'Save',
         onClick: () => props.actions.addUser(
             props.userInputs[nameProps.name],
             props.userInputs[userNameProps.name],

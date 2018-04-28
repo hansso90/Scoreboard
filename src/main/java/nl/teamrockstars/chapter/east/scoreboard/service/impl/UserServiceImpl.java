@@ -80,13 +80,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto submit(UserDto dto) {
         User user = mapper.fromDto(dto);
+
         userRepository.save(user);
         return mapper.userToUserDto(user);
     }
 
     @Override
     public Map<String, String> validate(UserDto userDto, Boolean alreadyExists) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap();
         map.putAll(chapterService.validate(userDto.getChapter(), true));
         return map;
     }
