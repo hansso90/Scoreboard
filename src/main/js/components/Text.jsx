@@ -10,7 +10,7 @@ const Text = ({
     const type = blur ? 'password' : 'input';
     const textProps = {
         value: userInputs[name] !== undefined ? userInputs[name] : '',
-        className: "text",
+        className: "text form-control",
         name,
         type
     };

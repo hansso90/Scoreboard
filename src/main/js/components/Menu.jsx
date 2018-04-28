@@ -1,15 +1,23 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 const Menu = (props) => {
+    const endpoints = ["categories", "chapters", "users", "dashboard"];
+
+
     return (
-        <div className="menu">
-            <ul>
-                <NavLink to="/categories" replace >Categories</NavLink>
-                <NavLink to="/chapters" replace >Chapters</NavLink>
-                <NavLink to="/users" replace >Users</NavLink>
-                <NavLink to="/dashboard" replace >Dashboard</NavLink>
-            </ul>
+        <div className="menu col-sm-12">
+            <nav className="navbar navbar-light navbar-expand-sm">
+                <div className="collapse navbar-collapse">
+                    <ul className="navbar-nav">
+                        {endpoints.map(name =>
+                            <li>
+                                <NavLink to={'/' + name} replace>{name}</NavLink>
+                            </li>
+                        )}
+                    </ul>
+                </div>
+            </nav>
         </div>
     );
 };

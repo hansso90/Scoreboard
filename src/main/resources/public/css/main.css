@@ -12,3 +12,37 @@
     -webkit-text-stroke-color: black;
     -webkit-text-stroke-width: 1.30px;
 }
+
+.login {
+    margin-top: 125px;
+}
+
+.reactApplication {
+    margin-top: 65px;
+}
+
+.form-group {
+    margin-bottom: 15px
+}
+
+.control-label {
+    padding-top: 7px
+}
+
+input.form-control {
+    padding: 10px;
+    height: auto;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    width: 100%
+}
+
+.overview {
+    padding: 5px;
+    font-size: 24px;
+}
+
+.overview > span {
+    display: block;
+}

@@ -5,12 +5,10 @@ import Label from './Label';
 
 const TextWithLabel = (props) => {
     return (
-        <div className="textWithLabel">
+        <div className="textWithLabel form-group">
             <Label {...props} />
-            {!props.readOnly &&
-            <Text {...props} /> }
-            {props.readOnly &&
-            <Label label={props.userInputs[props.name]} />
+            {!props.readOnly && <Text {...props} /> }
+            {props.readOnly && <Label label={props.userInputs[props.name]} />
             }
         </div>);
 };

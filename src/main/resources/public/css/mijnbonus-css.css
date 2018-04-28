@@ -6875,23 +6875,6 @@ input[type=password] {
     padding: 3px 10px
 }
 
-.login .form-group {
-    margin-bottom: 15px
-}
-
-.login .control-label {
-    padding-top: 7px
-}
-
-.login input.form-control {
-    padding: 10px;
-    height: auto;
-    border-radius: 0;
-    -webkit-appearance: none;
-    -webkit-border-radius: 0;
-    width: 100%
-}
-
 .btn {
     text-transform: uppercase;
     font-size: 17px;

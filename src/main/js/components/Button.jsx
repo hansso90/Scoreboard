@@ -6,7 +6,7 @@ const Button = ({ label, onClick }) => {
     const _onClick = () => {
         onClick();
     };
-    return (<button className="button" onClick={_onClick} >{label}</button>);
+    return (<button className="button btn btn-lg btn-secondary btn-secondary--outline btn-block submit" onClick={_onClick} >{label}</button>);
 };
 
 export default Button;
