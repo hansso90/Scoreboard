@@ -14,14 +14,17 @@ const Category = (props) => {
         text: `${category.defaultStardust}`
     };
     const buttonProps = {
-        label: 'Remove',
+        label: '🗑',
+        className: "btn btn-delete",
         onClick: () => props.actions.removeCategory(category.id)
     };
 
     return (
-        <div className="category">
+        <div className="category row">
+            <div>
             <LabelWithLabel {...nameProps} />
             <LabelWithLabel {...stardustProps} />
+            </div>
             <Button {...buttonProps} />
         </div>);
 };

@@ -2,11 +2,12 @@ import React from 'react';
 import proptypes from 'prop-types';
 
 
-const Button = ({ label, onClick }) => {
+const Button = ({ label, onClick, className }) => {
     const _onClick = () => {
         onClick();
     };
-    return (<button className="button btn btn-lg btn-secondary btn-secondary--outline btn-block submit" onClick={_onClick} >{label}</button>);
+    const buttonClass = className || "button btn btn-lg btn-secondary btn-secondary--outline btn-block submit";
+    return (<button className={buttonClass} onClick={_onClick} >{label}</button>);
 };
 
 export default Button;

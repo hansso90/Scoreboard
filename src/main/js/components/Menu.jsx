@@ -1,5 +1,6 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
+import upperFirst from 'lodash/upperFirst';
 
 const Menu = (props) => {
     const endpoints = ["categories", "chapters", "users", "dashboard"];
@@ -10,7 +11,7 @@ const Menu = (props) => {
             <ul className="row">
                 {endpoints.map(name =>
                     <li>
-                        <NavLink to={'/' + name} replace>{name}</NavLink>
+                        <NavLink to={'/' + name} replace>{upperFirst(name)}</NavLink>
                     </li>
                 )}
             </ul>

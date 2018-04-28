@@ -11,12 +11,13 @@ const Chapter = (props) => {
     };
 
     const buttonProps = {
-        label: 'Remove',
+        label: '🗑',
+        className: "btn btn-delete",
         onClick: () => props.actions.removeChapter(chapter.id)
     };
 
     return (
-        <div className="chapter">
+        <div className="chapter row">
             <LabelWithLabel {...nameProps} />
             <Button {...buttonProps} />
         </div>);

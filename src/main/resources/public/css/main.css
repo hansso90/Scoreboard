@@ -34,10 +34,11 @@ input.form-control {
 
 .menu {
     text-align: center;
+    background-color: #333333;
 }
 .menu ul {
     margin: auto;
-    width: 50%;
+    display: inline-flex;
     list-style-type: none;
     font-size: 24px;
 }
@@ -53,4 +54,13 @@ input.form-control {
 
 .labelWithLabel span:first-child {
     font-style: italic;
+}
+
+.btn.btn-delete {
+    background-color: red;
+    color: white;
+    margin: auto;
+    margin-right: 0;
+    font-size: 30px;
+    font-weight: bold;
 }

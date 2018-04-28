@@ -18,7 +18,7 @@ const AddCategory = (props) => {
     };
 
     const buttonProps = {
-        label: '+',
+        label: 'Save',
         onClick: () => props.actions.addCategory(props.userInputs[nameProps.name], props.userInputs[defaultStardustProps.name])
     };
 

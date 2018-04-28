@@ -1,5 +1,10 @@
 .progress-bars{
     padding-top: 85px;
+    overflow:hidden;
+}
+
+.progress-bars > * {
+    margin-bottom: 10px;
 }
 
 .stardustText{
@@ -40,6 +45,7 @@
     margin: 0;
     border-radius: 3px;
     box-shadow: 0 1px 5px #333 inset, 0 1px 0 #444;
+    -webkit-animation: scaleAround 2s ease-in-out infinite;
 }
 
 .progress-bar .stardustText {
@@ -92,11 +98,14 @@
     }
 }
 
-@-moz-keyframes stripes-anim {
+@-webkit-keyframes scaleAround {
     0% {
-        background-position: 0 0;
+        transform: scale(1);
+    }
+    50% {
+        transform: scaleX(0.99);
     }
     100% {
-        background-position: 50px 0;
+        transform: scale(1);
     }
 }

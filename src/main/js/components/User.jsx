@@ -11,12 +11,13 @@ const User = (props) => {
     };
 
     const buttonProps = {
-        label: 'Remove',
+        label: '🗑',
+        className: "btn btn-delete",
         onClick: () => props.actions.removeUser(user.id)
     };
 
     return (
-        <div className="user">
+        <div className="user row">
             <LabelWithLabel {...nameProps} />
             <Button {...buttonProps} />
         </div>);
