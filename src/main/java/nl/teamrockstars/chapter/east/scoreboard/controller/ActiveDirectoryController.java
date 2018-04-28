@@ -1,10 +1,5 @@
 package nl.teamrockstars.chapter.east.scoreboard.controller;
 
-<<<<<<< HEAD
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.PublicKey;
-=======
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
->>>>>>> Allow token login
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -117,10 +111,10 @@ public class ActiveDirectoryController {
 				.setExpectedSubject("hPTaTBD4gsO7plEknTMe82Ns-KzdSqPz10XV1Ng5M24");
 
 		try {
-			RsaKeyUtil rsaKeyUtil = new RsaKeyUtil();
-			PublicKey publicKey = rsaKeyUtil.fromPemEncoded(pubKeySTRING);
-
-			b = b.setVerificationKey(publicKey);
+			InputStream in = new ByteArrayInputStream(pubKeySTRING.getBytes());
+			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+			X509Certificate cert = (X509Certificate)certFactory.generateCertificate(in);
+			b = b.setVerificationKey(cert.getPublicKey());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -136,7 +130,7 @@ public class ActiveDirectoryController {
 		
 		User user = userService.findOrCreate(username, name);
 		user.setToken(UUID.randomUUID().toString());
-		user.setTokenExpirationDate(LocalDateTime.now().plusMinutes(1));
+		user.setTokenExpirationDate(LocalDateTime.now().plusMinutes(5));
 		
 		userRepository.save( user );
 		
