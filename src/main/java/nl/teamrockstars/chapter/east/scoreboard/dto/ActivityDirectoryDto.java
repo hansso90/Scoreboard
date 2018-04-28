@@ -1,6 +1,6 @@
 package nl.teamrockstars.chapter.east.scoreboard.dto;
 
-public class OAuthTokenDto extends DtoObject {
+public class ActivityDirectoryDto extends DtoObject {
 
 	
 	
@@ -15,4 +15,3 @@ public class OAuthTokenDto extends DtoObject {
 	}
 
 }
-

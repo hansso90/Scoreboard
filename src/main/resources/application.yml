@@ -17,7 +17,7 @@ spring:
       ddl-auto: create
   resource:
     add-mapping: true
-    
+
 # Specifies your Active Directory Application ID:
 azure:
   activedirectory:
