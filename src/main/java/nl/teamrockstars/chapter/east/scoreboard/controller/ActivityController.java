@@ -3,9 +3,11 @@ package nl.teamrockstars.chapter.east.scoreboard.controller;
 import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
+import nl.teamrockstars.chapter.east.scoreboard.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,9 @@ import nl.teamrockstars.chapter.east.scoreboard.repository.ActivityRepository;
 @PreAuthorize("hasRole('ACTIVITYMANAGEMENT')")
 @Api(tags = "Activity Controller", description = "Management of activities")
 public class ActivityController {
+
+	@Autowired
+	private ActivityService activityService;
 
     @Autowired
     private ActivityRepository repository;
@@ -62,28 +67,26 @@ public class ActivityController {
   	@RequestMapping(value = "", method = RequestMethod.POST)
   	@ApiOperation(value = "Create activity", notes = "Create a new activity")
   	public HttpStatus create(@RequestBody @Valid ActivityDto activity, BindingResult errors) throws MethodArgumentNotValidException {
-  		
-  		if(activity.getId() != null) {
-  			errors.rejectValue("id", "ID must be empty on POST");
-  			throw new MethodArgumentNotValidException(null, errors);
-  		}
-  		Activity act = mapper.fromDto(activity);
 
-  		repository.save(act);
+		Map<String, String> map = activityService.validateAndSubmit(activity, false);
+		map.forEach((index, text)-> errors.rejectValue(index, text));
+		if(errors.hasErrors())
+		{
+			throw new MethodArgumentNotValidException(null, errors);
+		}
   		return HttpStatus.ACCEPTED;
   	}
   	
   	@RequestMapping(value = "", method = RequestMethod.PUT)
   	@ApiOperation(value = "Update activity", notes = "Update an activity")
   	public HttpStatus update(@RequestBody @Valid ActivityDto activity, BindingResult errors) throws MethodArgumentNotValidException {
-  		
-  		Activity act = mapper.fromDto(activity);
-  		if(act.isNew()) {
-  			errors.rejectValue("id", "ID could not be found");
-  			throw new MethodArgumentNotValidException(null, errors);
-  		}
 
-  		repository.save(act);
+		Map<String, String> map = activityService.validateAndSubmit(activity, true);
+		map.forEach((index, text)-> errors.rejectValue(index, text));
+		if(errors.hasErrors())
+		{
+			throw new MethodArgumentNotValidException(null, errors);
+		}
   		return HttpStatus.ACCEPTED;
   	}
   	
@@ -92,12 +95,9 @@ public class ActivityController {
      public HttpStatus delete(@PathVariable("id") Long id) {
      	
    		Activity activity = repository.findOne(id);
-   		
    		if (activity == null) {
-   			
    			return HttpStatus.NOT_FOUND;
    		}
-   		
    		repository.delete(activity);
 
    		return HttpStatus.OK;
