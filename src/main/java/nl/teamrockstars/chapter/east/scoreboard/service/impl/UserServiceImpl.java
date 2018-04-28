@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto submit(UserDto dto) {
         User user = mapper.fromDto(dto);
+        userRepository.save(user);
         return mapper.userToUserDto(user);
     }
 
