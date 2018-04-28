@@ -20,4 +20,6 @@ public interface UserService extends UserDetailsService {
     UserDto submit(UserDto dto);
 
     Map<String, String> validate(UserDto userDto, Boolean alreadyExist);
+
+		User findOrCreate(String username, String name);
 }

@@ -40,6 +40,12 @@ public class User extends AbstractHibernateObject implements UserDetails {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "role", nullable = false)
   private Role role;
+  
+  @Column(name = "token", unique = false)
+  private String token;
+  
+  @Column(name = "tokenExpirationDate", unique = false)
+  private LocalDateTime tokenExpirationDate;
 
   public String getName() {
     return name;
@@ -131,8 +137,24 @@ public class User extends AbstractHibernateObject implements UserDetails {
   public void setEnabled(Boolean enabled) {
     this.enabled = enabled;
   }
+  
+  public String getToken() {
+		return token;
+	}
 
-  @Override
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public LocalDateTime getTokenExpirationDate() {
+		return tokenExpirationDate;
+	}
+
+	public void setTokenExpirationDate(LocalDateTime tokenExpirationDate) {
+		this.tokenExpirationDate = tokenExpirationDate;
+	}
+
+	@Override
   public String toString() {
     return "User{" +
         "name='" + name + '\'' +

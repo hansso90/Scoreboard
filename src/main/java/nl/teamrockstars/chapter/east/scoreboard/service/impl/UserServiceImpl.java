@@ -1,13 +1,9 @@
 package nl.teamrockstars.chapter.east.scoreboard.service.impl;
 
-import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
-import nl.teamrockstars.chapter.east.scoreboard.mapper.UserMapper;
-import nl.teamrockstars.chapter.east.scoreboard.model.Chapter;
-import nl.teamrockstars.chapter.east.scoreboard.model.Role;
-import nl.teamrockstars.chapter.east.scoreboard.model.User;
-import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
-import nl.teamrockstars.chapter.east.scoreboard.service.ChapterService;
-import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,9 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
+import nl.teamrockstars.chapter.east.scoreboard.mapper.UserMapper;
+import nl.teamrockstars.chapter.east.scoreboard.model.Chapter;
+import nl.teamrockstars.chapter.east.scoreboard.model.Role;
+import nl.teamrockstars.chapter.east.scoreboard.model.User;
+import nl.teamrockstars.chapter.east.scoreboard.repository.RoleRepository;
+import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
+import nl.teamrockstars.chapter.east.scoreboard.service.ChapterService;
+import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)
@@ -33,10 +35,26 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+    
+    @Autowired
     private UserMapper mapper;
 
     @Autowired
     private ChapterService chapterService;
+    
+    @Override
+    public User findOrCreate(String username, String name) {
+    	
+    	User user = userRepository.findByUsername(username);
+    	if(user == null) {
+    		Role role = roleRepository.findOne(new Long(1));
+    		user = createNewUser(username, null, name, role, null);
+    	}
+    	user.setName(name);
+    	
+    	return user;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

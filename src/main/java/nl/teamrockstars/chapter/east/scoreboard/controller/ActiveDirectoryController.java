@@ -2,11 +2,9 @@ package nl.teamrockstars.chapter.east.scoreboard.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import nl.teamrockstars.chapter.east.scoreboard.dto.ActivityDirectoryDto;
+import nl.teamrockstars.chapter.east.scoreboard.dto.ActivityDirectoryRedirectDto;
 import nl.teamrockstars.chapter.east.scoreboard.dto.OAuthTokenDto;
 import nl.teamrockstars.chapter.east.scoreboard.mapper.UserMapper;
+import nl.teamrockstars.chapter.east.scoreboard.model.User;
 import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
 import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
 
@@ -128,18 +127,22 @@ public class ActiveDirectoryController {
 		String username = jwtDecoded.getStringClaimValue("upn");
 		String name = jwtDecoded.getStringClaimValue("name"); 
 		
+		User user = userService.findOrCreate(username, name);
+		user.setToken(UUID.randomUUID().toString());
+		user.setTokenExpirationDate(LocalDateTime.now().plusMinutes(1));
+		
 //		dto.set
 
 		return new ResponseEntity<OAuthTokenDto>(dto, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ResponseEntity<ActivityDirectoryDto> getLoginUrl() throws UnsupportedEncodingException {
+	public ResponseEntity<ActivityDirectoryRedirectDto> getLoginUrl() throws UnsupportedEncodingException {
 
-		ActivityDirectoryDto dto = new ActivityDirectoryDto();
+		ActivityDirectoryRedirectDto dto = new ActivityDirectoryRedirectDto();
 		dto.setUrl(getRedirectUrl(redirectURI));
 
-		return new ResponseEntity<ActivityDirectoryDto>(dto, HttpStatus.OK);
+		return new ResponseEntity<ActivityDirectoryRedirectDto>(dto, HttpStatus.OK);
 	}
 
 	private String getRedirectUrl(String currentUri) throws UnsupportedEncodingException {
