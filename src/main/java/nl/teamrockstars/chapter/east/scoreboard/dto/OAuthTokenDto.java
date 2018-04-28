@@ -1,8 +1,6 @@
 package nl.teamrockstars.chapter.east.scoreboard.dto;
 
-public class OAuthTokenDto extends DtoObject {
-
-	
+public class OAuthTokenDto extends DtoObject {	
 	
 	private String url;
 
@@ -15,4 +13,3 @@ public class OAuthTokenDto extends DtoObject {
 	}
 
 }
-
