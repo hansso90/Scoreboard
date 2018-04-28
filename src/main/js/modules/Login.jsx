@@ -7,8 +7,16 @@ import actions from '../actions/index';
 import TextWithLabel from '../components/TextWithLabel';
 import Button from '../components/Button';
 import { Redirect } from 'react-router';
+import URI from 'urijs';
 
 const Login = (props) => {
+
+    const params = props.location.search;
+    if(params.length > 0){
+        const pars = new URI(params).query(true);
+        props.actions.doLogin(pars.username, pars.token);
+    }
+
     const userNameProps = {
         label: 'User name:',
         name: 'userNameBox',
