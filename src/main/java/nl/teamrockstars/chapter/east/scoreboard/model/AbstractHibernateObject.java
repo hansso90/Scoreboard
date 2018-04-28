@@ -1,18 +1,12 @@
 package nl.teamrockstars.chapter.east.scoreboard.model;
 
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
 
 @MappedSuperclass
 public abstract class AbstractHibernateObject implements Serializable {
@@ -30,7 +24,6 @@ public abstract class AbstractHibernateObject implements Serializable {
     public Long getId() {
         return id;
     }
-
 
     @Override
     public boolean equals(Object o) {
