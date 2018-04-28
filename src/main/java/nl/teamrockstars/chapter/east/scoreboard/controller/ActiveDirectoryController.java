@@ -1,0 +1,159 @@
+package nl.teamrockstars.chapter.east.scoreboard.controller;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.consumer.InvalidJwtException;
+import org.jose4j.jwt.consumer.JwtConsumer;
+import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import org.jose4j.keys.RsaKeyUtil;
+import org.jose4j.lang.JoseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import nl.teamrockstars.chapter.east.scoreboard.dto.ActivityDirectoryDto;
+import nl.teamrockstars.chapter.east.scoreboard.dto.OAuthTokenDto;
+import nl.teamrockstars.chapter.east.scoreboard.mapper.UserMapper;
+import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
+import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
+
+@RestController
+@RequestMapping(value = "/ad")
+public class ActiveDirectoryController {
+
+	private final class AuthParameterNames {
+
+		private static final String ERROR = "error";
+		private static final String ERROR_DESCRIPTION = "error_description";
+		private static final String ERROR_URI = "error_uri";
+		private static final String ID_TOKEN = "id_token";
+		private static final String CODE = "code";
+
+		private static final String pubKey = "-----BEGIN PUBLIC KEY-----\n" + 
+				"MIIDBTCCAe2gAwIBAgIQev76BWqjWZxChmKkGqoAfDANBgkqhkiG9w0BAQsFADAt\n" + 
+				"MSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MB4X\n" + 
+				"DTE4MDIxODAwMDAwMFoXDTIwMDIxOTAwMDAwMFowLTErMCkGA1UEAxMiYWNjb3Vu\n" + 
+				"dHMuYWNjZXNzY29udHJvbC53aW5kb3dzLm5ldDCCASIwDQYJKoZIhvcNAQEBBQAD\n" + 
+				"ggEPADCCAQoCggEBAMgmGiRfLh6Fdi99XI2VA3XKHStWNRLEy5Aw/gxFxchnh2kP\n" + 
+				"dk/bejFOs2swcx7yUWqxujjCNRsLBcWfaKUlTnrkY7i9x9noZlMrijgJy/Lk+HH5\n" + 
+				"HX24PQCDf+twjnHHxZ9G6/8VLM2e5ZBeZm+t7M3vhuumEHG3UwloLF6cUeuPdW+e\n" + 
+				"xnOB1U1fHBIFOG8ns4SSIoq6zw5rdt0CSI6+l7b1DEjVvPLtJF+zyjlJ1Qp7NgBv\n" + 
+				"AwdiPiRMU4l8IRVbuSVKoKYJoyJ4L3eXsjczoBSTJ6VjV2mygz96DC70MY3avccF\n" + 
+				"rk7tCEC6ZlMRBfY1XPLyldT7tsR3EuzjecSa1M8CAwEAAaMhMB8wHQYDVR0OBBYE\n" + 
+				"FIks1srixjpSLXeiR8zES5cTY6fBMA0GCSqGSIb3DQEBCwUAA4IBAQCKthfK4C31\n" + 
+				"DMuDyQZVS3F7+4Evld3hjiwqu2uGDK+qFZas/D/eDunxsFpiwqC01RIMFFN8yvmM\n" + 
+				"jHphLHiBHWxcBTS+tm7AhmAvWMdxO5lzJLS+UWAyPF5ICROe8Mu9iNJiO5JlCo0W\n" + 
+				"pui9RbB1C81Xhax1gWHK245ESL6k7YWvyMYWrGqr1NuQcNS0B/AIT1Nsj1WY7efM\n" + 
+				"JQOmnMHkPUTWryVZlthijYyd7P2Gz6rY5a81DAFqhDNJl2pGIAE6HWtSzeUEh3jC\n" + 
+				"sHEkoglKfm4VrGJEuXcALmfCMbdfTvtu4rlsaP2hQad+MG/KJFlenoTK34EMHeBP\n" + 
+				"DCpqNDz8UVNk\n" + 
+				"-----END PUBLIC KEY-----";
+	}
+
+	@Value("${azure.activedirectory.clientId}")
+	private String clientId;
+
+	@Value("${azure.activedirectory.clientSecret}")
+	private String clientSecret;
+
+	@Value("${azure.activedirectory.tenant}")
+	private String tenant;
+
+	@Value("${azure.activedirectory.authority}")
+	private String authority;
+
+	private String redirectURI = "http://localhost:8080/ad";
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private UserMapper mapper;
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public ResponseEntity<OAuthTokenDto> getUser(HttpServletRequest request) {
+
+		OAuthTokenDto dto = new OAuthTokenDto();
+		return new ResponseEntity<OAuthTokenDto>(dto, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public ResponseEntity<OAuthTokenDto> postAD(HttpServletRequest request) throws InvalidKeySpecException, JoseException, MalformedClaimException, InvalidJwtException {
+
+		OAuthTokenDto dto = new OAuthTokenDto();
+		String token = request.getParameterMap().get(AuthParameterNames.ID_TOKEN)[0];
+		String code = request.getParameterMap().get(AuthParameterNames.CODE)[0];
+
+		JwtConsumerBuilder b = new JwtConsumerBuilder();
+
+		try {
+			RsaKeyUtil rsaKeyUtil = new RsaKeyUtil();
+			PublicKey publicKey = rsaKeyUtil.fromPemEncoded(AuthParameterNames.pubKey);
+
+			// create a JWT consumer
+			// .setRequireExpirationTime()
+			b = b.setVerificationKey(publicKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		b = b.setSkipVerificationKeyResolutionOnNone();
+		b = b.setSkipSignatureVerification();
+		b = b.setSkipAllValidators();
+//		b.setR
+		JwtConsumer jwtConsumer = b.build();
+
+		// validate and decode the jwt
+		jwtConsumer.setSkipVerificationKeyResolutionOnNone(true);
+		
+		JwtClaims jwtDecoded = jwtConsumer.processToClaims(token);
+		String username = jwtDecoded.getStringClaimValue("upn");
+		String name = jwtDecoded.getStringClaimValue("name"); 
+		
+//		dto.set
+
+		return new ResponseEntity<OAuthTokenDto>(dto, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ResponseEntity<ActivityDirectoryDto> getLoginUrl() throws UnsupportedEncodingException {
+
+		ActivityDirectoryDto dto = new ActivityDirectoryDto();
+		dto.setUrl(getRedirectUrl(redirectURI));
+
+		return new ResponseEntity<ActivityDirectoryDto>(dto, HttpStatus.OK);
+	}
+
+	private String getRedirectUrl(String currentUri) throws UnsupportedEncodingException {
+
+		String redirectUrl = authority + this.tenant //
+				+ "/oauth2/authorize?response_type=code%20id_token&scope=openid&response_mode=form_post&redirect_uri="//
+				+ URLEncoder.encode(currentUri, "UTF-8") + "&client_id=" + clientId //
+				+ "&resource=https%3a%2f%2fgraph.windows.net" + "&nonce=" + UUID.randomUUID() + "&site_id=500879&claim=email"; //
+		// logger.info("redirect url: " + redirectUrl);
+		return redirectUrl;
+	}
+
+	public static boolean containsAuthenticationData(HttpServletRequest httpRequest) {
+		return httpRequest.getMethod().equalsIgnoreCase("POST") && (httpRequest.getParameterMap().containsKey(AuthParameterNames.ERROR) || httpRequest.getParameterMap().containsKey(AuthParameterNames.ID_TOKEN) || httpRequest.getParameterMap().containsKey(AuthParameterNames.CODE));
+	}
+
+}

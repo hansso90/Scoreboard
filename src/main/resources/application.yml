@@ -1,4 +1,5 @@
 
+
 #debug: true
 
 spring:
@@ -16,7 +17,15 @@ spring:
       ddl-auto: create
   resource:
     add-mapping: true
-
+    
+# Specifies your Active Directory Application ID:
+azure:
+  activedirectory:
+    clientId: da69c979-31ac-4560-b3d2-a04beba0e3e5
+    clientSecret: 
+    activeDirectoryGroups: 
+    tenant: RockstarsBV.onmicrosoft.com
+    authority: https://login.windows.net/
 
 logging:
   level:
