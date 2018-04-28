@@ -22,10 +22,10 @@ spring:
 azure:
   activedirectory:
     clientId: da69c979-31ac-4560-b3d2-a04beba0e3e5
-    clientSecret: 
-    activeDirectoryGroups: 
     tenant: RockstarsBV.onmicrosoft.com
     authority: https://login.windows.net/
+    issuer: https://sts.windows.net/9e8cdb6a-eda5-4cca-8b83-b40f0074d999/
+    frontEndBaseUrl: http://localhost:1337/login
 
 logging:
   level:
