@@ -34,7 +34,7 @@ public class User extends AbstractHibernateObject implements UserDetails {
   private LocalDateTime expired = LocalDateTime.now().minusDays(1); //default expired
 
   @ManyToOne
-  @JoinColumn(name = "chapter", nullable = false)
+  @JoinColumn(name = "chapter", nullable = true)
   private Chapter chapter;
 
   @ManyToOne(fetch = FetchType.EAGER)

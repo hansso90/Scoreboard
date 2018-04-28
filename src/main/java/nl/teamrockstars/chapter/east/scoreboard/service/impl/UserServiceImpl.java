@@ -84,7 +84,9 @@ public class UserServiceImpl implements UserService {
                               Chapter chapter) {
         User user = new User();
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
+        if(password != null) {
+        	user.setPassword(passwordEncoder.encode(password));
+        }
         user.setName(name);
         user.setRole(role);
         user.setChapter(chapter);

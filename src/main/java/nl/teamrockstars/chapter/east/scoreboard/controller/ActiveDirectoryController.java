@@ -1,20 +1,30 @@
 package nl.teamrockstars.chapter.east.scoreboard.controller;
 
+<<<<<<< HEAD
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.PublicKey;
+=======
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+>>>>>>> Allow token login
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import org.jose4j.keys.RsaKeyUtil;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,26 +52,6 @@ public class ActiveDirectoryController {
 		private static final String ERROR_URI = "error_uri";
 		private static final String ID_TOKEN = "id_token";
 		private static final String CODE = "code";
-
-		private static final String pubKey = "-----BEGIN PUBLIC KEY-----\n" + 
-				"MIIDBTCCAe2gAwIBAgIQev76BWqjWZxChmKkGqoAfDANBgkqhkiG9w0BAQsFADAt\n" + 
-				"MSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MB4X\n" + 
-				"DTE4MDIxODAwMDAwMFoXDTIwMDIxOTAwMDAwMFowLTErMCkGA1UEAxMiYWNjb3Vu\n" + 
-				"dHMuYWNjZXNzY29udHJvbC53aW5kb3dzLm5ldDCCASIwDQYJKoZIhvcNAQEBBQAD\n" + 
-				"ggEPADCCAQoCggEBAMgmGiRfLh6Fdi99XI2VA3XKHStWNRLEy5Aw/gxFxchnh2kP\n" + 
-				"dk/bejFOs2swcx7yUWqxujjCNRsLBcWfaKUlTnrkY7i9x9noZlMrijgJy/Lk+HH5\n" + 
-				"HX24PQCDf+twjnHHxZ9G6/8VLM2e5ZBeZm+t7M3vhuumEHG3UwloLF6cUeuPdW+e\n" + 
-				"xnOB1U1fHBIFOG8ns4SSIoq6zw5rdt0CSI6+l7b1DEjVvPLtJF+zyjlJ1Qp7NgBv\n" + 
-				"AwdiPiRMU4l8IRVbuSVKoKYJoyJ4L3eXsjczoBSTJ6VjV2mygz96DC70MY3avccF\n" + 
-				"rk7tCEC6ZlMRBfY1XPLyldT7tsR3EuzjecSa1M8CAwEAAaMhMB8wHQYDVR0OBBYE\n" + 
-				"FIks1srixjpSLXeiR8zES5cTY6fBMA0GCSqGSIb3DQEBCwUAA4IBAQCKthfK4C31\n" + 
-				"DMuDyQZVS3F7+4Evld3hjiwqu2uGDK+qFZas/D/eDunxsFpiwqC01RIMFFN8yvmM\n" + 
-				"jHphLHiBHWxcBTS+tm7AhmAvWMdxO5lzJLS+UWAyPF5ICROe8Mu9iNJiO5JlCo0W\n" + 
-				"pui9RbB1C81Xhax1gWHK245ESL6k7YWvyMYWrGqr1NuQcNS0B/AIT1Nsj1WY7efM\n" + 
-				"JQOmnMHkPUTWryVZlthijYyd7P2Gz6rY5a81DAFqhDNJl2pGIAE6HWtSzeUEh3jC\n" + 
-				"sHEkoglKfm4VrGJEuXcALmfCMbdfTvtu4rlsaP2hQad+MG/KJFlenoTK34EMHeBP\n" + 
-				"DCpqNDz8UVNk\n" + 
-				"-----END PUBLIC KEY-----";
 	}
 
 	@Value("${azure.activedirectory.clientId}")
@@ -95,29 +85,46 @@ public class ActiveDirectoryController {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<OAuthTokenDto> postAD(HttpServletRequest request) throws InvalidKeySpecException, JoseException, MalformedClaimException, InvalidJwtException {
+	public void postAD(HttpServletRequest request, HttpServletResponse response) throws InvalidKeySpecException, JoseException, MalformedClaimException, InvalidJwtException, IOException {
 
-		OAuthTokenDto dto = new OAuthTokenDto();
+		String pubKeySTRING = "-----BEGIN PUBLIC KEY-----\n" +
+				"MIIDBTCCAe2gAwIBAgIQev76BWqjWZxChmKkGqoAfDANBgkqhkiG9w0BAQsFADAt\n" + 
+				"MSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MB4X\n" + 
+				"DTE4MDIxODAwMDAwMFoXDTIwMDIxOTAwMDAwMFowLTErMCkGA1UEAxMiYWNjb3Vu\n" + 
+				"dHMuYWNjZXNzY29udHJvbC53aW5kb3dzLm5ldDCCASIwDQYJKoZIhvcNAQEBBQAD\n" + 
+				"ggEPADCCAQoCggEBAMgmGiRfLh6Fdi99XI2VA3XKHStWNRLEy5Aw/gxFxchnh2kP\n" + 
+				"dk/bejFOs2swcx7yUWqxujjCNRsLBcWfaKUlTnrkY7i9x9noZlMrijgJy/Lk+HH5\n" + 
+				"HX24PQCDf+twjnHHxZ9G6/8VLM2e5ZBeZm+t7M3vhuumEHG3UwloLF6cUeuPdW+e\n" + 
+				"xnOB1U1fHBIFOG8ns4SSIoq6zw5rdt0CSI6+l7b1DEjVvPLtJF+zyjlJ1Qp7NgBv\n" + 
+				"AwdiPiRMU4l8IRVbuSVKoKYJoyJ4L3eXsjczoBSTJ6VjV2mygz96DC70MY3avccF\n" + 
+				"rk7tCEC6ZlMRBfY1XPLyldT7tsR3EuzjecSa1M8CAwEAAaMhMB8wHQYDVR0OBBYE\n" + 
+				"FIks1srixjpSLXeiR8zES5cTY6fBMA0GCSqGSIb3DQEBCwUAA4IBAQCKthfK4C31\n" +
+				"DMuDyQZVS3F7+4Evld3hjiwqu2uGDK+qFZas/D/eDunxsFpiwqC01RIMFFN8yvmM\n" + 
+				"jHphLHiBHWxcBTS+tm7AhmAvWMdxO5lzJLS+UWAyPF5ICROe8Mu9iNJiO5JlCo0W\n" + 
+				"pui9RbB1C81Xhax1gWHK245ESL6k7YWvyMYWrGqr1NuQcNS0B/AIT1Nsj1WY7efM\n" + 
+				"JQOmnMHkPUTWryVZlthijYyd7P2Gz6rY5a81DAFqhDNJl2pGIAE6HWtSzeUEh3jC\n" + 
+				"sHEkoglKfm4VrGJEuXcALmfCMbdfTvtu4rlsaP2hQad+MG/KJFlenoTK34EMHeBP\n" + 
+				"DCpqNDz8UVNk\n" + 
+				"-----END PUBLIC KEY-----";
+	
+		
 		String token = request.getParameterMap().get(AuthParameterNames.ID_TOKEN)[0];
-		String code = request.getParameterMap().get(AuthParameterNames.CODE)[0];
 
 		JwtConsumerBuilder b = new JwtConsumerBuilder();
+		
+		b = b.setExpectedAudience("da69c979-31ac-4560-b3d2-a04beba0e3e5")//
+				.setExpectedIssuer("https://sts.windows.net/9e8cdb6a-eda5-4cca-8b83-b40f0074d999/")//
+				.setExpectedSubject("hPTaTBD4gsO7plEknTMe82Ns-KzdSqPz10XV1Ng5M24");
 
 		try {
 			RsaKeyUtil rsaKeyUtil = new RsaKeyUtil();
-			PublicKey publicKey = rsaKeyUtil.fromPemEncoded(AuthParameterNames.pubKey);
+			PublicKey publicKey = rsaKeyUtil.fromPemEncoded(pubKeySTRING);
 
-			// create a JWT consumer
-			// .setRequireExpirationTime()
 			b = b.setVerificationKey(publicKey);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		b = b.setSkipVerificationKeyResolutionOnNone();
-		b = b.setSkipSignatureVerification();
-		b = b.setSkipAllValidators();
-//		b.setR
 		JwtConsumer jwtConsumer = b.build();
 
 		// validate and decode the jwt
@@ -131,9 +138,9 @@ public class ActiveDirectoryController {
 		user.setToken(UUID.randomUUID().toString());
 		user.setTokenExpirationDate(LocalDateTime.now().plusMinutes(1));
 		
-//		dto.set
-
-		return new ResponseEntity<OAuthTokenDto>(dto, HttpStatus.OK);
+		userRepository.save( user );
+		
+		response.sendRedirect( "http://localhost:1337/login?username=" + user.getUsername() + "&token=" + user.getToken() );
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
