@@ -53,6 +53,7 @@
   },
   "dependencies": {
     "moment": "^2.22.1",
-    "react-day-picker": "^7.1.6"
+    "react-day-picker": "^7.1.6",
+    "urijs": "^1.19.1"
   }
 }
