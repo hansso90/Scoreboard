@@ -1,12 +1,9 @@
 package nl.teamrockstars.chapter.east.scoreboard.controller;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -28,9 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import nl.teamrockstars.chapter.east.scoreboard.dto.ActivityDirectoryRedirectDto;
+import nl.teamrockstars.chapter.east.scoreboard.dto.ActiveDirectoryRedirectDto;
 import nl.teamrockstars.chapter.east.scoreboard.model.User;
 import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
+import nl.teamrockstars.chapter.east.scoreboard.service.AzureADKeyService;
 import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
 
 @RestController
@@ -53,6 +51,9 @@ public class ActiveDirectoryController {
 	@Value("${azure.activedirectory.authority}")
 	private String authority;
 
+	@Value("${azure.activedirectory.issuer}")
+	private String issuer;
+
 	@Value("${azure.activedirectory.frontEndBaseUrl}")
 	private String frontEndBaseUrl;
 
@@ -64,71 +65,53 @@ public class ActiveDirectoryController {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private AzureADKeyService azureADKeyService;
+
 	private JwtConsumer jwtConsumer;
 
-	public ActiveDirectoryController(@Value("${azure.activedirectory.issuer}") String issuer, @Value("${azure.activedirectory.clientId}") String clientId) {
-		String pubKeySTRING = "-----BEGIN PUBLIC KEY-----\n" + //
-				"MIIDBTCCAe2gAwIBAgIQev76BWqjWZxChmKkGqoAfDANBgkqhkiG9w0BAQsFADAt\n" + //
-				"MSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MB4X\n" + //
-				"DTE4MDIxODAwMDAwMFoXDTIwMDIxOTAwMDAwMFowLTErMCkGA1UEAxMiYWNjb3Vu\n" + //
-				"dHMuYWNjZXNzY29udHJvbC53aW5kb3dzLm5ldDCCASIwDQYJKoZIhvcNAQEBBQAD\n" + //
-				"ggEPADCCAQoCggEBAMgmGiRfLh6Fdi99XI2VA3XKHStWNRLEy5Aw/gxFxchnh2kP\n" + //
-				"dk/bejFOs2swcx7yUWqxujjCNRsLBcWfaKUlTnrkY7i9x9noZlMrijgJy/Lk+HH5\n" + //
-				"HX24PQCDf+twjnHHxZ9G6/8VLM2e5ZBeZm+t7M3vhuumEHG3UwloLF6cUeuPdW+e\n" + //
-				"xnOB1U1fHBIFOG8ns4SSIoq6zw5rdt0CSI6+l7b1DEjVvPLtJF+zyjlJ1Qp7NgBv\n" + //
-				"AwdiPiRMU4l8IRVbuSVKoKYJoyJ4L3eXsjczoBSTJ6VjV2mygz96DC70MY3avccF\n" + //
-				"rk7tCEC6ZlMRBfY1XPLyldT7tsR3EuzjecSa1M8CAwEAAaMhMB8wHQYDVR0OBBYE\n" + //
-				"FIks1srixjpSLXeiR8zES5cTY6fBMA0GCSqGSIb3DQEBCwUAA4IBAQCKthfK4C31\n" + //
-				"DMuDyQZVS3F7+4Evld3hjiwqu2uGDK+qFZas/D/eDunxsFpiwqC01RIMFFN8yvmM\n" + //
-				"jHphLHiBHWxcBTS+tm7AhmAvWMdxO5lzJLS+UWAyPF5ICROe8Mu9iNJiO5JlCo0W\n" + //
-				"pui9RbB1C81Xhax1gWHK245ESL6k7YWvyMYWrGqr1NuQcNS0B/AIT1Nsj1WY7efM\n" + //
-				"JQOmnMHkPUTWryVZlthijYyd7P2Gz6rY5a81DAFqhDNJl2pGIAE6HWtSzeUEh3jC\n" + //
-				"sHEkoglKfm4VrGJEuXcALmfCMbdfTvtu4rlsaP2hQad+MG/KJFlenoTK34EMHeBP\n" + //
-				"DCpqNDz8UVNk\n" + //
-				"-----END PUBLIC KEY-----";
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public void postAD(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		JwtConsumerBuilder b = new JwtConsumerBuilder();
+		JwtConsumerBuilder b = new JwtConsumerBuilder().setExpectedAudience(clientId).setExpectedIssuer(issuer);
+		PublicKey key = azureADKeyService.getADPublicKey();
 
-		b = b.setExpectedAudience(clientId)//
-				.setExpectedIssuer(issuer);
-
-		try {
-			InputStream in = new ByteArrayInputStream(pubKeySTRING.getBytes());
-			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-			X509Certificate cert = (X509Certificate) certFactory.generateCertificate(in);
-			b = b.setVerificationKey(cert.getPublicKey());
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (key != null) {
+			b = b.setVerificationKey(key);
+		} else {
+			b.setSkipAllDefaultValidators();
+			b.setSkipSignatureVerification();
 		}
 
 		jwtConsumer = b.build();
-	}
-
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public void postAD(HttpServletRequest request, HttpServletResponse response) throws InvalidKeySpecException, JoseException, MalformedClaimException, InvalidJwtException, IOException {
 
 		String token = request.getParameterMap().get(AuthParameterNames.ID_TOKEN)[0];
 
-		JwtClaims jwtDecoded = jwtConsumer.processToClaims(token);
-		String username = jwtDecoded.getStringClaimValue(AuthParameterNames.UPN);
-		String name = jwtDecoded.getStringClaimValue(AuthParameterNames.NAME);
+		try {
+			JwtClaims jwtDecoded = jwtConsumer.processToClaims(token);
+			String username = jwtDecoded.getStringClaimValue(AuthParameterNames.UPN);
+			String name = jwtDecoded.getStringClaimValue(AuthParameterNames.NAME);
+			User user = userService.findOrCreate(username, name);
+			user.setToken(UUID.randomUUID().toString());
+			user.setTokenExpirationDate(LocalDateTime.now().plusMinutes(5));
 
-		User user = userService.findOrCreate(username, name);
-		user.setToken(UUID.randomUUID().toString());
-		user.setTokenExpirationDate(LocalDateTime.now().plusMinutes(5));
+			userRepository.save(user);
 
-		userRepository.save(user);
+			response.sendRedirect(frontEndBaseUrl + "?username=" + user.getUsername() + "&token=" + user.getToken());
+		} catch (InvalidJwtException | MalformedClaimException e) {
+			e.printStackTrace();
+			response.sendRedirect(frontEndBaseUrl + "?failed=true");
+		}
 
-		response.sendRedirect(frontEndBaseUrl + "?username=" + user.getUsername() + "&token=" + user.getToken());
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ResponseEntity<ActivityDirectoryRedirectDto> getLoginUrl() throws UnsupportedEncodingException {
+	public ResponseEntity<ActiveDirectoryRedirectDto> getLoginUrl() throws UnsupportedEncodingException {
 
-		ActivityDirectoryRedirectDto dto = new ActivityDirectoryRedirectDto();
+		ActiveDirectoryRedirectDto dto = new ActiveDirectoryRedirectDto();
 		dto.setUrl(getRedirectUrl(redirectURI));
 
-		return new ResponseEntity<ActivityDirectoryRedirectDto>(dto, HttpStatus.OK);
+		return new ResponseEntity<ActiveDirectoryRedirectDto>(dto, HttpStatus.OK);
 	}
 
 	private String getRedirectUrl(String currentUri) throws UnsupportedEncodingException {
@@ -136,7 +119,9 @@ public class ActiveDirectoryController {
 		String redirectUrl = authority + this.tenant //
 				+ "/oauth2/authorize?response_type=code%20id_token&scope=openid&response_mode=form_post&redirect_uri="//
 				+ URLEncoder.encode(currentUri, "UTF-8") + "&client_id=" + clientId //
-				+ "&resource=https%3a%2f%2fgraph.windows.net" + "&nonce=" + UUID.randomUUID();// + "&site_id=500879&claim=email"; //
+				+ "&resource=https%3a%2f%2fgraph.windows.net" + "&nonce=" + UUID.randomUUID();// +
+																																											// "&site_id=500879&claim=email";
+																																											// //
 
 		return redirectUrl;
 	}

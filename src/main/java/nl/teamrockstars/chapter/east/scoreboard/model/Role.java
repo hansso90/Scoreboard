@@ -10,6 +10,12 @@ import javax.persistence.FetchType;
 
 @Entity(name = "role")
 public class Role extends AbstractHibernateObject {
+	
+	public class Names {
+		
+		public static final String ADMIN = "admin";
+		public static final String USER = "user";
+	}
 
   @Column(name = "name", unique = true, nullable = false)
   private String name;

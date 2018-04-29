@@ -41,8 +41,9 @@ public class ScoreboardApplication extends RepositoryRestConfigurerAdapter {
   public void createFirstUser() {
 
     Chapter chapter = chapterService.createNewChapter("MT");
-
-    Role role = roleService.createNewRole("admin", Right.values());
+    Role role = roleService.createNewRole(Role.Names.ADMIN, Right.values());
+    
+    roleService.createNewRole(Role.Names.USER, Right.ROLE_DASHBOARD);
 
     String password = "password";
     User user = userService.createNewUser("admin", "password", "Beheerder", role, chapter);

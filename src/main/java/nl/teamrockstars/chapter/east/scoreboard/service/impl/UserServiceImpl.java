@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     	
     	User user = userRepository.findByUsername(username);
     	if(user == null) {
-    		Role role = roleRepository.findOne(new Long(1));
+    		Role role = roleRepository.findByName(Role.Names.ADMIN);
     		user = createNewUser(username, null, name, role, null);
     	}
     	user.setName(name);

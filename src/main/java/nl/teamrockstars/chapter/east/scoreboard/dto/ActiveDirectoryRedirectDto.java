@@ -1,6 +1,6 @@
 package nl.teamrockstars.chapter.east.scoreboard.dto;
 
-public class ActivityDirectoryRedirectDto extends DtoObject {
+public class ActiveDirectoryRedirectDto extends DtoObject {
 
 	
 	
