@@ -81,8 +81,6 @@ function* onRemoveUser(msg) {
 
 
 export default function* usersSaga() {
-    console.log('running usersaga');
-
     yield takeLatest(REQUIRE_USERS, getAllUsers);
     yield takeLatest(ADD_USER, onAddUser);
     yield takeLatest(REMOVE_USER, onRemoveUser);

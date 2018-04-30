@@ -3,7 +3,7 @@ import { RECEIVE_LOGIN_ERROR, CLEAR_LOGIN_ERROR, RECEIVE_TOKEN } from '../action
 
 const initalState = {
     loginError: null,
-    token:null
+    token: null
 };
 
 export default (state = initalState, action) => {
@@ -13,12 +13,13 @@ export default (state = initalState, action) => {
                 loginError: action.message
             };
             return assignIn({}, state, obj);
-         case RECEIVE_TOKEN:
+        case RECEIVE_TOKEN:
             const tokenObj = {
-                token: action.token
+                token: action.token,
+                loginError: null
             };
             return assignIn({}, state, tokenObj);
-            case CLEAR_LOGIN_ERROR:
+        case CLEAR_LOGIN_ERROR:
             return initalState;
 
         default:

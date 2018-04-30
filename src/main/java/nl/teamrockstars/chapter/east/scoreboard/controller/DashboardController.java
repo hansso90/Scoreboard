@@ -2,9 +2,7 @@ package nl.teamrockstars.chapter.east.scoreboard.controller;
 
 import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,14 +31,22 @@ public class DashboardController {
   public ResponseEntity<DashboardDto> dashboardData() {
   	
 		DashboardDto dto = new DashboardDto();
-		
+
+		Map<String,String> colors;
+
+			colors = new HashMap<String,String>();
+				colors.put("West","orange");
+				colors.put("East","pink");
+				colors.put("North","blue");
+				colors.put("South","green");
+
 		List<String> names = Lists.newArrayList("West", "East","North","South");
 		List<DashboardChapterDto> chapters = new ArrayList<>();
 		
 		for(String name : names) {
 			
 			DashboardChapterDto chapter = new DashboardChapterDto();
-			
+			chapter.setChapterColor(colors.get(name));
 			chapter.setChapterName(name);
 			chapter.setMemberCount(random(20, 35));
 			chapter.setStardust(random(80, 150));

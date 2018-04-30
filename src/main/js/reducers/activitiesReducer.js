@@ -14,7 +14,7 @@ export default (state = initalState, action) => {
             };
             return assignIn({}, state, obj);
         case RECEIVE_ACTIVITIES:
-            return assignIn({}, state, { activities: action.activities });
+            return assignIn({}, state, { activities: action.activities, activityError: null });
 
         default:
             return state;

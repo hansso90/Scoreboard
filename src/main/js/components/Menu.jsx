@@ -11,8 +11,8 @@ const Menu = (props) => {
             <ul className="row">
                 {endpoints.map((name, index) =>
                     (<li>
-                        <NavLink to={'/' + name} replace>{upperFirst(name)}</NavLink>
-                    </li>)
+                        <NavLink to={`/${name}`} replace>{upperFirst(name)}</NavLink>
+                     </li>)
                 )}
             </ul>
         </div>

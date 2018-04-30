@@ -1,5 +1,5 @@
 import React from 'react';
-import Chapter from './Chapter';
+import DeletableChapter from './DeletableChapter';
 
 const ChaptersOverview = (props) => {
     const chapterData = props.chapterData;
@@ -18,7 +18,7 @@ const ChaptersOverview = (props) => {
         <div className="chaptersOverview overview">
             <span>Chapters:</span>
             {chapters.map((a, index) => {
-                return (<Chapter chapter={a} actions={props.actions} />);
+                return (<DeletableChapter chapter={a} actions={props.actions} />);
             })}
 
         </div>);

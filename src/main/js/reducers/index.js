@@ -1,12 +1,14 @@
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web and AsyncStorage for react-native
 import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
 import userInputReducer from './userInputReducer';
 import authorizationReducer from './authorizationReducer';
 import activitiesReducer from './activitiesReducer';
+import dashboardActivitiesReducer from './dashboardActivitiesReducer';
 import categoriesReducer from './categoriesReducer';
 import chaptersReducer from './chaptersReducer';
 import usersReducer from './usersReducer';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web and AsyncStorage for react-native
+
 
 const persistConfig = {
     key: 'root',
@@ -20,5 +22,6 @@ export default persistReducer(persistConfig, combineReducers({
     activities: activitiesReducer,
     categories: categoriesReducer,
     chapters: chaptersReducer,
-    users: usersReducer
+    users: usersReducer,
+    dashboardActivities: dashboardActivitiesReducer
 }));

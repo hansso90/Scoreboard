@@ -5,10 +5,11 @@ import { bindActionCreators } from 'redux';
 import proptypes from 'prop-types';
 import actions from '../actions/index';
 import Menu from '../components/Menu';
+import Chapter from '../components/Chapter';
 
 
 const Dashboard = (props) => {
-    const chapters = [
+    const chaptersColors = [
         { color: 'blue', name: 'NORTH' },
         { color: 'orange', name: 'EAST' },
         { color: 'pink', name: 'WEST' },
@@ -16,12 +17,12 @@ const Dashboard = (props) => {
     ];
 
 
-    const activityData = props.activityData;
-    const activityError = activityData.activityError;
-    const activities = activityData.activities;
-    const waitingActivities = !activities && !activityError;
+    const dashboardActivityData = props.dashboardActivityData;
+    const dashboardActivityError = dashboardActivityData.dashboardActivityError;
+    const dashboardActivities = dashboardActivityData.dashboardActivities;
+    const waitingActivities = !dashboardActivities && !dashboardActivityError;
     if(waitingActivities) {
-        props.actions.requireActivities();
+        props.actions.requireDashboardActivities();
         return (
             <div>
                 <Menu />
@@ -30,16 +31,12 @@ const Dashboard = (props) => {
         );
     }
 
-    const chaptersHTML = chapters.map(obj =>
-        (<div className="col-sm-24">
-            <div className={`progress-bar stripes ${obj.color}`}>
-                <span style={{ width: '30%' }} className="stardustText" />
-                <span className="rockhand">
-                    <div className="label">{obj.name}</div>
-                    <div className="pointer">🤘</div>
-                </span>
-            </div>
-         </div>)
+    const chaptersHTML = dashboardActivities.chapters.map((c, index) =>
+        (<Chapter chapter={{
+            color: c.chapterColor,
+            name: c.chapterName
+        }}
+        />)
     );
 
     return (
@@ -57,7 +54,7 @@ const Dashboard = (props) => {
 function mapStateToProps(state) {
     return {
         userInputs: { ...state.userInput },
-        activityData: { ...state.activities }
+        dashboardActivityData: { ...state.dashboardActivities }
     };
 }
 
@@ -77,6 +74,6 @@ Dashboard.propTypes = {
 };
 
 Dashboard.defaultValues = {
-    activityData: null
+    dashboardActivityData: null
 };
 

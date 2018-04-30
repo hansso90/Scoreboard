@@ -14,7 +14,7 @@ export default (state = initalState, action) => {
             };
             return assignIn({}, state, obj);
         case RECEIVE_CATEGORIES:
-            return assignIn({}, state, { categories: action.categories });
+            return assignIn({}, state, { categories: action.categories, categoryError: null });
 
         default:
             return state;
