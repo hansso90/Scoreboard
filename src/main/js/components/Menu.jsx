@@ -1,18 +1,18 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import upperFirst from 'lodash/upperFirst';
 
 const Menu = (props) => {
-    const endpoints = ["categories", "chapters", "users", "activities", "dashboard"];
+    const endpoints = ['categories', 'chapters', 'users', 'activities', 'dashboard'];
 
 
     return (
         <div className="menu">
             <ul className="row">
-                {endpoints.map(name =>
-                    <li>
+                {endpoints.map((name, index) =>
+                    (<li>
                         <NavLink to={'/' + name} replace>{upperFirst(name)}</NavLink>
-                    </li>
+                    </li>)
                 )}
             </ul>
         </div>

@@ -4,42 +4,49 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import proptypes from 'prop-types';
 import actions from '../actions/index';
-
+import Menu from '../components/Menu';
 
 
 const Dashboard = (props) => {
     const chapters = [
-        {color: "blue", name: "NORTH"},
-        {color: "orange", name: "EAST"},
-        {color: "pink", name: "WEST"},
-        {color: "green", name: "SOUTH"}
+        { color: 'blue', name: 'NORTH' },
+        { color: 'orange', name: 'EAST' },
+        { color: 'pink', name: 'WEST' },
+        { color: 'green', name: 'SOUTH' }
     ];
 
-    const chaptersHTML = chapters.map(obj =>
-            <div className="col-sm-24">
-                <div className={"progress-bar stripes " + obj.color }>
-                    <span style={{width: '30%'}} className="stardustText"></span>
-                    <span className="rockhand">
-                            <div className="label">{obj.name}</div>
-                            <div className="pointer">🤘</div>
-                    </span>
-                </div>
-            </div>
-        );
 
     const activityData = props.activityData;
     const activityError = activityData.activityError;
     const activities = activityData.activities;
     const waitingActivities = !activities && !activityError;
-    if (waitingActivities) {
+    if(waitingActivities) {
         props.actions.requireActivities();
+        return (
+            <div>
+                <Menu />
+                <span>Getting Dashboard Data</span>
+            </div>
+        );
     }
 
+    const chaptersHTML = chapters.map(obj =>
+        (<div className="col-sm-24">
+            <div className={`progress-bar stripes ${obj.color}`}>
+                <span style={{ width: '30%' }} className="stardustText" />
+                <span className="rockhand">
+                    <div className="label">{obj.name}</div>
+                    <div className="pointer">🤘</div>
+                </span>
+            </div>
+         </div>)
+    );
 
     return (
         <div>
-            <div id='stars'></div>
-            <div id='stars-back'></div>
+            <Menu />
+            <div id="stars" />
+            <div id="stars-back" />
             <div className="container-fluid">
                 <div className="row progress-bars">
                     {chaptersHTML}
@@ -49,20 +56,20 @@ const Dashboard = (props) => {
 };
 function mapStateToProps(state) {
     return {
-    userInputs: {...state.userInput},
-    activityData: {...state.activities}
-};
+        userInputs: { ...state.userInput },
+        activityData: { ...state.activities }
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-    actions: bindActionCreators({...actions}, dispatch)
-};
+        actions: bindActionCreators({ ...actions }, dispatch)
+    };
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Dashboard));
 
-const {object} = proptypes;
+const { object } = proptypes;
 
 Dashboard.propTypes = {
     userInputs: object.isRequired,

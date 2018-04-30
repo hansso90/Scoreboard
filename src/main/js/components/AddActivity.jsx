@@ -1,7 +1,7 @@
 import React from 'react';
-import DropdownWithLabel from "./DropdownWithLabel";
-import TextWithLabel from "./TextWithLabel";
-import Button from "./Button";
+import DropdownWithLabel from './DropdownWithLabel';
+import TextWithLabel from './TextWithLabel';
+import Button from './Button';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import MomentLocaleUtils, {
     formatDate,
@@ -11,15 +11,14 @@ import MomentLocaleUtils, {
 import 'moment/locale/nl';
 
 
-
 const AddActivity = (props) => {
 
-    const users = props.users.map((u,i) => {
+    const users = props.users.map((u, i) => {
         return {
             key: i,
             name: u.name,
             value: i
-        }
+        };
     });
     const userProps = {
         label: 'User',
@@ -35,7 +34,7 @@ const AddActivity = (props) => {
             key: i,
             name: c.name,
             value: c.id
-        }
+        };
     });
     const categoryProps = {
         label: 'Category',
@@ -82,7 +81,7 @@ const AddActivity = (props) => {
     }
 
     const buttonProps = {
-        label: '+',
+        label: 'Save',
         onClick: () => {
             props.actions.addActivity(
                 props.users[props.userInputs[userProps.name]],
@@ -91,7 +90,7 @@ const AddActivity = (props) => {
                 props.userInputs[stardustProps.name],
                 props.userInputs[descriptionProps.name],
                 date
-            )
+            );
         }
     };
 
@@ -107,7 +106,7 @@ const AddActivity = (props) => {
                 onDayChange={dayChange}
                 formatDate={formatDate}
                 parseDate={parseDate}
-                placeholder={'Datum'}
+                placeholder="Datum"
                 dayPickerProps={{
                     locale: 'nl',
                     localeUtils: MomentLocaleUtils,
