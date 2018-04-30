@@ -1,13 +1,14 @@
 package nl.teamrockstars.chapter.east.scoreboard.dto;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 public class UserDto extends BaseUserDto {
 	
 	private ZonedDateTime lastModifiedAt;
 	
 	private ZonedDateTime createdAt;
+	
+	private RoleDto role;
 
 	public ZonedDateTime getLastModifiedAt() {
 		return lastModifiedAt;
@@ -24,6 +25,12 @@ public class UserDto extends BaseUserDto {
 	public void setCreatedAt(ZonedDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
-	
-	
+
+    public RoleDto getRole() {
+        return role;
+    }
+
+    public void setRole( RoleDto role ) {
+        this.role = role;
+    }
 }

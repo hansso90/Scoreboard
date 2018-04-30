@@ -1,5 +1,22 @@
 package nl.teamrockstars.chapter.east.scoreboard.controller;
 
+import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import nl.teamrockstars.chapter.east.scoreboard.dto.UserDto;
@@ -7,20 +24,6 @@ import nl.teamrockstars.chapter.east.scoreboard.mapper.UserMapper;
 import nl.teamrockstars.chapter.east.scoreboard.model.User;
 import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
 import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.CollectionUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
-
-import static nl.teamrockstars.chapter.east.scoreboard.controller.RouteConstants.PUBLIC;
 
 @RestController
 @RequestMapping(value = PUBLIC + "/user")
@@ -38,15 +41,15 @@ public class UserController {
     private UserMapper mapper;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ApiOperation(value = "Get user", notes = "Gets a certain user with id", response = User.class)
-    public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
-        return new ResponseEntity<User>(userRepository.findById(id), HttpStatus.OK);
+    @ApiOperation(value = "Get user", notes = "Gets a certain user with id", response = UserDto.class)
+    public ResponseEntity<UserDto> getUser(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(mapper.userToUserDto(userRepository.findById(id)), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
-    @ApiOperation(value = "Get user", notes = "gets the current user out of token;", response = User.class)
+    @ApiOperation(value = "Get user", notes = "gets the current user out of token;", response = UserDto.class)
     public ResponseEntity<UserDto> getCurrentUser() {
-        return new ResponseEntity(mapper.userToUserDto(userService.getCurrentAuthentication()), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.userToUserDto(userService.getCurrentAuthentication()), HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -82,6 +85,6 @@ public class UserController {
             new MethodArgumentNotValidException(null, errors);
         }
         UserDto dto = userService.submit(user);
-        return new ResponseEntity(dto, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(dto, HttpStatus.ACCEPTED);
     }
 }
