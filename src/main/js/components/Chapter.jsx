@@ -5,15 +5,12 @@ const Chapter = (props) => {
     const chapter = props.chapter;
 
     return (
-        <div className="col-sm-24">
-            <div className={`progress-bar stripes ${chapter.color}`}>
-                <span style={{ width: '30%' }} className="stardustText" />
-                <span className="rockhand">
-                    <div className="label">{chapter.name}</div>
-                    <div className="pointer">🤘</div>
-                </span>
-            </div>
-        </div>
+        <span >
+            <span className="rockhand">
+                <div className="label">{chapter.chapterName}</div>
+                <div className={`pointer ${chapter.chapterColor}`}>🤘</div>
+            </span>
+        </span>
     );
 };
 
@@ -22,7 +19,13 @@ const { string, shape } = propTypes;
 
 Chapter.propTypes = {
     chapter: shape({
-        name: string,
-        color: string,
+        chapterName: string,
+        chapterColor: string
     }).isRequired
+};
+Chapter.DefaultValue = {
+    chapter: shape({
+        chapterName: '',
+        chapterColor: ''
+    })
 };

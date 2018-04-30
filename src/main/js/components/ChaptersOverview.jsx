@@ -18,7 +18,10 @@ const ChaptersOverview = (props) => {
         <div className="chaptersOverview overview">
             <span>Chapters:</span>
             {chapters.map((a, index) => {
-                return (<DeletableChapter chapter={a} actions={props.actions} />);
+                return (<DeletableChapter
+                    chapter={{ chapterName: a.name, chapterColor: 'black' }}
+                    actions={props.actions}
+                />);
             })}
 
         </div>);

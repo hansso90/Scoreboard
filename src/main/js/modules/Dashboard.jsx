@@ -5,18 +5,10 @@ import { bindActionCreators } from 'redux';
 import proptypes from 'prop-types';
 import actions from '../actions/index';
 import Menu from '../components/Menu';
-import Chapter from '../components/Chapter';
+import ProgressChapter from '../components/ProgressChapter';
 
 
 const Dashboard = (props) => {
-    const chaptersColors = [
-        { color: 'blue', name: 'NORTH' },
-        { color: 'orange', name: 'EAST' },
-        { color: 'pink', name: 'WEST' },
-        { color: 'green', name: 'SOUTH' }
-    ];
-
-
     const dashboardActivityData = props.dashboardActivityData;
     const dashboardActivityError = dashboardActivityData.dashboardActivityError;
     const dashboardActivities = dashboardActivityData.dashboardActivities;
@@ -31,12 +23,18 @@ const Dashboard = (props) => {
         );
     }
 
+    if(dashboardActivityError) {
+        return (
+            <div>
+                <Menu />
+                <span>{dashboardActivityError}</span>
+            </div>
+        );
+    }
+
+
     const chaptersHTML = dashboardActivities.chapters.map((c, index) =>
-        (<Chapter chapter={{
-            color: c.chapterColor,
-            name: c.chapterName
-        }}
-        />)
+        (<ProgressChapter chapter={c} />)
     );
 
     return (

@@ -13,11 +13,10 @@ const DeletableChapter = (props) => {
     };
 
     return (
-        <div>
+        <div className="progress-bar col-sm-24 chapter row">
+            <span />
             <Chapter {...props} />
-            <div className="chapter row">
-                <Button {...buttonProps} />
-            </div>
+            <Button {...buttonProps} />
         </div>);
 };
 

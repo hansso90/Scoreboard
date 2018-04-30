@@ -50,7 +50,9 @@ public class DashboardController {
 			chapter.setChapterName(name);
 			chapter.setMemberCount(random(20, 35));
 			chapter.setStardust(random(80, 150));
-			
+			if(name == "East")			{
+				chapter.setStardust(random(150, 250));
+			}
 			chapters.add(chapter);
 		}
 		
