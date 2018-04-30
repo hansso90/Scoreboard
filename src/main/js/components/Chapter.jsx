@@ -5,12 +5,10 @@ const Chapter = (props) => {
     const chapter = props.chapter;
 
     return (
-        <span >
             <span className="rockhand">
                 <div className="label">{chapter.chapterName}</div>
                 <div className={`pointer ${chapter.chapterColor}`}>🤘</div>
             </span>
-        </span>
     );
 };
 

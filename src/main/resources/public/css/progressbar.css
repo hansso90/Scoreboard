@@ -21,11 +21,13 @@
 .rockhand {
     min-height: 100%;
     display : inline-flex;
-    transform: translateY(-75%);
+    transform: translateY(-75%) scale(0.9);
+    border-radius: 5px;
+    margin-left: 2px;
 }
 
 .rockhand .label {
-    transform: rotate(90deg) translateY(25%) translateX(-20px);
+    transform: rotate(90deg) translateY(25%) translateX(-15px);
     width: 10px;
     font-weight: bold;
     -webkit-text-fill-color: white;
