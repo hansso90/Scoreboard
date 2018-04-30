@@ -1,5 +1,5 @@
 import { assignIn } from 'lodash';
-import { RECEIVE_CHAPTERS, RECEIVE_CHAPTER_ERROR } from '../actions/types';
+import { RECEIVE_CHAPTERS, RECEIVE_CHAPTER_ERROR, LOGGED_OUT } from '../actions/types';
 
 const initalState = {
     chapterError: null,
@@ -15,7 +15,8 @@ export default (state = initalState, action) => {
             return assignIn({}, state, obj);
         case RECEIVE_CHAPTERS:
             return assignIn({}, state, { chapters: action.chapters, chapterError: null });
-
+        case LOGGED_OUT:
+            return initalState;
         default:
             return state;
     }

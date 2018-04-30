@@ -1,4 +1,4 @@
-import { UN_AUTHORIZED, DO_LOGIN, RECEIVE_LOGIN_ERROR, CLEAR_LOGIN_ERROR, RECEIVE_TOKEN } from './types';
+import { UN_AUTHORIZED, DO_LOGIN, RECEIVE_LOGIN_ERROR, CLEAR_LOGIN_ERROR, RECEIVE_TOKEN, DO_LOGOUT, LOGGED_OUT } from './types';
 
 export function unAuthorized() {
     return {
@@ -11,6 +11,20 @@ export function doLogin(username, password) {
         type: DO_LOGIN,
         username,
         password
+    };
+}
+
+
+export function doLogout() {
+    return {
+        type: DO_LOGOUT,
+    };
+}
+
+
+export function onLoggedOut() {
+    return {
+        type: LOGGED_OUT,
     };
 }
 

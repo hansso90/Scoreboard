@@ -1,5 +1,5 @@
 import { assignIn } from 'lodash';
-import { RECEIVE_CATEGORIES, RECEIVE_CATEGORY_ERROR } from '../actions/types';
+import { RECEIVE_CATEGORIES, RECEIVE_CATEGORY_ERROR, LOGGED_OUT } from '../actions/types';
 
 const initalState = {
     categoryError: null,
@@ -15,7 +15,8 @@ export default (state = initalState, action) => {
             return assignIn({}, state, obj);
         case RECEIVE_CATEGORIES:
             return assignIn({}, state, { categories: action.categories, categoryError: null });
-
+        case LOGGED_OUT:
+            return initalState;
         default:
             return state;
     }

@@ -20,3 +20,19 @@ export function login(userName, password) {
 
     return fetch(`${webApiBaseUrl}/oauth/token`, prefs);
 }
+
+
+export function logout(token) {
+    // Define fetch properties
+    const prefs = {
+        method: 'DELETE',
+        credentials: 'same-origin',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json'
+
+        }
+    };
+
+    return fetch(`${webApiBaseUrl}/oauth/token`, prefs);
+}

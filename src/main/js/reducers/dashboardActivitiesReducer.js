@@ -1,5 +1,5 @@
 import { assignIn } from 'lodash';
-import { RECEIVE_DASHBOARDACTIVITIES, RECEIVE_DASHBOARDACTIVITY_ERROR } from '../actions/types';
+import { RECEIVE_DASHBOARDACTIVITIES, RECEIVE_DASHBOARDACTIVITY_ERROR, LOGGED_OUT } from '../actions/types';
 
 const initalState = {
     dashboardActivityError: null,
@@ -15,7 +15,8 @@ export default (state = initalState, action) => {
             return assignIn({}, state, obj);
         case RECEIVE_DASHBOARDACTIVITIES:
             return assignIn({}, state, { dashboardActivities: action.dashboardActivities, dashboardActivityError: null });
-
+        case LOGGED_OUT:
+            return initalState;
         default:
             return state;
     }

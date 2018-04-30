@@ -1,5 +1,5 @@
 import { assignIn } from 'lodash';
-import { RECEIVE_ACTIVITIES, RECEIVE_ACTIVITY_ERROR } from '../actions/types';
+import { RECEIVE_ACTIVITIES, RECEIVE_ACTIVITY_ERROR, LOGGED_OUT } from '../actions/types';
 
 const initalState = {
     activityError: null,
@@ -15,7 +15,8 @@ export default (state = initalState, action) => {
             return assignIn({}, state, obj);
         case RECEIVE_ACTIVITIES:
             return assignIn({}, state, { activities: action.activities, activityError: null });
-
+        case LOGGED_OUT:
+            return initalState;
         default:
             return state;
     }
