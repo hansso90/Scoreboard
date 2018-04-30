@@ -28,6 +28,16 @@ input.form-control {
     font-size: 18px;
 }
 
+
+.overview .row {
+    border: 1px #222222 solid;
+    background-color: rgba(51, 51, 51, 0.8);
+    border-bottom: none;
+}
+.overview .row:last-child {
+    border-bottom: 1px #222222 solid;
+}
+
 .overview > span {
     display: block;
 }

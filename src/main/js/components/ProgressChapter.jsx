@@ -9,7 +9,11 @@ const ProgressChapter = (props) => {
         <div className="col-sm-24">
             <div className={`progress-bar stripes ${chapter.chapterColor}`}>
                 <span style={{ width: `${chapter.stardust / 4}%` }} className="stardustText" />
-                <Chapter {...props} />
+                <span className="rockhand">
+                    <Chapter {...props} />
+                    <div className={`pointer ${chapter.chapterColor}`}>🤘</div>
+                </span>
+
             </div>
         </div>
     );
