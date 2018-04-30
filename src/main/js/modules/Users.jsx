@@ -27,7 +27,8 @@ const Users = (props) => {
 
     return (
         <div className="users">
-            <Menu />
+            <Menu currentUser={userData.currentUser} />
+
             <div>
                 { waitingChapters || waitingUsers && (
                     <span>Getting data</span>

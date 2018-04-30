@@ -8,9 +8,10 @@ import Menu from '../components/Menu';
 import AddChapter from '../components/AddChapter';
 
 const Chapters = (props) => {
+    const userData = props.userData;
     return (
         <div className="chapters">
-            <Menu />
+            <Menu currentUser={userData.currentUser} />
             <div className="row">
                 <div className="col-md-12 col-sm-24">
                     <AddChapter {...props} />
@@ -27,7 +28,8 @@ const Chapters = (props) => {
 function mapStateToProps(state) {
     return {
         userInputs: { ...state.userInput },
-        chapterData: { ...state.chapters }
+        chapterData: { ...state.chapters },
+        userData: { ...state.users }
     };
 }
 

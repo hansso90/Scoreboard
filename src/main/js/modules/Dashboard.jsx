@@ -13,11 +13,12 @@ const Dashboard = (props) => {
     const dashboardActivityError = dashboardActivityData.dashboardActivityError;
     const dashboardActivities = dashboardActivityData.dashboardActivities;
     const waitingActivities = !dashboardActivities && !dashboardActivityError;
+    const userData = props.userData;
     if(waitingActivities) {
         props.actions.requireDashboardActivities();
         return (
             <div>
-                <Menu />
+                <Menu currentUser={userData.currentUser} />
                 <span>Getting Dashboard Data</span>
             </div>
         );
@@ -26,7 +27,8 @@ const Dashboard = (props) => {
     if(dashboardActivityError) {
         return (
             <div>
-                <Menu />
+                <Menu currentUser={userData.currentUser} />
+
                 <span>{dashboardActivityError}</span>
             </div>
         );
@@ -39,7 +41,7 @@ const Dashboard = (props) => {
 
     return (
         <div>
-            <Menu />
+            <Menu currentUser={userData.currentUser} />
             <div id="stars" />
             <div id="stars-back" />
             <div className="container-fluid">
@@ -52,7 +54,8 @@ const Dashboard = (props) => {
 function mapStateToProps(state) {
     return {
         userInputs: { ...state.userInput },
-        dashboardActivityData: { ...state.dashboardActivities }
+        dashboardActivityData: { ...state.dashboardActivities },
+        userData: { ...state.users }
     };
 }
 

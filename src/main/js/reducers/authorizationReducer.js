@@ -20,7 +20,11 @@ export default (state = initalState, action) => {
             };
             return assignIn({}, state, tokenObj);
         case CLEAR_LOGIN_ERROR:
-            return initalState;
+            const errorObj = {
+
+                loginError: null
+            };
+            return assignIn({}, state, errorObj);
         case LOGGED_OUT:
             return initalState;
         default:

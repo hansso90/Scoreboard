@@ -1,9 +1,13 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import upperFirst from 'lodash/upperFirst';
-import Button from './Button';
 
 const Menu = (props) => {
+
+    if(!props.currentUser) {
+        return (<Redirect to="/login" />);
+    }
+
     const endpoints = ['categories', 'chapters', 'users', 'activities', 'dashboard', 'logout'];
 
     const lis = endpoints.map((name, index) =>

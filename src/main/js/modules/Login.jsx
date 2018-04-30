@@ -11,12 +11,6 @@ import URI from 'urijs';
 
 const Login = (props) => {
 
-    const params = props.location.search;
-    if(params.length > 0){
-        const pars = new URI(params).query(true);
-        props.actions.doLogin(pars.username, pars.token);
-    }
-
     const userNameProps = {
         label: 'User name:',
         name: 'userNameBox',
@@ -39,14 +33,22 @@ const Login = (props) => {
     const adLoginButton = {
         label: 'Login with Microsoft Credentials',
         onClick: () => {
-            fetch(`http://localhost:8080/ad/login`).then(res => {
-                res.json().then(json => {
+            fetch('http://localhost:8080/ad/login').then((res) => {
+                res.json().then((json) => {
                     const url = json.url;
                     window.location.href = url;
                 });
             });
         }
     };
+
+    if(!props.authorization.loginError && !props.authorization.token && !props.userData.currentUser) {
+        const params = props.location.search;
+        if(params.length > 0) {
+            const pars = new URI(params).query(true);
+            props.actions.doLogin(pars.username, pars.token);
+        }
+    }
 
     return (
         <div className="login">
@@ -57,14 +59,17 @@ const Login = (props) => {
             {props.authorization.loginError &&
                 <span>{props.authorization.loginError}</span>
             }
-            {props.authorization.token && <Redirect to='/categories'/>}
+            {props.authorization.token && props.userData.currentUser && <Redirect to="/dashboard" />}
+            {!props.authorization.loginError && (props.authorization.token || props.userData.currentUser) && !(!props.authorization.token && !props.userData.currentUser) &&
+            <span>Loging you in</span>}
         </div>);
 };
 
 function mapStateToProps(state) {
     return {
         userInputs: { ...state.userInput },
-        authorization: { ...state.authorization }
+        authorization: { ...state.authorization },
+        userData: { ...state.users }
     };
 }
 

@@ -3,7 +3,7 @@ import './fetch';
 const webApiBaseUrl = 'http://localhost:8080';
 
 
-export function getUserById(id, token) {
+export function getCurrentUser(token) {
     // Define fetch properties
     const prefs = {
         method: 'GET',
@@ -15,7 +15,7 @@ export function getUserById(id, token) {
         }
     };
 
-    return fetch(`${webApiBaseUrl}/api/v0/user/${id}`, prefs);
+    return fetch(`${webApiBaseUrl}/api/v0/user/current`, prefs);
 }
 
 export function getUsers(token) {

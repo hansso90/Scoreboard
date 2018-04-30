@@ -1,4 +1,4 @@
-import { REQUIRE_USERS, ADD_USER, RECEIVE_USERS, RECEIVE_USER_ERROR, REMOVE_USER } from './types';
+import { REQUIRE_USERS, ADD_USER, RECEIVE_USERS, RECEIVE_USER_ERROR, REMOVE_USER, RECEIVE_CURRENT_USER } from './types';
 
 export function requireUsers() {
     return {
@@ -26,6 +26,14 @@ export function onReceiveUsers(users) {
     return {
         type: RECEIVE_USERS,
         users
+    };
+}
+
+
+export function onReceiveCurrentUser(currentUser) {
+    return {
+        type: RECEIVE_CURRENT_USER,
+        currentUser
     };
 }
 

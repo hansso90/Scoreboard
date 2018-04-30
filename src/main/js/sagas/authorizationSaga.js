@@ -3,14 +3,16 @@ import { takeLatest, call, put, select } from 'redux-saga/effects';
 import { createBrowserHistory } from 'history';
 import actions from '../actions/index';
 import { login, logout } from '../services/authorizationService';
+import { getCurrentUser } from '../services/userService';
 import { UN_AUTHORIZED, DO_LOGIN, DO_LOGOUT, LOGGED_OUT } from '../actions/types';
 import { receiveToken, onLoggedOut } from '../actions/authorizationActions';
+import { onReceiveCurrentUser } from '../actions/userActions';
 
 const { clearLoginError, receiveLoginError } = actions;
 const history = createBrowserHistory();
 function* onUnAuthorized() {
     history.push('/login');
-    history.go('/login');
+    history.go();
 }
 export const getToken = state => state.authorization.token;
 
@@ -18,16 +20,23 @@ function* onDoLogin(message) {
     try {
         const result = yield call(login, message.username, message.password);
         if(!result.ok) {
-            console.log('response niet ok');
+            console.log('token response niet ok');
             yield put(receiveLoginError('De gebruikersnaam en het wachtwoord komen niet overeen'));
-        } else {
-            const tokenJson = yield result.json();
-            const token = tokenJson.access_token;
-            yield put(clearLoginError());
-            yield put(receiveToken(token));
-            history.push('/dashboard');
-            history.go();
+            return;
         }
+        const tokenJson = yield result.json();
+        const token = tokenJson.access_token;
+        const userResult = yield call(getCurrentUser, token);
+        if(!userResult.ok) {
+            console.log('user response niet ok');
+            yield put(receiveLoginError('De gebruiker kon niet worden opgehaald'));
+            return;
+        }
+        const currentUser = yield call([userResult, 'json']);
+
+        yield put(onReceiveCurrentUser(currentUser));
+        yield put(clearLoginError());
+        yield put(receiveToken(token));
     } catch(e) {
         console.log(e);
 

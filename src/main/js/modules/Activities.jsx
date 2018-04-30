@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import actions from '../actions/index';
 import Menu from '../components/Menu';
-import AddActivity from "../components/AddActivity";
+import AddActivity from '../components/AddActivity';
 
 
 const Activities = (props) => {
@@ -36,7 +36,7 @@ const Activities = (props) => {
 
     return (
         <div>
-            <Menu />
+            <Menu currentUser={userData.currentUser} />
             <div>
                 { waiting && (
                     <span>Getting data</span>
@@ -46,12 +46,12 @@ const Activities = (props) => {
                 { categoryError && <span>{categoryError}</span> }
                 { !waiting && (
                     <div>
-                        <AddActivity {...props} users={users} chapters={chapters} categories={categories}/>
+                        <AddActivity {...props} users={users} chapters={chapters} categories={categories} />
                     </div>
                 )}
             </div>
         </div>
-    )
+    );
 };
 
 function mapStateToProps(state) {

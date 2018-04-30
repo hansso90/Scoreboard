@@ -8,9 +8,10 @@ import Menu from '../components/Menu';
 import AddCategory from '../components/AddCategory';
 
 const Categories = (props) => {
+    const userData = props.userData;
     return (
         <div className="categories">
-            <Menu />
+            <Menu currentUser={userData.currentUser} />
             <div className="row">
                 <div className="col-md-12 col-sm-24">
                     <AddCategory {...props} />
@@ -26,7 +27,8 @@ const Categories = (props) => {
 function mapStateToProps(state) {
     return {
         userInputs: { ...state.userInput },
-        categoryData: { ...state.categories }
+        categoryData: { ...state.categories },
+        userData: { ...state.users }
     };
 }
 
