@@ -1,5 +1,5 @@
 .progress-bars{
-    padding-top: 85px;
+    padding-top: 20px;
     overflow:hidden;
 }
 
@@ -46,7 +46,7 @@
     margin: 0;
     border-radius: 3px;
     box-shadow: 0 1px 5px #333 inset, 0 1px 0 #444;
-    -webkit-animation: scaleAround 2s ease-in-out infinite;
+    -webkit-animation: scaleAround 4s ease-in-out infinite;
 }
 
 .progress-bar .stardustText {

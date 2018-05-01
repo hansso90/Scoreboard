@@ -70,7 +70,6 @@ const Dropdown = (props) => {
             >
                 {htmlOptions}
             </select>
-            <p>{ _selectedOption() }</p>
         </div>
     );
 };

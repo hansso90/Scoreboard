@@ -6780,7 +6780,7 @@ html {
 }
 
 body {
-    background: #232323 url(http://mijnbonus.teamrockstars.nl/dist/background.jpg) no-repeat top;
+    background:  linear-gradient(rgba(0,0,0,0.4), rgba(128,128,128,0.4)), url(http://mijnbonus.teamrockstars.nl/dist/background.jpg) no-repeat top;
     background-size: cover;
     background-attachment: fixed;
     font-size: .8rem
@@ -6866,8 +6866,8 @@ input[type=text] {
     }
 }
 
-input[type=password] {
-    background: #3a3a3b;
+input {
+    background: rgba(58,58,59, 0.8);
     color: #fff;
     border: 0;
     border-bottom: 1px solid #757575;

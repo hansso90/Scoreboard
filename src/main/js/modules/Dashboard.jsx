@@ -40,7 +40,7 @@ const Dashboard = (props) => {
     );
 
     return (
-        <div>
+        <div style={{overflow: "hidden", 'max-height': "100%"}}>
             <Menu currentUser={userData.currentUser} />
             <div id="stars" />
             <div id="stars-back" />
