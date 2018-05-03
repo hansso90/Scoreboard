@@ -1,16 +1,14 @@
 import React from 'react';
-//import { withRouter } from 'react-router';
+import URI from 'urijs';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import proptypes from 'prop-types';
 import actions from '../actions/index';
 import TextWithLabel from '../components/TextWithLabel';
 import Button from '../components/Button';
-import { Redirect } from 'react-router';
-import URI from 'urijs';
 
 const Login = (props) => {
-
     const userNameProps = {
         label: 'User name:',
         name: 'userNameBox',
@@ -35,7 +33,7 @@ const Login = (props) => {
         onClick: () => {
             fetch('http://localhost:8080/ad/login').then((res) => {
                 res.json().then((json) => {
-                    const url = json.url;
+                    const { url } = json;
                     window.location.href = url;
                 });
             });
@@ -80,11 +78,25 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
-const { object } = proptypes;
+const {
+    objectOf, func, string, shape
+} = proptypes;
 
 Login.propTypes = {
-    userInputs: object.isRequired,
-    authorization: object.isRequired,
-    actions: object.isRequired
+    userInputs: objectOf(string).isRequired,
+    authorization: shape({
+        loginError: string,
+        token: string
+    }).isRequired,
+    actions: shape({
+        doLogin: func.isRequired
+    }).isRequired,
+    location: shape({
+        search: string
+    }).isRequired,
+    userData: shape({
+        currentUser: shape({
+        }).isRequired
+    }).isRequired
 };
 

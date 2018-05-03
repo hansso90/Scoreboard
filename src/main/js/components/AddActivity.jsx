@@ -7,12 +7,12 @@ import MomentLocaleUtils, {
     formatDate,
     parseDate,
 } from 'react-day-picker/moment';
+import find from 'lodash/find';
 
 import 'moment/locale/nl';
 
 
 const AddActivity = (props) => {
-
     const users = props.users.map((u, i) => {
         return {
             key: i,
@@ -68,12 +68,12 @@ const AddActivity = (props) => {
         userInputs: props.userInputs
     };
 
-    const stardustProps = {
-        label: 'Stardust',
-        name: 'addActivity_stardust',
-        actions: props.actions,
-        userInputs: props.userInputs
-    };
+    // const stardustProps = {
+    //     label: 'Stardust',
+    //     name: 'addActivity_stardust',
+    //     actions: props.actions,
+    //     userInputs: props.userInputs
+    // };
 
     let date = new Date();
     function dayChange(d) {
@@ -83,11 +83,12 @@ const AddActivity = (props) => {
     const buttonProps = {
         label: 'Save',
         onClick: () => {
+            const category = find(props.categories, c => `${c.id}` === `${props.userInputs[categoryProps.name]}`);
             props.actions.addActivity(
                 props.users[props.userInputs[userProps.name]],
                 props.userInputs[chapterProps.name],
                 props.userInputs[categoryProps.name],
-                props.userInputs[stardustProps.name],
+                category.defaultStardust,
                 props.userInputs[descriptionProps.name],
                 date
             );
@@ -99,7 +100,6 @@ const AddActivity = (props) => {
             <DropdownWithLabel {...userProps} />
             <DropdownWithLabel {...chapterProps} />
             <DropdownWithLabel {...categoryProps} />
-            <TextWithLabel {...stardustProps} />
             <TextWithLabel {...descriptionProps} />
             <DayPickerInput
                 value={date}

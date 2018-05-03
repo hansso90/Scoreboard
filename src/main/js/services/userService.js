@@ -68,8 +68,10 @@ export function createUser(token, name, username, password, chapterId) {
             new: false,
             rights: [
                 'ROLE_ROLEMANAGEMENT',
-                'ROLE_USERANAGEMENT',
-                'ROLE_ACTIVITYMANAGEMENT'
+                'ROLE_USERMANAGEMENT',
+                'ROLE_ACTIVITYMANAGEMENT',
+                'ROLE_CHAPTERMANAGEMENT',
+                'ROLE_DASHBOARD'
             ]
         },
         username

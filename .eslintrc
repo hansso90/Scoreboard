@@ -15,7 +15,7 @@
         "import/no-extraneous-dependencies": ["error", {"packageDir": ""}],
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "keyword-spacing": ["error", { "overrides": { "if": { "after": false }, "for": { "after": false }, "catch": {"after": false} } }],
-        //"linebreak-style": ["error", "windows"],
+        "linebreak-style": ["off", "windows"],
         "max-len": ["warn", 150, { "ignoreTrailingComments": true, "ignoreComments": true }],
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "no-use-before-define": ["error", "nofunc"],

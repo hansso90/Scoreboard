@@ -2,7 +2,7 @@
 import { takeLatest, call, put, select } from 'redux-saga/effects';
 import actions from '../actions/index';
 import { createActivity, getActivities } from '../services/activityService';
-import {ADD_ACTIVITY, REQUIRE_ACTIVITIES} from '../actions/types';
+import { ADD_ACTIVITY, REQUIRE_ACTIVITIES } from '../actions/types';
 
 export const getToken = state => state.authorization.token;
 const { onReceiveActivities, receiveActivityError, unAuthorized } = actions;
@@ -24,8 +24,7 @@ function* getAllActivities() {
             const message = yield call([activitiesResponse, 'text']);
             yield put(receiveActivityError(message));
         }
-    }
-    catch(e) {
+    } catch(e) {
         yield put(receiveActivityError(e.message));
         yield put(unAuthorized());
     }

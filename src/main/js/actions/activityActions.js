@@ -15,7 +15,7 @@ export function addActivity(user, chapterId, categoryId, stardust, description, 
         stardust,
         description,
         date
-    }
+    };
 }
 
 export function onReceiveActivities(activities) {
