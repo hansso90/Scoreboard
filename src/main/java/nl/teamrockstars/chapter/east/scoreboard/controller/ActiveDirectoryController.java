@@ -2,21 +2,27 @@ package nl.teamrockstars.chapter.east.scoreboard.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import org.jose4j.lang.JoseException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -35,6 +41,8 @@ import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
 @RequestMapping(value = "/ad")
 public class ActiveDirectoryController {
 
+    private static Logger LOG = LoggerFactory.getLogger(ActiveDirectoryController.class);
+
 	private final class AuthParameterNames {
 
 		private static final String ID_TOKEN = "id_token";
@@ -50,9 +58,6 @@ public class ActiveDirectoryController {
 
 	@Value("${azure.activedirectory.authority}")
 	private String authority;
-
-	@Value("${azure.activedirectory.issuer}")
-	private String issuer;
 
 	@Value("${azure.activedirectory.frontEndBaseUrl}")
 	private String frontEndBaseUrl;
@@ -71,24 +76,13 @@ public class ActiveDirectoryController {
 	private JwtConsumer jwtConsumer;
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public void postAD(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-		JwtConsumerBuilder b = new JwtConsumerBuilder().setExpectedAudience(clientId).setExpectedIssuer(issuer);
-		PublicKey key = azureADKeyService.getADPublicKey();
-
-		if (key != null) {
-			b = b.setVerificationKey(key);
-		} else {
-			b.setSkipAllDefaultValidators();
-			b.setSkipSignatureVerification();
-		}
-
-		jwtConsumer = b.build();
+	public void postAD(HttpServletRequest request, HttpServletResponse response) throws IOException, MalformedClaimException {
 
 		String token = request.getParameterMap().get(AuthParameterNames.ID_TOKEN)[0];
+        createJwtConsumer(token);
 
 		try {
-			JwtClaims jwtDecoded = jwtConsumer.processToClaims(token);
+			JwtClaims jwtDecoded = this.jwtConsumer.processToClaims(token);
 			String username = jwtDecoded.getStringClaimValue(AuthParameterNames.UPN);
 			String name = jwtDecoded.getStringClaimValue(AuthParameterNames.NAME);
 			User user = userService.findOrCreate(username, name);
@@ -105,7 +99,58 @@ public class ActiveDirectoryController {
 
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+    private void createJwtConsumer(String token) {
+        String kid = null;
+        String issuer = null;
+
+        JwtConsumer firstPassConsumer = new JwtConsumerBuilder().setSkipAllDefaultValidators().setSkipSignatureVerification().build();
+        try {
+            kid = firstPassConsumer.process(token).getJoseObjects().get(0).getKeyIdHeaderValue();
+            JwtClaims firstpassClaims = firstPassConsumer.processToClaims(token);
+            try {
+                issuer = firstpassClaims.getIssuer();
+            } catch (MalformedClaimException e) {
+                LOG.error(e.getMessage());
+            }
+            LOG.debug("Found kid: {}, issuer: {}.", kid, issuer);
+        } catch (InvalidJwtException e) {
+            LOG.error(e.getMessage());
+        }
+
+        JwtConsumerBuilder jwtConsumer = new JwtConsumerBuilder().setExpectedAudience(clientId).setExpectedIssuer(issuer);
+        PublicKey key = azureADKeyService.createADPublicKey(getCertificateString(kid));
+        if (key != null) {
+            jwtConsumer = jwtConsumer.setVerificationKey(key);
+        } else {
+            LOG.warn("Verification key was null, this is unsafe.");
+            jwtConsumer.setSkipAllDefaultValidators();
+            jwtConsumer.setSkipSignatureVerification();
+        }
+        this.jwtConsumer = jwtConsumer.build();
+    }
+
+    private String getCertificateString(String kid)  {
+        String certificateString = null;
+        try {
+            JSONObject json = new JSONObject(IOUtils.toString(new URL("https://login.microsoftonline.com/common/discovery/keys"), Charset.forName("UTF-8")));
+            JSONArray keys = (JSONArray) json.get("keys");
+            for (Object key : keys) {
+                JSONObject keyObject = (JSONObject) key;
+                if (StringUtils.equals(kid, keyObject.get("kid").toString())) {
+                    certificateString = keyObject.get("x5c").toString();
+                    certificateString = StringUtils.remove(certificateString, "[\"");
+                    certificateString = StringUtils.remove(certificateString, "\"]");
+                    LOG.debug("Found certificate: {}", certificateString);
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            LOG.error(e.getMessage());
+        }
+        return certificateString;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ResponseEntity<ActiveDirectoryRedirectDto> getLoginUrl() throws UnsupportedEncodingException {
 
 		ActiveDirectoryRedirectDto dto = new ActiveDirectoryRedirectDto();

@@ -4,5 +4,6 @@ import java.security.PublicKey;
 
 public interface AzureADKeyService {
 
-    PublicKey getADPublicKey();
+    PublicKey createADPublicKey(String key);
+
 }
