@@ -13,7 +13,7 @@ public class ActivityDto extends DtoObject {
 
     private DtoObject category;
 
-    private List<BaseUserDto> users;
+    private List<UserDto> users;
 
     private DtoObject chapter;
     
@@ -46,22 +46,22 @@ public class ActivityDto extends DtoObject {
     }
 
     public ZonedDateTime getDate() {
-			return date;
-		}
+		return date;
+	}
 
-		public void setDate(ZonedDateTime date) {
-			this.date = date;
-		}
+	public void setDate(ZonedDateTime date) {
+		this.date = date;
+	}
 
-		public List<BaseUserDto> getUsers() {
-			return users;
-		}
+	public List<UserDto> getUsers() {
+		return users;
+	}
 
-		public void setUsers(List<BaseUserDto> users) {
-			this.users = users;
-		}
+	public void setUsers(List<UserDto> users) {
+		this.users = users;
+	}
 
-		public DtoObject getChapter() {
+	public DtoObject getChapter() {
         return chapter;
     }
 
@@ -69,21 +69,21 @@ public class ActivityDto extends DtoObject {
         this.chapter = chapter;
     }
 
-		public ZonedDateTime getLastModifiedAt() {
-			return lastModifiedAt;
-		}
+	public ZonedDateTime getLastModifiedAt() {
+		return lastModifiedAt;
+	}
 
-		public void setLastModifiedAt(ZonedDateTime lastModifiedAt) {
-			this.lastModifiedAt = lastModifiedAt;
-		}
+	public void setLastModifiedAt(ZonedDateTime lastModifiedAt) {
+		this.lastModifiedAt = lastModifiedAt;
+	}
 
-		public ZonedDateTime getCreatedAt() {
-			return createdAt;
-		}
+	public ZonedDateTime getCreatedAt() {
+		return createdAt;
+	}
 
-		public void setCreatedAt(ZonedDateTime createdAt) {
-			this.createdAt = createdAt;
-		}
+	public void setCreatedAt(ZonedDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
     
     
 }

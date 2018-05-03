@@ -2,6 +2,7 @@ package nl.teamrockstars.chapter.east.scoreboard.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -64,12 +65,14 @@ public class Activity extends AbstractHibernateObject {
     this.category = category;
   }
 
-  public List<User> getUser() {
+  public List<User> getUsers()
+  {
     return users;
   }
 
-  public void setUser(List<User> user) {
-    users = user;
+  public void setUsers( List<User> users )
+  {
+        this.users = users;
   }
 
   public Chapter getChapter() {
