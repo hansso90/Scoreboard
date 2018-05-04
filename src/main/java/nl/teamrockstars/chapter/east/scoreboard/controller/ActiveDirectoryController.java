@@ -36,7 +36,6 @@ import nl.teamrockstars.chapter.east.scoreboard.model.User;
 import nl.teamrockstars.chapter.east.scoreboard.repository.UserRepository;
 import nl.teamrockstars.chapter.east.scoreboard.service.AzureADKeyService;
 import nl.teamrockstars.chapter.east.scoreboard.service.UserService;
-import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping(value = "/ad")
@@ -152,8 +151,12 @@ public class ActiveDirectoryController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-	public RedirectView getLoginUrl() throws UnsupportedEncodingException {
-		return new RedirectView(getRedirectUrl(redirectURI));
+	public ResponseEntity<ActiveDirectoryRedirectDto> getLoginUrl() throws UnsupportedEncodingException {
+
+		ActiveDirectoryRedirectDto dto = new ActiveDirectoryRedirectDto();
+		dto.setUrl(getRedirectUrl(redirectURI));
+
+		return new ResponseEntity<ActiveDirectoryRedirectDto>(dto, HttpStatus.OK);
 	}
 
 	private String getRedirectUrl(String currentUri) throws UnsupportedEncodingException {
@@ -161,7 +164,10 @@ public class ActiveDirectoryController {
 		String redirectUrl = authority + this.tenant //
 				+ "/oauth2/authorize?response_type=code%20id_token&scope=openid&response_mode=form_post&redirect_uri="//
 				+ URLEncoder.encode(currentUri, "UTF-8") + "&client_id=" + clientId //
-				+ "&resource=https%3a%2f%2fgraph.windows.net" + "&nonce=" + UUID.randomUUID();// // "&site_id=500879&claim=email";
+				+ "&resource=https%3a%2f%2fgraph.windows.net" + "&nonce=" + UUID.randomUUID();// +
+																																											// "&site_id=500879&claim=email";
+																																											// //
+
 		return redirectUrl;
 	}
 
